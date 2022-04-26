@@ -4,6 +4,7 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/maplive.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:http/http.dart' as http;
 
 class StartPage extends StatefulWidget {
   @override
@@ -12,10 +13,35 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage>
     with AutomaticKeepAliveClientMixin<StartPage> {
+  late String _name = 'befor';
+
   @override
   void initState() {
     super.initState();
     // print('initState Live');
+    loadData();
+  }
+
+  void loadData() async {
+    String dsd = await fetch();
+    setState(() {
+      _name = dsd;
+    });
+  }
+
+  Future<String> fetch() async {
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://185.208.175.202:4680/live/'));
+      request.fields.addAll({'serial': '027028356897'});
+      // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
+      http.StreamedResponse response = await request.send();
+
+      return response.statusCode.toString();
+    } catch (error) {
+      // print('Error add project $error');
+      return "error";
+    }
   }
 
   @override
@@ -52,6 +78,15 @@ class _StartPageState extends State<StartPage>
               ),
               onPressed: () {},
               child: Text('نسخه آزمایش'),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              'Hello, $_name',
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ],
