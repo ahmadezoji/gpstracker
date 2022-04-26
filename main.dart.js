@@ -46289,6 +46289,7 @@ m.d=f
 k=A.a9v("POST",A.ko("http://185.208.175.202:4680/live/"))
 f=t.N
 k.y.U(0,A.a5(["serial",m.d],f,f))
+k.r.U(0,A.a5(["Access-Control-Allow-Origin","*"],f,f))
 s=8
 return A.N(J.at9(k),$async$hL)
 case 8:j=c
