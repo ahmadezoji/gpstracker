@@ -32,7 +32,7 @@ class _StartPageState extends State<StartPage>
   Future<String> fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://185.208.175.202:4680/live/'));
+          'POST', Uri.parse('https://185.208.175.202:4680/live/'));
       request.fields.addAll({'serial': '027028356897'});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
