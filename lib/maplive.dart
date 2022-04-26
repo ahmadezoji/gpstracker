@@ -40,19 +40,9 @@ class _mapLiveState extends State<mapLive> {
   bool bZoom = false;
 
   Point lastPos = new Point(
-      lat: 0.0,
-      lon: 0.0,
-      dateTime: '',
-      speed: 0.0,
-      mileage: 0.0,
-      heading: 0.0);
+      lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
   Point currentPos = new Point(
-      lat: 0.0,
-      lon: 0.0,
-      dateTime: '',
-      speed: 0.0,
-      mileage: 0.0,
-      heading: 0.0);
+      lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
 
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
 
@@ -81,6 +71,7 @@ class _mapLiveState extends State<mapLive> {
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://185.208.175.202:4680/live/'));
       request.fields.addAll({'serial': serial});
+      request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
@@ -130,50 +121,48 @@ class _mapLiveState extends State<mapLive> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawerEnableOpenDragGesture: true,
-        endDrawer: Drawer(
-        backgroundColor: Colors.white,
-        child: Center(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+      drawerEnableOpenDragGesture: true,
+      endDrawer: Drawer(
+          backgroundColor: Colors.white,
+          child: Center(
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: [
+                const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text('Devices'),
                 ),
-                child: Text('Devices'),
-              ),
-              ListTile(
-                title: const Text('ماشین دوم'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text('ماشین سوم'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        )),
-    body: Column(
-    children: [
-    Expanded(child: buildMap(), flex: 8),
-    Expanded(
-    child: StatusBar(),
-    flex: 2,
-    )
-    ],
-    ),
-    floatingActionButton: _floatingBottons(
-    )
-    ,
+                ListTile(
+                  title: const Text('ماشین دوم'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('ماشین سوم'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          )),
+      body: Column(
+        children: [
+          Expanded(child: buildMap(), flex: 8),
+          Expanded(
+            child: StatusBar(),
+            flex: 2,
+          )
+        ],
+      ),
+      floatingActionButton: _floatingBottons(),
     );
   }
 
@@ -203,7 +192,9 @@ class _mapLiveState extends State<mapLive> {
           value: isSwitched,
           onChanged: (value) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => PinCodePage(),fullscreenDialog: true));
+                context,
+                MaterialPageRoute(
+                    builder: (_) => PinCodePage(), fullscreenDialog: true));
             setState(() {
               isSwitched = value;
               print(isSwitched);
@@ -218,7 +209,6 @@ class _mapLiveState extends State<mapLive> {
           child: const Icon(Icons.add_link),
           backgroundColor: Colors.red,
           onPressed: () {
-
             Scaffold.of(context).openDrawer();
             // _key.currentState!.openDrawer();
           },
