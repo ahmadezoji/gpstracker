@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="PLATFORM" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/git/flutter-mapbox-gl-e15c6c7871608328ca76ff1817188d95d135fb2e/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.13/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.15.0/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.9/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/location-4.3.0/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/android" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

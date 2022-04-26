@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.mapboxsdk:mapbox-android-plugin-localization-v9:0.12.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aca1ecf4111dd629f8ae15ef4a27e374/jetified-mapbox-android-plugin-localization-v9-0.12.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aca1ecf4111dd629f8ae15ef4a27e374/jetified-mapbox-android-plugin-localization-v9-0.12.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aca1ecf4111dd629f8ae15ef4a27e374/jetified-mapbox-android-plugin-localization-v9-0.12.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aca1ecf4111dd629f8ae15ef4a27e374/jetified-mapbox-android-plugin-localization-v9-0.12.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-plugin-localization-v9/0.12.0/78f5f773651ec6f46e849cac36051dfb1a394902/mapbox-android-plugin-localization-v9-0.12.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
