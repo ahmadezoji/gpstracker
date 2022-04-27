@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/maplive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,21 +15,45 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage>
     with AutomaticKeepAliveClientMixin<StartPage> {
   late String _name = 'befor';
-
+  // static const platform = const MethodChannel("myChannel");
+  static const platform = MethodChannel('com.next.cargpstracker/sendMsg');
   @override
   void initState() {
     super.initState();
     // print('initState Live');
+    // platform.setMethodCallHandler(nativeMethodCallHandler);
     loadData();
   }
-
+  // Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
+  //   print('Native call!');
+  //   switch (methodCall.method) {
+  //     case "methodNameItz" :
+  //       return "This data from flutter.....";
+  //       break;
+  //     default:
+  //       return "Nothing";
+  //       break;
+  //   }
+  // }
   void loadData() async {
     String dsd = await fetch();
     setState(() {
       _name = dsd;
     });
   }
-
+  Future<Null> sendSms() async {
+    print("SendSMS");
+    try {
+      final String result = await platform.invokeMethod(
+          'send', <String, dynamic>{
+        "phone": "09195835135",
+        "msg": "Hello! I'm sent programatically."
+      }); //Replace a 'X' with 10 digit phone number
+      print(result);
+    } on PlatformException catch (e) {
+      print('مشکل');
+    }
+  }
   Future<String> fetch() async {
     try {
       var request = http.MultipartRequest(
@@ -76,7 +101,7 @@ class _StartPageState extends State<StartPage>
                 onPrimary: Colors.white, // foreground
                 padding: EdgeInsets.only(top: 5),
               ),
-              onPressed: () {},
+              onPressed: () { sendSms();},
               child: Text('نسخه آزمایش'),
             ),
           ),

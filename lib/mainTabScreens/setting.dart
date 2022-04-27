@@ -113,7 +113,7 @@ class _SettingState extends State<Setting> {
     try {
       final String result = await platform.invokeMethod(
           'send', <String, dynamic>{
-        "phone": "09127060772",
+        "phone": "09195835135",
         "msg": "Hello! I'm sent programatically."
       }); //Replace a 'X' with 10 digit phone number
       print(result);
