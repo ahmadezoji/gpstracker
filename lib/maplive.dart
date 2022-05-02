@@ -72,6 +72,7 @@ class _mapLiveState extends State<mapLive> {
           'POST', Uri.parse('http://185.208.175.202:4680/live/'));
       request.fields.addAll({'serial': serial});
       request.headers.addAll({'Access-Control-Allow-Origin': '*'});
+      request.headers.addAll({'Access-Control-Allow-Credentials': 'true'});
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
