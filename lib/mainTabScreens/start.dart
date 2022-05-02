@@ -60,7 +60,6 @@ class _StartPageState extends State<StartPage>
           'POST', Uri.parse('http://185.208.175.202:4680/live/'));
       request.fields.addAll({'serial': '027028356897'});
       request.headers.addAll({'Access-Control-Allow-Origin': '*'});
-      request.headers.addAll({'Access-Control-Allow-Credentials': 'true'});
       http.StreamedResponse response = await request.send();
 
       return response.statusCode.toString();
