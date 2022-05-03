@@ -2,6 +2,7 @@ import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -32,18 +33,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Setting',
+            label: 'Art'.tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
-            label: 'Live',
+            label: 'Live'.tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: 'History'.tr,
           ),
         ],
         currentIndex: _selectedIndex,

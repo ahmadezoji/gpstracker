@@ -1,9 +1,11 @@
+import 'package:cargpstracker/LacaleString.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/mainTabScreens/start.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() => runApp(const MyApp());
 
@@ -16,9 +18,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: appTitle,
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      translations: LocaleString(),
+      locale: Locale('fa','IR'),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+
+        primarySwatch: Colors.blue,
+      ),
       home: SpalshScreen(),
     );
+    // return  MaterialApp(
+    //   title: appTitle,
+    //   home: SpalshScreen(),
+    // );
   }
 }

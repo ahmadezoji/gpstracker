@@ -16,15 +16,32 @@ class SpalshScreen extends StatefulWidget {
   _SpalshScreenState createState() => _SpalshScreenState();
 }
 
-class _SpalshScreenState extends State<SpalshScreen> {
+class _SpalshScreenState extends State<SpalshScreen>
+    with TickerProviderStateMixin {
+  late AnimationController controller;
+
   @override
   void initState() {
     super.initState();
     // fetch();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
+    controller.repeat(reverse: true);
+
     Timer(
         Duration(seconds: 5),
         () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => StartPage())));
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void fetch() async {
@@ -54,11 +71,21 @@ class _SpalshScreenState extends State<SpalshScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Column(children: [
-          Lottie.network(
-              'https://assets5.lottiefiles.com/packages/lf20_f9lgn7bp.json'),
-        ]));
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Lottie.network(
+                'https://assets5.lottiefiles.com/packages/lf20_f9lgn7bp.json'),
+            CircularProgressIndicator(
+              value: controller.value,
+              semanticsLabel: 'Linear progress indicator',
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

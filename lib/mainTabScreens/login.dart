@@ -5,7 +5,7 @@ import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:cargpstracker/maplive.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-
+import 'package:get/get.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -52,18 +52,6 @@ class _LoginPageState extends State<LoginPage>
                     hintText: 'شماره تماس'),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //       left: 15.0, right: 15.0, top: 15, bottom: 0),
-            //   //padding: EdgeInsets.symmetric(horizontal: 15),
-            //   child: TextField(
-            //     obscureText: true,
-            //     decoration: InputDecoration(
-            //         border: OutlineInputBorder(),
-            //         labelText: 'Password',
-            //         hintText: 'Enter secure password'),
-            //   ),
-            // ),
             TextButton(
               onPressed: () {
                 //TODO FORGOT PASSWORD SCREEN GOES HERE
@@ -84,8 +72,8 @@ class _LoginPageState extends State<LoginPage>
                       context, MaterialPageRoute(builder: (_) => RegisterPage(),fullscreenDialog: false));
                 },
                 child: Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  "Login".tr,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),

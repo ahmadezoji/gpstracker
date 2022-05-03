@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/pincode.dart';
 import 'package:cargpstracker/models/point.dart';
@@ -36,6 +37,12 @@ class _mapLiveState extends State<mapLive> {
   late double heading = 0.0;
 
   late bool isSwitched = false;
+  String _button = 'None';
+  double _headerHeight = 60.0;
+  double _bodyHeight = 250.0;
+  BottomDrawerController _controller = BottomDrawerController();
+
+  bool drawerOpen = true;
 
   bool bZoom = false;
 
@@ -92,6 +99,7 @@ class _mapLiveState extends State<mapLive> {
 
   @override
   void initState() {
+    _controller.open();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       currentPos = (await fetch())!;
       if (currentPos == null) return;
@@ -157,13 +165,96 @@ class _mapLiveState extends State<mapLive> {
       body: Column(
         children: [
           Expanded(child: buildMap(), flex: 8),
+          // Expanded(
+          //   child: StatusBar(),
+          //   flex: 2,
+          // )
           Expanded(
-            child: StatusBar(),
+            child: _buildBottomDrawer(context),
             flex: 2,
           )
         ],
       ),
       floatingActionButton: _floatingBottons(),
+    );
+  }
+
+  Widget _buildBottomDrawer(BuildContext context) {
+    return BottomDrawer(
+      header: _buildBottomDrawerHead(context),
+      body: _buildBottomDrawerBody(context),
+      headerHeight: _headerHeight,
+      drawerHeight: _bodyHeight,
+      color: Colors.white,
+      controller: _controller,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.15),
+          blurRadius: 60,
+          spreadRadius: 5,
+          offset: const Offset(2, -6), // changes position of shadow
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomDrawerHead(BuildContext context) {
+    return Container(
+      height: _headerHeight,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: 10.0,
+              right: 10.0,
+              top: 10.0,
+            ),
+            child: TextButton(
+              child:  Text(
+                'Speed :  ${speed.toString()} km/h',
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              onPressed: (){
+                if(drawerOpen) _controller.close();
+                else
+                  _controller.open();
+              },
+            ),
+          ),
+          Spacer(),
+          Divider(
+            height: 1.0,
+            color: Colors.grey,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomDrawerBody(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: _bodyHeight,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'mile :  ${mile.toString()} mile',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            Text(
+              'heading : ${heading.toString()} ',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -210,7 +301,9 @@ class _mapLiveState extends State<mapLive> {
           child: const Icon(Icons.add_link),
           backgroundColor: Colors.red,
           onPressed: () {
-            Scaffold.of(context).openDrawer();
+            // Scaffold.of(context).openDrawer();
+            /// open the bottom drawer.
+            _controller.open();
             // _key.currentState!.openDrawer();
           },
         ),

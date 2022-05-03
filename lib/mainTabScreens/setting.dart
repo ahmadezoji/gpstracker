@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cargpstracker/maplive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +31,16 @@ class _SettingState extends State<Setting> {
   String language = 'english';
   String speedAlarm = '60-220 km/h';
   String notifyType = '2';
+
+  final List locale = [
+    {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
+    {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
+  ];
+
+  updateLanguage(Locale locale) {
+    Get.back();
+    Get.updateLocale(locale);
+  }
 
   onChangeFunction(bool newValue) {
     setState(() {
@@ -179,10 +190,28 @@ class _SettingState extends State<Setting> {
                   context, 'Alarm Speed', speedAlarm, onChangeTextSpeedAlarm),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    var locale = Locale('en', 'US');
+                    Get.updateLocale(locale);
+                  },
+                  child: Text('English')),
+              ElevatedButton(
+                  onPressed: () {
+                    var locale = Locale('fa', 'IR');
+                    Get.updateLocale(locale);
+                  },
+                  child: Text('فارسی')),
+
+            ],
+          ),
           Container(
             child: TextButton(
               child: Text(
-                'Apply',
+                'Apply'.tr,
                 style: TextStyle(fontSize: 20.0),
               ),
               // color: Colors.blueAccent,

@@ -7,7 +7,7 @@ import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:get/get.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -98,8 +98,8 @@ class _RegisterPageState extends State<RegisterPage>
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
                 child: Text(
-                  'ذخیره',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  "Save".tr,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),

@@ -46,7 +46,8 @@ dependencies:
   lottie: ^1.2.2
   firebase_core: ^1.13.1
   qr_code_scanner: ^0.7.0
-
+  get: ^4.6.1
+  bottom_drawer: ^0.0.5
 
 
 dev_dependencies:
