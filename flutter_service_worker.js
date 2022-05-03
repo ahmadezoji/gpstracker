@@ -3,8 +3,8 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "index.html": "e12a286249aeee99204df64e44e295aa",
-"/": "e12a286249aeee99204df64e44e295aa",
+  "index.html": "792eff7171a3d313d3c091424a27af99",
+"/": "792eff7171a3d313d3c091424a27af99",
 "manifest.json": "c7c685fa0dd5e47b44b5549304857ce0",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "version.json": "5c6efea802bc6455d4ed9496585b0f15",
@@ -13,7 +13,7 @@ const RESOURCES = {
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/NOTICES": "7d7a5edfdcc0cc13b267d11a5213c76b",
+"assets/NOTICES": "6b9edbd22ac2b43ae03cf611a3fa25a6",
 "assets/fonts/MaterialIcons-Regular.otf": "7e7a6cccddf6d7b20012a548461d5d81",
 "assets/packages/fluttertoast/assets/toastify.js": "e7006a0a033d834ef9414d48db3be6fc",
 "assets/packages/fluttertoast/assets/toastify.css": "a85675050054f179444bc5ad70ffc635",
@@ -26,7 +26,7 @@ const RESOURCES = {
 "canvaskit/profiling/canvaskit.wasm": "95e736ab31147d1b2c7b25f11d4c32cd",
 "canvaskit/canvaskit.js": "c2b4e5f3d7a3d82aed024e7249a78487",
 "canvaskit/canvaskit.wasm": "4b83d89d9fecbea8ca46f2f760c5a9ba",
-"main.dart.js": "5c384b90790586cc7828854301ff0604"
+"main.dart.js": "06638dc1e25a3c9de38ab3d691cbe69f"
 };
 
 // The application shell files that are downloaded before a service worker can
