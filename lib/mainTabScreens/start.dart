@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/maplive.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';

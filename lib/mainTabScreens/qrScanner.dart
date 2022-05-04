@@ -1,7 +1,8 @@
 import 'dart:core';
 import 'dart:io';
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/maplive.dart';
+import 'package:cargpstracker/mainTabScreens/register.dart';
+
 import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       setState(() {
         result = scanData;
       });
+      // Navigator.pop(context);
     });
   }
 

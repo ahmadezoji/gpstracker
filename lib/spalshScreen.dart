@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/start.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -35,7 +36,7 @@ class _SpalshScreenState extends State<SpalshScreen>
     Timer(
         Duration(seconds: 5),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => StartPage())));
+            context, MaterialPageRoute(builder: (context) => LoginPage())));
   }
 
   @override
@@ -77,8 +78,8 @@ class _SpalshScreenState extends State<SpalshScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Lottie.network(
-                'https://assets5.lottiefiles.com/packages/lf20_f9lgn7bp.json'),
+            Lottie.asset(
+                'assets/gps-pointer.json'),
             CircularProgressIndicator(
               value: controller.value,
               semanticsLabel: 'Linear progress indicator',

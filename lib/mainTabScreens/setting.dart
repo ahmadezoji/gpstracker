@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cargpstracker/maplive.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -193,6 +193,10 @@ class _SettingState extends State<Setting> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Text(
+                "change_lang".tr,
+                style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w500,color: Colors.black),
+              ),
               ElevatedButton(
                   onPressed: () {
                     var locale = Locale('en', 'US');
@@ -208,11 +212,16 @@ class _SettingState extends State<Setting> {
 
             ],
           ),
+          SizedBox(height: 20),
           Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.blue,
+            ),
             child: TextButton(
               child: Text(
                 'Apply'.tr,
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(fontSize: 20.0,color: Colors.white),
               ),
               // color: Colors.blueAccent,
               // textColor: Colors.white,

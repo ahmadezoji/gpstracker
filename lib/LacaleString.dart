@@ -14,7 +14,11 @@ class LocaleString extends Translations{
       'History':'History',
       'Art':'Settings',
       'Apply' : 'Apply',
-      'Training' : 'Training Mode'
+      'Training' : 'Training Mode',
+      'alert-title' : 'Switch On/Off Alert',
+      "device-serial" : "device serial",
+      "device" : "device",
+      "change_lang" : "change lang"
     },
     'fa_IR':{
       'App_Name' : 'موقعیت یاب',
@@ -25,7 +29,11 @@ class LocaleString extends Translations{
       'History':'تاریخچه',
       'Art':'تنظیمات',
       'Apply' : 'قبول',
-      'Training' : 'نسخه آزمایش'
+      'Training' : 'نسخه آزمایش',
+      'alert-title' : 'هشدار خاموش کردن',
+      "device-serial" : "سریال دستگاه",
+      "device" : "دستگاه",
+      "change_lang" : "تغییر زبان"
     },
   };
 

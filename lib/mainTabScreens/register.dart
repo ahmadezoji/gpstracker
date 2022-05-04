@@ -2,12 +2,14 @@ import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
-import 'package:cargpstracker/maplive.dart';
+
 import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+import 'dart:developer';
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -77,8 +79,8 @@ class _RegisterPageState extends State<RegisterPage>
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'دستگاه',
-                    hintText: 'شماره سریال'),
+                    labelText: "device".tr,
+                    hintText: "device-serial".tr),
               ),
             ),
             Container(
@@ -113,8 +115,7 @@ class _RegisterPageState extends State<RegisterPage>
               child: IconButton(
                 icon: Icon(Icons.qr_code, size: 46),
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => QrScannerPage()));
+                  _navigateAndDisplaySelection(context);
                 },
               ),
               // DefaultTextStyle(
@@ -128,7 +129,21 @@ class _RegisterPageState extends State<RegisterPage>
       ),
     );
   }
+  void _navigateAndDisplaySelection(BuildContext context) async {
 
+    bool _debugLocked = false; // used to prevent re-entrant calls to push, pop, and friends
+    assert(!_debugLocked);
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>  QrScannerPage()),
+    );
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    // ScaffoldMessenger.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text('$result')));
+  }
   @override
   bool get wantKeepAlive => true;
 }

@@ -1,13 +1,16 @@
 class Point {
-  final double lat;
-  final double lon;
+  late  double lat;
+  late  double lon;
+
   // final String name;
   final String dateTime;
-  final double speed ;
+  final double speed;
+
   final double mileage;
-  final double heading ;
+  final double heading;
+
 // required this.name,
-  const Point({
+   Point({
     required this.lat,
     required this.lon,
     required this.dateTime,
@@ -27,19 +30,30 @@ class Point {
   // String getName() {
   //   return name;
   // }
+  void setLat(double lat) {
+    this.lat = lat;
+  }
+
+  void setLon(double lon) {
+    this.lon = lon;
+  }
 
   double getSpeed() {
     return speed;
   }
+
   String getDateTime() {
     return dateTime;
   }
+
   double getMileage() {
     return mileage;
   }
-   double getHeading() {
+
+  double getHeading() {
     return heading;
   }
+
 // name: json['properties']["name"],/
   factory Point.fromJson(Map<String, dynamic> json) {
     return Point(
