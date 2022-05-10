@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/start.dart';
+import 'package:cargpstracker/setPattern.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -20,7 +22,7 @@ class SpalshScreen extends StatefulWidget {
 class _SpalshScreenState extends State<SpalshScreen>
     with TickerProviderStateMixin {
   late AnimationController controller;
-
+  List<int>? pattern;
   @override
   void initState() {
     super.initState();
@@ -35,8 +37,23 @@ class _SpalshScreenState extends State<SpalshScreen>
 
     Timer(
         Duration(seconds: 5),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginPage())));
+        () => pushNew());
+  }
+
+  void pushNew() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>  LoginPage()),
+    );
+    print(result);
+    if (result is List<int>) {
+      context.replaceSnackbar(
+        content: Text("pattern is $result"),
+      );
+      setState(() {
+        pattern = result;
+      });
+    }
   }
 
   @override
@@ -48,7 +65,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   void fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://185.208.175.202:4680/getConfig/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/getConfig/'));
       request.fields.addAll({'serial': '027028362416'});
 
       http.StreamedResponse response = await request.send();
@@ -78,8 +95,7 @@ class _SpalshScreenState extends State<SpalshScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Lottie.asset(
-                'assets/gps-pointer.json'),
+            Lottie.asset('assets/gps-pointer.json'),
             CircularProgressIndicator(
               value: controller.value,
               semanticsLabel: 'Linear progress indicator',

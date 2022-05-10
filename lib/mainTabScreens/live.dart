@@ -85,7 +85,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       serial = prefs.getString('serial')!;
 
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://185.208.175.202:4680/live/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': serial});
       request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
@@ -238,21 +238,21 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         Switch(
           value: isSwitched,
           onChanged: (value) {
-            // showDialog<String>(
-            //   context: context,
-            //   builder: (BuildContext context) =>   AlertDialog(
-            //     title: const Text('AlertDialog Title'),
-            //     content: const Text('this is a demo alert diolog'),
-            //     actions: <Widget>[
-            //       TextButton(
-            //         child: const Text('Approve'),
-            //         onPressed: () {
-            //           Navigator.of(context).pop();
-            //         },
-            //       ),
-            //     ],
-            //   )
-            // );
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) =>   AlertDialog(
+                title: const Text('AlertDialog Title'),
+                content: const Text('this is a demo alert diolog'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Approve'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            );
             setState(() {
               isSwitched = value;
               print(isSwitched);
