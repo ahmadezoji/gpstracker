@@ -24,8 +24,8 @@ const RESOURCES = {
 "assets/assets/gps-pointer.json": "05b9173f571dbece8c0f0ffc8220bf54",
 "assets/assets/custom-icon.png": "a5d3d56e9ff5f6226d8487ca8ec4585f",
 "assets/assets/flutter-logo.png": "3b87320b0f7fffa16e05e4829fd92da3",
-"index.html": "917e32a4563894e43dbf32ef48bee7cf",
-"/": "917e32a4563894e43dbf32ef48bee7cf",
+"index.html": "d93de0c2e6ab05d43dd7e633b0265fe0",
+"/": "d93de0c2e6ab05d43dd7e633b0265fe0",
 "manifest.json": "c7c685fa0dd5e47b44b5549304857ce0"
 };
 
