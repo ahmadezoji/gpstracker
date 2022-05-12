@@ -46284,7 +46284,7 @@ d.toString
 n.e=d
 d=n.id
 B.d.sp(d,0)
-l=A.aaB("POST",A.kw("http://130.185.77.83:4680/history/",0,null))
+l=A.aaB("POST",A.kw("https://130.185.77.83:4680/history/",0,null))
 c=t.N
 l.y.T(0,A.a_(["serial",n.e,"timestamp",a1],c,c))
 s=7
@@ -46410,7 +46410,7 @@ case 7:l=c
 f=A.cY(J.Q(l.a,"serial"))
 f.toString
 m.d=f
-k=A.aaB("POST",A.kw("http://130.185.77.83:4680/live/",0,null))
+k=A.aaB("POST",A.kw("https://130.185.77.83:4680/live/",0,null))
 f=t.N
 k.y.T(0,A.a_(["serial",m.d],f,f))
 k.r.T(0,A.a_(["Access-Control-Allow-Origin","*"],f,f))
@@ -46669,7 +46669,7 @@ this.aZ()},
 hH(a){var s=0,r=A.E(t.z),q=1,p,o=[],n=this,m,l,k,j,i,h,g,f,e,d
 var $async$hH=A.A(function(b,c){if(b===1){p=c
 s=q}while(true)switch(s){case 0:q=3
-m=A.aaB("POST",A.kw("http://130.185.77.83:4680/getConfig/",0,null))
+m=A.aaB("POST",A.kw("https://130.185.77.83:4680/getConfig/",0,null))
 f=t.N
 m.y.T(0,A.a_(["serial",n.x],f,f))
 s=6
@@ -46732,7 +46732,7 @@ return A.D($async$wg,r)},
 tP(){var s=0,r=A.E(t.H),q=this,p,o,n
 var $async$tP=A.A(function(a,b){if(a===1)return A.B(b,r)
 while(true)switch(s){case 0:q.wg()
-p=A.aaB("POST",A.kw("http://130.185.77.83:4680/setConfig/",0,null))
+p=A.aaB("POST",A.kw("https://130.185.77.83:4680/setConfig/",0,null))
 o=t.N
 p.y.T(0,A.a_(["serial",q.x,"timezone",q.ch,"language",q.cx,"speed",q.cy,"notification","2","apnName","test","apnUser","user","apnPass","123","number",q.Q,"fence","","interval",q.y,"static",q.z],o,o))
 s=2
