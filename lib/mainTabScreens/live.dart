@@ -87,7 +87,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': serial});
-      request.headers.addAll({'Access-Control-Allow-Origin': '*'});
+      // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
