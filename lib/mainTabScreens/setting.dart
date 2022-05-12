@@ -87,7 +87,7 @@ class _SettingState extends State<Setting> {
   void fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/getConfig/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/getConfig/'));
       request.fields.addAll({'serial': serial});
 
       http.StreamedResponse response = await request.send();
@@ -136,7 +136,7 @@ class _SettingState extends State<Setting> {
   Future<void> applyChanges() async {
     sendSms();
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://130.185.77.83:4680/setConfig/'));
+        'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
     request.fields.addAll({
       'serial': serial,
       'timezone': timezone,

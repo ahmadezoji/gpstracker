@@ -118,7 +118,7 @@ class _HistoryState extends State<History>
       dirArr.clear();
 
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/history/'));
       request.fields.addAll({'serial': serial, 'timestamp': stamp});
       // Map<String,String> headers= { "Accept": "application/json",
       //     "Access-Control_Allow_Origin": "*"};

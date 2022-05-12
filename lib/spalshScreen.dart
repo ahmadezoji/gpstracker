@@ -65,7 +65,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   void fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/getConfig/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/getConfig/'));
       request.fields.addAll({'serial': '027028362416'});
 
       http.StreamedResponse response = await request.send();
