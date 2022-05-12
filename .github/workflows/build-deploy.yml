@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: BuildIn
     runs-on: ubuntu-latest
     
     steps:
