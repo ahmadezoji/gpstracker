@@ -45,7 +45,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   void pushNew() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  LoginPage()),
+      MaterialPageRoute(builder: (context) =>  HomePage()),
     );
     print(result);
     if (result is List<int>) {

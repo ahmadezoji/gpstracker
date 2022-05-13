@@ -7,10 +7,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1382612080/android.cloud_firestore.iml" filepath="$PROJECT_DIR$/.idea/modules/1382612080/android.cloud_firestore.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1449482211/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/1449482211/android.firebase_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-581200723/android.fluttertoast.iml" filepath="$PROJECT_DIR$/.idea/modules/-581200723/android.fluttertoast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1347409488/android.geolocator_android.iml" filepath="$PROJECT_DIR$/.idea/modules/-1347409488/android.geolocator_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-360702067/android.location.iml" filepath="$PROJECT_DIR$/.idea/modules/-360702067/android.location.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/967694883/android.mapbox_gl.iml" filepath="$PROJECT_DIR$/.idea/modules/967694883/android.mapbox_gl.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2063031730/android.qr_code_scanner.iml" filepath="$PROJECT_DIR$/.idea/modules/-2063031730/android.qr_code_scanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1335347599/android.shared_preferences_android.iml" filepath="$PROJECT_DIR$/.idea/modules/1335347599/android.shared_preferences_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/978112309/android.smart_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/978112309/android.smart_auth.iml" />
     </modules>
   </component>
 </project>

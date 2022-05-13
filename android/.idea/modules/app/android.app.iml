@@ -79,8 +79,10 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.gson:gson:2.8.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:1.15.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-location:16.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.mapbox.mapboxsdk:mapbox-android-telemetry:6.2.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-base:16.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-places-placereport:16.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-tasks:16.0.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-basement:16.0.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar" level="project" />
@@ -126,9 +128,9 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: com.mapbox.mapboxsdk:mapbox-sdk-geojson:5.3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.9" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-location:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-location:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:18.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-places-placereport:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-places-placereport:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:18.0.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:18.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.3.6@aar" level="project" />
@@ -155,12 +157,14 @@
     <orderEntry type="library" name="Gradle: com.mapbox.mapboxsdk:mapbox-android-gestures:0.7.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mapbox.mapboxsdk:mapbox-android-accounts:0.7.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mapbox.mapboxsdk:mapbox-android-sdk-gl-core:5.2.2@aar" level="project" />
-    <orderEntry type="module" module-name="android.mapbox_gl" />
     <orderEntry type="module" module-name="android.fluttertoast" />
-    <orderEntry type="module" module-name="android.location" />
     <orderEntry type="module" module-name="android.qr_code_scanner" />
+    <orderEntry type="module" module-name="android.smart_auth" />
+    <orderEntry type="module" module-name="android.mapbox_gl" />
     <orderEntry type="module" module-name="android.cloud_firestore" />
-    <orderEntry type="module" module-name="android.firebase_core" />
+    <orderEntry type="module" module-name="android.geolocator_android" />
+    <orderEntry type="module" module-name="android.location" />
     <orderEntry type="module" module-name="android.shared_preferences_android" />
+    <orderEntry type="module" module-name="android.firebase_core" />
   </component>
 </module>

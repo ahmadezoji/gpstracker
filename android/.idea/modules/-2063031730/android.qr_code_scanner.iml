@@ -23,8 +23,25 @@
         </compilerArguments>
       </configuration>
     </facet>
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+        </afterSyncTasks>
+        <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android/src/main/res;file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android/src/debug/res;file://$MODULE_DIR$/../../../../build/qr_code_scanner/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/qr_code_scanner/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android/src/androidTest/res;file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/qr_code_scanner/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/qr_code_scanner/generated/res/resValues/androidTest/debug" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="PROJECT_TYPE" value="1" />
+      </configuration>
+    </facet>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../../../build/qr_code_scanner/intermediates/javac/debug/classes" />
     <output-test url="file://$MODULE_DIR$/../../../../build/qr_code_scanner/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
@@ -57,7 +74,7 @@
       <excludeFolder url="file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/example/.pub" />
       <excludeFolder url="file:///mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/example/build" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.multidex:multidex-instrumentation:2.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.multidex:multidex:2.0.0@aar" level="project" />

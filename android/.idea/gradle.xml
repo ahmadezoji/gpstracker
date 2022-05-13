@@ -16,9 +16,11 @@
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.13/android" />
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.15.0/android" />
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.9/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_android-3.1.6/android" />
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/location-4.3.0/android" />
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.7.0/android" />
             <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.11/android" />
+            <option value="/mnt/467da999-8fbb-4f87-8b6e-ed76378cda19/flutter/.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

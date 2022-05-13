@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:typed_data';
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/main.dart';
 
@@ -6,6 +7,7 @@ import 'package:cargpstracker/models/point.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -21,11 +23,11 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History>
     with AutomaticKeepAliveClientMixin<History> {
-
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
   String serial = '';
   String label = '';
   String selectedDate = Jalali.now().toJalaliDateTime();
+  late Timestamp currentTimeStamp;
   late LatLng pos = new LatLng(41.025819, 29.230415);
   late MapboxMapController mapController;
 
@@ -46,69 +48,104 @@ class _HistoryState extends State<History>
 
   String selectedStyle = 'mapbox://styles/mapbox/light-v10';
   List<Point> dirArr = [];
-
+  List<LatLng> dirLatLons = [];
   late Jalali tempPickedDate;
 
   @override
   void initState() {
     super.initState();
   }
-  void _onMapCreated(MapboxMapController controller) {
-    mapController = controller;
-    mapController.onCircleTapped.add(_onCircleTapped);
+
+  Future<Uint8List> loadMarkerImage() async {
+    var byteData = await rootBundle.load("assets/finish.png");
+    return byteData.buffer.asUint8List();
   }
 
-  void _onCircleTapped(Circle circle) {
-    log('circle = ${int.parse(circle.id)}');
-    Point p = dirArr.elementAt(int.parse(circle.id));
+  Future<void> _onMapCreated(MapboxMapController controller) async {
+    mapController = controller;
+    mapController.onCircleTapped.add(_onCircleTapped);
+    mapController.onLineTapped.add(_onLineTapped);
+  }
+
+  void _onLineTapped(Line line) {}
+  Future<void> _onCircleTapped(Circle circle) async {
+    int index= dirLatLons.indexOf(circle.options.geometry!,0);
+
+
+    // Point p = dirArr.elementAt(int.parse(circle.id));
     setState(() {
-      speed = p.getSpeed();
-      mile = p.getMileage();
-      heading = p.getHeading();
+      speed = dirArr[index].getSpeed();
+      mile = dirArr[index].getMileage();
+      heading = dirArr[index].getHeading();
     });
   }
 
-  void _add() {
+  Future<void> _add() async {
     mapController.clearLines();
     mapController.clearCircles();
-    List<LatLng> points = [];
-    for (Point point in dirArr) {
-      points.add(LatLng(point.getLat(), point.getLon()));
-    }
+    // List<LatLng> points = [];
+    // for (Point point in dirArr) {
+    //   points.add(LatLng(point.getLat(), point.getLon()));
+    // }
     CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
         LatLng(
-          points[0].latitude,
-          points[0].longitude,
+          dirLatLons[0].latitude,
+          dirLatLons[0].longitude,
         ),
         11);
     mapController.moveCamera(cameraUpdate);
 
     mapController.addCircle(CircleOptions(
-        circleColor: 'red',
-        geometry: LatLng(points[0].latitude, points[0].longitude),
+        circleColor: 'yellow',
+        geometry: LatLng(dirLatLons[0].latitude, dirLatLons[0].longitude),
         circleRadius: 8));
+
 
     mapController.addLine(
       LineOptions(
-        geometry: points,
+        geometry: dirLatLons,
         lineColor: "blue",
         lineWidth: 2.0,
         lineOpacity: 1.0,
       ),
     );
-
-    // for (var i = 1; i < points.length - 1; i++) {
+    List<CircleOptions> list = [];
+    for (var i = 1; i < dirLatLons.length -1 ; i++) {
+      list.add(CircleOptions(
+          circleColor: 'red',
+          geometry: LatLng(dirLatLons[i].latitude, dirLatLons[i].longitude),
+          circleRadius: 4));
+    }
+    mapController.addCircles(list, null);
+    // for (var i = 1; i < points.length - 1; i = i + 3) {
     //   mapController.addCircle(CircleOptions(
-    //       circleColor: 'blue',
+    //       circleColor: 'black',
     //       geometry: LatLng(points[i].latitude, points[i].longitude),
-    //       circleRadius: 8));
+    //       circleRadius: 4));
     // }
 
-    mapController.addCircle(CircleOptions(
-        circleColor: 'yellow',
-        geometry: LatLng(points[points.length - 1].latitude,
-            points[points.length - 1].longitude),
-        circleRadius: 8));
+    // mapController.addCircle(CircleOptions(
+    //     circleColor: 'yellow',
+    //     geometry: LatLng(points[points.length - 1].latitude,
+    //         points[points.length - 1].longitude),
+    //     circleRadius: 8));
+    var markerImage = await loadMarkerImage();
+    mapController.addImage('marker', markerImage);
+    mapController.addSymbol(SymbolOptions(
+      geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
+          dirLatLons[dirLatLons.length - 1].longitude), // location is 0.0 on purpose for this example
+      iconImage: "marker",
+      iconSize: 2,
+    ));
+
+
+
+
+    setState(() {
+      speed = dirArr[0].getSpeed();
+      mile = dirArr[0].getMileage();
+      heading = dirArr[0].getHeading();
+    });
   }
 
   void fetch(String stamp) async {
@@ -125,12 +162,12 @@ class _HistoryState extends State<History>
       // request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
-
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
+          dirLatLons.add(LatLng(p.lat, p.lon));
           dirArr.add(p);
         }
         _add();
@@ -147,11 +184,12 @@ class _HistoryState extends State<History>
     return Scaffold(
       key: _key,
       drawerEnableOpenDragGesture: false,
-      body:buildMap(),
+      body: buildMap(),
       extendBody: true,
-      bottomNavigationBar:  _buildBottomDrawer(context),
+      bottomNavigationBar: _buildBottomDrawer(context),
     );
   }
+
   Scaffold buildMap() {
     return Scaffold(
       endDrawer: Drawer(
@@ -172,8 +210,8 @@ class _HistoryState extends State<History>
                   onPressed: () => _selectDate(context),
                   child: Text(
                     'Select date',
-                    style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 )
               ],
@@ -195,6 +233,7 @@ class _HistoryState extends State<History>
       floatingActionButton: _floatingBottons(),
     );
   }
+
   Widget _buildBottomDrawer(BuildContext context) {
     return BottomDrawer(
       header: _buildBottomDrawerHead(context),
@@ -231,10 +270,9 @@ class _HistoryState extends State<History>
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
                 style:
-                const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
-              onPressed: () {
-              },
+              onPressed: () {},
             ),
           ),
           Spacer(),
@@ -303,14 +341,15 @@ class _HistoryState extends State<History>
           child: const Icon(Icons.satellite),
           onPressed: () {
             selectedStyle = selectedStyle == light ? sattlite : light;
+            fetch(currentTimeStamp.seconds.toString());
             setState(() {});
           },
         ),
         const SizedBox(height: 100),
-
       ],
     );
   }
+
   //change Flat to text button
   _selectDate(BuildContext context) async {
     Jalali? picked = await showPersianDatePicker(
@@ -325,12 +364,12 @@ class _HistoryState extends State<History>
       });
 
       Timestamp myTimeStamp =
-      Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+      currentTimeStamp = myTimeStamp;
       print(myTimeStamp.seconds.toString());
       fetch(myTimeStamp.seconds.toString());
     }
   }
-
 
   @override
   bool get wantKeepAlive => true;
