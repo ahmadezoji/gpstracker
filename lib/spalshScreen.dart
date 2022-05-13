@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/start.dart';
@@ -26,7 +27,8 @@ class _SpalshScreenState extends State<SpalshScreen>
   @override
   void initState() {
     super.initState();
-    // fetch();
+    HttpOverrides.global = MyHttpOverrides();
+    fetch();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -74,7 +76,7 @@ class _SpalshScreenState extends State<SpalshScreen>
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = convert.jsonDecode(responseString);
-        String serial = json["device_id_id"].toString();
+        String serial = json[0]["device_id_id"].toString();
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('serial', serial).then((bool success) {
           print(serial);
@@ -104,5 +106,12 @@ class _SpalshScreenState extends State<SpalshScreen>
         ),
       ),
     );
+  }
+}
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }

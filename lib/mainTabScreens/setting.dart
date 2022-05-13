@@ -98,13 +98,13 @@ class _SettingState extends State<Setting> {
         final json = convert.jsonDecode(responseString);
         print(json);
         setState(() {
-          serial = json["device_id_id"].toString();
-          interval = json["interval"].toString();
-          static = json["static"].toString();
-          timezone = json["timezone"].toString();
-          language = json["language"].toString();
-          speedAlarm = json["speed_alarm"].toString();
-          adminNum = json["admin_num"].toString();
+          serial = json[0]["device_id_id"].toString();
+          interval = json[0]["interval"].toString();
+          static = json[0]["static"].toString();
+          timezone = json[0]["timezone"].toString();
+          language = json[0]["language"].toString();
+          speedAlarm = json[0]["speed_alarm"].toString();
+          adminNum = json[0]["admin_num"].toString();
         });
 
         final prefs = await SharedPreferences.getInstance();
