@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'dart:developer';
 import 'dart:convert';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+// import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class History extends StatefulWidget {
@@ -26,7 +26,7 @@ class _HistoryState extends State<History>
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
   String serial = '';
   String label = '';
-  String selectedDate = Jalali.now().toJalaliDateTime();
+  String selectedDate = ''; //Jalali.now().toJalaliDateTime();
   late Timestamp currentTimeStamp;
   late LatLng pos = new LatLng(41.025819, 29.230415);
   late MapboxMapController mapController;
@@ -49,7 +49,7 @@ class _HistoryState extends State<History>
   String selectedStyle = 'mapbox://styles/mapbox/light-v10';
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
-  late Jalali tempPickedDate;
+  // late Jalali tempPickedDate;
 
   @override
   void initState() {
@@ -69,8 +69,7 @@ class _HistoryState extends State<History>
 
   void _onLineTapped(Line line) {}
   Future<void> _onCircleTapped(Circle circle) async {
-    int index= dirLatLons.indexOf(circle.options.geometry!,0);
-
+    int index = dirLatLons.indexOf(circle.options.geometry!, 0);
 
     // Point p = dirArr.elementAt(int.parse(circle.id));
     setState(() {
@@ -100,7 +99,6 @@ class _HistoryState extends State<History>
         geometry: LatLng(dirLatLons[0].latitude, dirLatLons[0].longitude),
         circleRadius: 8));
 
-
     mapController.addLine(
       LineOptions(
         geometry: dirLatLons,
@@ -110,7 +108,7 @@ class _HistoryState extends State<History>
       ),
     );
     List<CircleOptions> list = [];
-    for (var i = 1; i < dirLatLons.length -1 ; i++) {
+    for (var i = 1; i < dirLatLons.length - 1; i++) {
       list.add(CircleOptions(
           circleColor: 'red',
           geometry: LatLng(dirLatLons[i].latitude, dirLatLons[i].longitude),
@@ -132,14 +130,13 @@ class _HistoryState extends State<History>
     var markerImage = await loadMarkerImage();
     mapController.addImage('marker', markerImage);
     mapController.addSymbol(SymbolOptions(
-      geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
-          dirLatLons[dirLatLons.length - 1].longitude), // location is 0.0 on purpose for this example
+      geometry: LatLng(
+          dirLatLons[dirLatLons.length - 1].latitude,
+          dirLatLons[dirLatLons.length - 1]
+              .longitude), // location is 0.0 on purpose for this example
       iconImage: "marker",
       iconSize: 2,
     ));
-
-
-
 
     setState(() {
       speed = dirArr[0].getSpeed();
@@ -225,10 +222,10 @@ class _HistoryState extends State<History>
           },
           onMapCreated: _onMapCreated,
           onMapClick: (point, latlng) {},
-          onStyleLoadedCallback: () => fetch(
-              (Timestamp.fromDate(Jalali.now().toDateTime()))
-                  .seconds
-                  .toString()),
+          // onStyleLoadedCallback: () => fetch(
+          //     (Timestamp.fromDate(Jalali.now().toDateTime()))
+          //         .seconds
+          //         .toString()),
           initialCameraPosition: CameraPosition(target: pos, zoom: 13)),
       floatingActionButton: _floatingBottons(),
     );
@@ -352,23 +349,23 @@ class _HistoryState extends State<History>
 
   //change Flat to text button
   _selectDate(BuildContext context) async {
-    Jalali? picked = await showPersianDatePicker(
-      context: context,
-      initialDate: Jalali.now(),
-      firstDate: Jalali(1385, 8),
-      lastDate: Jalali(1450, 9),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked.toJalaliDateTime();
-      });
+    // Jalali? picked = await showPersianDatePicker(
+    //   context: context,
+    //   initialDate: Jalali.now(),
+    //   firstDate: Jalali(1385, 8),
+    //   lastDate: Jalali(1450, 9),
+    // );
+    // if (picked != null && picked != selectedDate) {
+    //   setState(() {
+    //     selectedDate = picked.toJalaliDateTime();
+    //   });
 
-      Timestamp myTimeStamp =
-          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
-      currentTimeStamp = myTimeStamp;
-      print(myTimeStamp.seconds.toString());
-      fetch(myTimeStamp.seconds.toString());
-    }
+    //   Timestamp myTimeStamp =
+    //       Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+    //   currentTimeStamp = myTimeStamp;
+    //   print(myTimeStamp.seconds.toString());
+    //   fetch(myTimeStamp.seconds.toString());
+    // }
   }
 
   @override
