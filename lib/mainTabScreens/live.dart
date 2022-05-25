@@ -103,6 +103,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       // print('Error add project $error');
       return null;
     }
+    return null;
   }
 
   @override

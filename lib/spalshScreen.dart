@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/start.dart';
-import 'package:cargpstracker/setPattern.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'dart:developer';
 
 class SpalshScreen extends StatefulWidget {
   @override

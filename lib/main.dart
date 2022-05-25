@@ -1,8 +1,4 @@
 import 'package:cargpstracker/LacaleString.dart';
-import 'package:cargpstracker/mainTabScreens/history.dart';
-import 'package:cargpstracker/mainTabScreens/setting.dart';
-import 'package:cargpstracker/bottonTabs.dart';
-import 'package:cargpstracker/mainTabScreens/start.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';

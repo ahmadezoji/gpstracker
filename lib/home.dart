@@ -1,4 +1,3 @@
-import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:flutter/material.dart';
