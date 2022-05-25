@@ -14,25 +14,26 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Flutter installation
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable' # or: 'beta' or 'master'
       - run: flutter --version
     
-    - name: Get dependencies
-      run: flutter pub get
-    
- 
-    
-    - name: Build release project
-      run: flutter build web
+      - name: Get dependencies
+        run: flutter pub get
 
-    - name: Upload production-ready build files
-      uses: actions/upload-artifact@v2
-      with:
-        name: production-files
-        path: ./build/web
+
+
+      - name: Build release project
+        run: flutter build web
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-files
+          path: ./build/web
   
   deploy:
     name: Deploy
