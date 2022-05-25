@@ -4,8 +4,6 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class StartPage extends StatefulWidget {
@@ -55,7 +53,7 @@ class _StartPageState extends State<StartPage>
         "msg": "Hello! I'm sent programatically."
       }); //Replace a 'X' with 10 digit phone number
       print(result);
-    } on PlatformException catch (e) {
+    } on PlatformException {
       print('مشکل');
     }
   }

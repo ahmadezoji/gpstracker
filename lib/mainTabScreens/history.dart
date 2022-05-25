@@ -5,15 +5,13 @@ import 'package:cargpstracker/main.dart';
 
 import 'package:cargpstracker/models/point.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert' as convert;
+// import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'dart:developer';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'dart:convert';
-// import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class History extends StatefulWidget {
@@ -40,6 +38,7 @@ class _HistoryState extends State<History>
   late double speed = 0.0;
   late double heading = 0.0;
   late double mile = 0;
+  late String date = '';
 
   final sattlite = 'mapbox://styles/mapbox/satellite-v9';
   final street = 'mapbox://styles/mapbox/streets-v11';
@@ -49,7 +48,7 @@ class _HistoryState extends State<History>
   String selectedStyle = 'mapbox://styles/mapbox/light-v10';
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
-  // late Jalali tempPickedDate;
+  late Jalali tempPickedDate;
 
   @override
   void initState() {
@@ -76,6 +75,7 @@ class _HistoryState extends State<History>
       speed = dirArr[index].getSpeed();
       mile = dirArr[index].getMileage();
       heading = dirArr[index].getHeading();
+      date = dirArr[index].getDateTime();
     });
   }
 
@@ -122,21 +122,21 @@ class _HistoryState extends State<History>
     //       circleRadius: 4));
     // }
 
-    // mapController.addCircle(CircleOptions(
-    //     circleColor: 'yellow',
-    //     geometry: LatLng(points[points.length - 1].latitude,
-    //         points[points.length - 1].longitude),
-    //     circleRadius: 8));
-    var markerImage = await loadMarkerImage();
-    mapController.addImage('marker', markerImage);
-    mapController.addSymbol(SymbolOptions(
-      geometry: LatLng(
-          dirLatLons[dirLatLons.length - 1].latitude,
-          dirLatLons[dirLatLons.length - 1]
-              .longitude), // location is 0.0 on purpose for this example
-      iconImage: "marker",
-      iconSize: 2,
-    ));
+    mapController.addCircle(CircleOptions(
+        circleColor: 'red',
+        geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
+            dirLatLons[dirLatLons.length - 1].longitude),
+        circleRadius: 8));
+    // var markerImage = await loadMarkerImage();
+    // mapController.addImage('marker', markerImage);
+    // mapController.addSymbol(SymbolOptions(
+    //   geometry: LatLng(
+    //       dirLatLons[dirLatLons.length - 1].latitude,
+    //       dirLatLons[dirLatLons.length - 1]
+    //           .longitude), // location is 0.0 on purpose for this example
+    //   iconImage: "marker",
+    //   iconSize: 2,
+    // ));
 
     setState(() {
       speed = dirArr[0].getSpeed();
@@ -197,7 +197,7 @@ class _HistoryState extends State<History>
               children: [
                 Text(
                   //"${selectedDate.toJalaliDateTime()}".split(' ')[0],
-                  "${selectedDate}".split(' ')[0],
+                  "$selectedDate".split(' ')[0],
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.normal),
                 ),
                 SizedBox(
@@ -300,6 +300,12 @@ class _HistoryState extends State<History>
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            Text(
+              'dateTime : ${date.toString()} ',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             )
           ],
         ),
@@ -347,25 +353,35 @@ class _HistoryState extends State<History>
     );
   }
 
+  // void showDateDialog(BuildContext context) async {
+  //   LinearDatePicker(
+  //     dateChangeListener: (String selectedDate) {
+  //       print(selectedDate);
+  //     },
+  //     showMonthName: true,
+  //     isJalaali: true,
+  //   );
+  // }
+
   //change Flat to text button
   _selectDate(BuildContext context) async {
-    // Jalali? picked = await showPersianDatePicker(
-    //   context: context,
-    //   initialDate: Jalali.now(),
-    //   firstDate: Jalali(1385, 8),
-    //   lastDate: Jalali(1450, 9),
-    // );
-    // if (picked != null && picked != selectedDate) {
-    //   setState(() {
-    //     selectedDate = picked.toJalaliDateTime();
-    //   });
+    Jalali? picked = await showPersianDatePicker(
+      context: context,
+      initialDate: Jalali.now(),
+      firstDate: Jalali(1385, 8),
+      lastDate: Jalali(1450, 9),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked.toJalaliDateTime();
+      });
 
-    //   Timestamp myTimeStamp =
-    //       Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
-    //   currentTimeStamp = myTimeStamp;
-    //   print(myTimeStamp.seconds.toString());
-    //   fetch(myTimeStamp.seconds.toString());
-    // }
+      Timestamp myTimeStamp =
+          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+      currentTimeStamp = myTimeStamp;
+      print(myTimeStamp.seconds.toString());
+      fetch(myTimeStamp.seconds.toString());
+    }
   }
 
   @override

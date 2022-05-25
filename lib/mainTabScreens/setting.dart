@@ -1,14 +1,11 @@
-import 'dart:math';
 
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'dart:developer';
 import 'package:flutter/services.dart';
 
 class Setting extends StatefulWidget {

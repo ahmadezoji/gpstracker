@@ -40,12 +40,14 @@ dependencies:
   flutter_map: any # or the latest version on Pub
   fluttertoast: ^8.0.8
   http: ^0.13.4
+  persian_datetime_picker: ^2.4.0
+  # flutter_linear_datepicker: ^2.0.4
   cloud_firestore: ^3.1.7
   shared_preferences: ^2.0.13
   lottie: ^1.2.2
   firebase_core: ^1.13.1
   qr_code_scanner: ^0.7.0
-  get: ^4.6.5
+  get: ^4.6.1
   bottom_drawer: ^0.0.5
   pinput: ^2.2.7
   geolocator: ^8.2.0

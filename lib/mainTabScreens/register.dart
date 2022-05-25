@@ -3,12 +3,9 @@ import 'dart:core';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 
-import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
-import 'dart:developer';
 
 class RegisterPage extends StatefulWidget {
   @override

@@ -1,14 +1,9 @@
 import 'dart:core';
 import 'dart:io';
-import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/register.dart';
 
-import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class QrScannerPage extends StatefulWidget {
   @override

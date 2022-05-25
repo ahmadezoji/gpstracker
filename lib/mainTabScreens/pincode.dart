@@ -1,11 +1,7 @@
 import 'dart:core';
 
-import 'package:cargpstracker/home.dart';
 
-import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PinCodePage extends StatefulWidget {
   @override

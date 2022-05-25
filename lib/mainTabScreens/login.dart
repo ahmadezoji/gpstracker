@@ -1,10 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/register.dart';
 
-import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:get/get.dart';
 class LoginPage extends StatefulWidget {
   @override
