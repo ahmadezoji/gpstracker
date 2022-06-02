@@ -56,7 +56,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   @override
   void dispose() {
-    mapController.dispose();
+    // mapController.dispose();
     _timer.cancel();
     super.dispose();
   }
@@ -108,13 +108,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+
+        child: Scaffold(
       key: _key,
-      drawerEnableOpenDragGesture: false,
-      body:buildMap(),
+      drawerEnableOpenDragGesture: true,
+      body: buildMap(),
       extendBody: true,
-      bottomNavigationBar:  _buildBottomDrawer(context),
-    );
+      bottomNavigationBar: _buildBottomDrawer(context),
+    ));
   }
 
   void addSymbol(Point newPos) {
@@ -234,26 +236,24 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-
         // Zoom In
         Switch(
           value: isSwitched,
           onChanged: (value) {
             showDialog<String>(
-              context: context,
-              builder: (BuildContext context) =>   AlertDialog(
-                title: const Text('AlertDialog Title'),
-                content: const Text('this is a demo alert diolog'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Approve'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              )
-            );
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                      title: const Text('AlertDialog Title'),
+                      content: const Text('this is a demo alert diolog'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Approve'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ));
             setState(() {
               isSwitched = value;
               print(isSwitched);

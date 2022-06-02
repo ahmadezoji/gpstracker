@@ -1,8 +1,13 @@
 import 'dart:core';
+import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:flutter/material.dart';
 import 'package:cargpstracker/mainTabScreens/register.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:get/get.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -10,10 +15,38 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
+  late String userPhone;
   @override
   void initState() {
     super.initState();
     // print('initState Live');
+  }
+
+  void sendCode() async {
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
+      request.fields.addAll({'phone': userPhone});
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.toBytes();
+        final responseString = String.fromCharCodes(responseData);
+        final json = jsonDecode(responseString);
+        print(json);
+        if (json["status"] == true) {
+          Fluttertoast.showToast(msg: "sending-varify-code".tr);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) =>
+                      OtpPage(code: json["code"], userPhone: userPhone),
+                  fullscreenDialog: false));
+        }
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {}
   }
 
   @override
@@ -42,6 +75,11 @@ class _LoginPageState extends State<LoginPage>
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    userPhone = value;
+                  });
+                },
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -65,8 +103,11 @@ class _LoginPageState extends State<LoginPage>
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => RegisterPage(),fullscreenDialog: false));
+                  sendCode();
+                  // Navigator.pushReplacement(
+                  // context,
+                  // MaterialPageRoute(
+                  // builder: (_) => RegisterPage(), fullscreenDialog: false));
                 },
                 child: Text(
                   "Login".tr,

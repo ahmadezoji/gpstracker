@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
+// import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,14 +126,15 @@ class _RegisterPageState extends State<RegisterPage>
       ),
     );
   }
-  void _navigateAndDisplaySelection(BuildContext context) async {
 
-    bool _debugLocked = false; // used to prevent re-entrant calls to push, pop, and friends
+  void _navigateAndDisplaySelection(BuildContext context) async {
+    bool _debugLocked =
+        false; // used to prevent re-entrant calls to push, pop, and friends
     assert(!_debugLocked);
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) =>  QrScannerPage()),
-    );
+    // final result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) =>  QrScannerPage()),
+    // );
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
@@ -141,6 +142,7 @@ class _RegisterPageState extends State<RegisterPage>
     //   ..removeCurrentSnackBar()
     //   ..showSnackBar(SnackBar(content: Text('$result')));
   }
+
   @override
   bool get wantKeepAlive => true;
 }

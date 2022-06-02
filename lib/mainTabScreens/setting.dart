@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -13,7 +12,8 @@ class Setting extends StatefulWidget {
   _SettingState createState() => _SettingState();
 }
 
-class _SettingState extends State<Setting> {
+class _SettingState extends State<Setting> with TickerProviderStateMixin {
+  late AnimationController controller;
   late String valueChoose;
   List listItem = ["option1", 'option2'];
   static const platform = const MethodChannel("platfrom.channel.message/info");
@@ -27,6 +27,8 @@ class _SettingState extends State<Setting> {
   String language = 'english';
   String speedAlarm = '60-220 km/h';
   String notifyType = '2';
+
+  bool loading = false;
 
   final List locale = [
     {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
@@ -76,7 +78,15 @@ class _SettingState extends State<Setting> {
 
   @override
   void initState() {
-    fetch();
+    // fetch();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
+    controller.repeat(reverse: true);
+
     super.initState();
   }
 
@@ -94,6 +104,7 @@ class _SettingState extends State<Setting> {
         final json = convert.jsonDecode(responseString);
         print(json);
         setState(() {
+          loading = !loading;
           serial = json[0]["device_id_id"].toString();
           interval = json[0]["interval"].toString();
           static = json[0]["static"].toString();
@@ -164,152 +175,168 @@ class _SettingState extends State<Setting> {
 // buildDeviceOptions(context, 'Device serial', serial),
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      color: Colors.grey[200],
-      padding: const EdgeInsets.all(10),
-      child: ListView(
+    if (loading == false) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Column(
-            children: [
-              dropdown(),
-              buildDeviceOptions(
-                  context, 'Interval', interval, onChangeTextInterval),
-              buildDeviceOptions(
-                  context, 'Statics', static, onChangeTextStatic),
-              buildDeviceOptions(
-                  context, 'Alarm number', adminNum, onChangeTextAdminNum),
-              buildTableOptions(context, 'Time Zone', 'istanbul', 'tehran'),
-              buildTableOptions(context, 'Language', 'english', 'persian'),
-              buildSwitchOptions('Fence Config', valNotify, onChangeFunction),
-              buildDeviceOptions(
-                  context, 'Alarm Speed', speedAlarm, onChangeTextSpeedAlarm),
-            ],
+          CircularProgressIndicator(
+            value: controller.value,
+            semanticsLabel: 'Linear progress indicator',
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "change_lang".tr,
-                style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w500,color: Colors.black),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    var locale = Locale('en', 'US');
-                    Get.updateLocale(locale);
-                  },
-                  child: Text('English')),
-              ElevatedButton(
-                  onPressed: () {
-                    var locale = Locale('fa', 'IR');
-                    Get.updateLocale(locale);
-                  },
-                  child: Text('فارسی')),
-
-            ],
-          ),
-          SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.blue,
-            ),
-            child: TextButton(
-              child: Text(
-                'Apply'.tr,
-                style: TextStyle(fontSize: 20.0,color: Colors.white),
-              ),
-              // color: Colors.blueAccent,
-              // textColor: Colors.white,
-              onPressed: () {
-                applyChanges();
-              },
-            ),
-          ),
-
-          // SizedBox(
-          //   height: 10,
-          // ),
-          // Row(
-          //   children: const [
-          //     Icon(
-          //       Icons.device_hub,
-          //       color: Colors.black,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text('Device',
-          //         style: TextStyle(
-          //             fontSize: 20,
-          //             color: Colors.black,
-          //             fontWeight: FontWeight.bold))
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: 5,
-          // ),
-          // Container(
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.all(Radius.circular(20)),
-          //     ),
-          //     child: Expanded(
-          //         child: Column(
-          //           children: [
-          //             dropdown(),
-          //             buildDeviceOptions(context, 'Interval', interval,
-          //                 onChangeTextInterval),
-          //             buildDeviceOptions(
-          //                 context, 'Statics', static, onChangeTextStatic),
-          //             buildDeviceOptions(
-          //                 context, 'Alarm number', adminNum,
-          //                 onChangeTextAdminNum),
-          //             buildTableOptions(
-          //                 context, 'Time Zone', 'istanbul', 'tehran'),
-          //             buildTableOptions(
-          //                 context, 'Language', 'english', 'persian'),
-          //             buildSwitchOptions(
-          //                 'Fence Config', valNotify, onChangeFunction),
-          //             buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
-          //                 onChangeTextSpeedAlarm),
-          //           ],
-          //         ))),
-          // SizedBox(
-          //   height: 40,
-          // ),
-          // Row(
-          //   children: const [
-          //     Icon(
-          //       Icons.settings_applications,
-          //       color: Colors.black,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text('Application',
-          //         style:
-          //         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: 5,
-          // ),
-          // Container(
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.all(Radius.circular(20)),
-          //     ),
-          //     child: Expanded(
-          //         child: Column(
-          //           children: [
-          //             buildDeviceOptions(context, 'Backup days', '5 days',
-          //                 onChangeTextSerial)
-          //           ],
-          //         ))),
+          Center(child: Text('Please wait its loading...'))
         ],
-      ),
-    ));
+      ));
+    } else {
+      return Scaffold(
+          body: Container(
+        color: Colors.grey[200],
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: [
+            Column(
+              children: [
+                dropdown(),
+                buildDeviceOptions(
+                    context, 'Interval', interval, onChangeTextInterval),
+                buildDeviceOptions(
+                    context, 'Statics', static, onChangeTextStatic),
+                buildDeviceOptions(
+                    context, 'Alarm number', adminNum, onChangeTextAdminNum),
+                buildTableOptions(context, 'Time Zone', 'istanbul', 'tehran'),
+                buildTableOptions(context, 'Language', 'english', 'persian'),
+                buildSwitchOptions('Fence Config', valNotify, onChangeFunction),
+                buildDeviceOptions(
+                    context, 'Alarm Speed', speedAlarm, onChangeTextSpeedAlarm),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "change_lang".tr,
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      var locale = Locale('en', 'US');
+                      Get.updateLocale(locale);
+                    },
+                    child: Text('English')),
+                ElevatedButton(
+                    onPressed: () {
+                      var locale = Locale('fa', 'IR');
+                      Get.updateLocale(locale);
+                    },
+                    child: Text('فارسی')),
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+              ),
+              child: TextButton(
+                child: Text(
+                  'Apply'.tr,
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                ),
+                // color: Colors.blueAccent,
+                // textColor: Colors.white,
+                onPressed: () {
+                  applyChanges();
+                },
+              ),
+            ),
+
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   children: const [
+            //     Icon(
+            //       Icons.device_hub,
+            //       color: Colors.black,
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Text('Device',
+            //         style: TextStyle(
+            //             fontSize: 20,
+            //             color: Colors.black,
+            //             fontWeight: FontWeight.bold))
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 5,
+            // ),
+            // Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //       borderRadius: BorderRadius.all(Radius.circular(20)),
+            //     ),
+            //     child: Expanded(
+            //         child: Column(
+            //           children: [
+            //             dropdown(),
+            //             buildDeviceOptions(context, 'Interval', interval,
+            //                 onChangeTextInterval),
+            //             buildDeviceOptions(
+            //                 context, 'Statics', static, onChangeTextStatic),
+            //             buildDeviceOptions(
+            //                 context, 'Alarm number', adminNum,
+            //                 onChangeTextAdminNum),
+            //             buildTableOptions(
+            //                 context, 'Time Zone', 'istanbul', 'tehran'),
+            //             buildTableOptions(
+            //                 context, 'Language', 'english', 'persian'),
+            //             buildSwitchOptions(
+            //                 'Fence Config', valNotify, onChangeFunction),
+            //             buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
+            //                 onChangeTextSpeedAlarm),
+            //           ],
+            //         ))),
+            // SizedBox(
+            //   height: 40,
+            // ),
+            // Row(
+            //   children: const [
+            //     Icon(
+            //       Icons.settings_applications,
+            //       color: Colors.black,
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Text('Application',
+            //         style:
+            //         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 5,
+            // ),
+            // Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //       borderRadius: BorderRadius.all(Radius.circular(20)),
+            //     ),
+            //     child: Expanded(
+            //         child: Column(
+            //           children: [
+            //             buildDeviceOptions(context, 'Backup days', '5 days',
+            //                 onChangeTextSerial)
+            //           ],
+            //         ))),
+          ],
+        ),
+      ));
+    }
   }
 
   Padding buildSwitchOptions(

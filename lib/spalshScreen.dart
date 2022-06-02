@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -32,15 +33,13 @@ class _SpalshScreenState extends State<SpalshScreen>
       });
     controller.repeat(reverse: true);
 
-    Timer(
-        Duration(seconds: 5),
-        () => pushNew());
+    Timer(Duration(seconds: 5), () => pushNew());
   }
 
   void pushNew() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  HomePage()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
     print(result);
     if (result is List<int>) {
@@ -103,10 +102,12 @@ class _SpalshScreenState extends State<SpalshScreen>
     );
   }
 }
-class MyHttpOverrides extends HttpOverrides{
+
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
