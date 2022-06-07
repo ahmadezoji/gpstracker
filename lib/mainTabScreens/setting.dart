@@ -1,3 +1,4 @@
+import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,12 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   late AnimationController controller;
   late String valueChoose;
   List listItem = ["option1", 'option2'];
+  List<Device> devicesList = [];
+  List<String> devicesListSerials = [];
   static const platform = const MethodChannel("platfrom.channel.message/info");
   int languageIndex = 0;
   bool valNotify = false;
-  String serial = '027028362416';
+  String serial = '';
   String interval = '1-60s';
   String static = '1-60m';
   String adminNum = '09127060772';
@@ -79,15 +82,60 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   @override
   void initState() {
     // fetch();
+    getUserDevice();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
-    )..addListener(() {
-        setState(() {});
-      });
+    )..addListener(() {});
     controller.repeat(reverse: true);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // ignore: invalid_use_of_protected_member
+    // controller.clearListeners();
+    // controller.stop(canceled: true);
+    super.dispose();
+  }
+
+  void getUserDevice() async {
+    try {
+      // final prefs = await SharedPreferences.getInstance();
+      // String? phone = prefs.getString('phone');
+      String phone = '09195835135';
+
+      // if (phone == null) return;
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('https://130.185.77.83:4680/getDeviceByUser/'));
+      request.fields.addAll({
+        'phone': phone,
+      });
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.toBytes();
+        final responseString = String.fromCharCodes(responseData);
+        final json = convert.jsonDecode(responseString);
+
+        for (var dev in json) {
+          Device device = Device.fromJson(dev);
+          devicesList.add(device);
+          devicesListSerials.add(device.getSerial());
+        }
+        serial = devicesListSerials[0];
+        print('serial $serial');
+        fetch();
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('serial', devicesListSerials[0]).then((bool success) {
+          print(success);
+        });
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {}
   }
 
   void fetch() async {
@@ -97,14 +145,13 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
       request.fields.addAll({'serial': serial});
 
       http.StreamedResponse response = await request.send();
-
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = convert.jsonDecode(responseString);
-        print(json);
+
         setState(() {
-          loading = !loading;
+          loading = true;
           serial = json[0]["device_id_id"].toString();
           interval = json[0]["interval"].toString();
           static = json[0]["static"].toString();
@@ -114,10 +161,10 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           adminNum = json[0]["admin_num"].toString();
         });
 
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('serial', serial).then((bool success) {
-          print(success);
-        });
+        // final prefs = await SharedPreferences.getInstance();
+        // prefs.setString('serial', serial).then((bool success) {
+        // print(success);
+        // });
       } else {
         print(response.reasonPhrase);
       }
@@ -391,9 +438,10 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
               onChanged: (String? newValue) {
                 setState(() {
                   serial = newValue!;
+                  fetch();
                 });
               },
-              items: <String>['027028362416', '027028360584	', '027028356897']
+              items: devicesListSerials
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

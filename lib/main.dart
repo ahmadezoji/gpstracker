@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const String ACCESS_TOKEN =
-      'pk.eyJ1IjoiYWhtYWQtZXpvamkiLCJhIjoiY2s4bXlmc3RhMDczaTNob3c2YTF0a3YwdyJ9.xk8OyD77TanRLKtKqal1rQ';
+      'pk.eyJ1Ijoic2FhbWV6b2ppIiwiYSI6ImNsNDJvZ3RoeTB1NWMzZG82YnVodGU1d2EifQ.x3z9Smy3JJcwy-bNzHsZ6A';
   static const appTitle = 'Drawer Demo';
 
   @override

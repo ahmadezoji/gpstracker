@@ -5,9 +5,7 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
@@ -24,31 +22,34 @@ class _SpalshScreenState extends State<SpalshScreen>
   void initState() {
     super.initState();
     HttpOverrides.global = MyHttpOverrides();
-    fetch();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addListener(() {
-        setState(() {});
-      });
-    controller.repeat(reverse: true);
+      duration: const Duration(seconds: 3),
+    )..addListener(() {});
+    controller.repeat(reverse: false);
 
-    Timer(Duration(seconds: 5), () => pushNew());
+    Timer(Duration(seconds: 3), () => pushPage());
   }
 
-  void pushNew() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-    print(result);
-    if (result is List<int>) {
-      context.replaceSnackbar(
-        content: Text("pattern is $result"),
-      );
-      setState(() {
-        pattern = result;
-      });
+  void pushPage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // String phone = prefs.getString('phone')!;
+      String phone = '09127060772';
+
+      if (phone != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      }
+    } catch (error) {
+      print('Error add project $error');
     }
   }
 
@@ -56,31 +57,6 @@ class _SpalshScreenState extends State<SpalshScreen>
   void dispose() {
     controller.dispose();
     super.dispose();
-  }
-
-  void fetch() async {
-    try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/getConfig/'));
-      request.fields.addAll({'serial': '027028362416'});
-
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = convert.jsonDecode(responseString);
-        String serial = json[0]["device_id_id"].toString();
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('serial', serial).then((bool success) {
-          print(serial);
-        });
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {
-      print('Error add project $error');
-    }
   }
 
   @override

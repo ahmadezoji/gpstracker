@@ -1,11 +1,12 @@
 import 'dart:core';
+import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:flutter/material.dart';
 import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'dart:io' show Platform;
 import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
-  late String userPhone;
+  late String userPhone = '';
   @override
   void initState() {
     super.initState();
@@ -33,10 +34,10 @@ class _LoginPageState extends State<LoginPage>
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-        print(json);
+        // print(json);
         if (json["status"] == true) {
           Fluttertoast.showToast(msg: "sending-varify-code".tr);
-          Navigator.pushReplacement(
+          Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (_) =>
@@ -89,10 +90,14 @@ class _LoginPageState extends State<LoginPage>
             ),
             TextButton(
               onPressed: () {
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => LoginByPassPage(userPhone: userPhone),
+                        fullscreenDialog: false));
               },
               child: Text(
-                'Forgot Password',
+                'Login With Password',
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),

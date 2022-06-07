@@ -1,6 +1,10 @@
+import 'package:cargpstracker/check_pattern.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/bottonTabs.dart';
+import 'package:cargpstracker/setPattern.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,11 +23,40 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
+  final bool switchVal = false;
+
+  void switchChange(BuildContext context, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? savedStrList = prefs.getStringList('pattern');
+    List<int>? intProductList = savedStrList?.map((i) => int.parse(i)).toList();
+    if (intProductList == null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => SetPattern(), fullscreenDialog: false));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) =>
+                  CheckPattern(pattern: intProductList, bswitch: value),
+              fullscreenDialog: false));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title), actions: [
+        Switch(
+          value: false,
+          onChanged: (value) {
+            switchChange(context, value);
+          },
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        ),
+      ]),
       body: const Center(
         child: MyStatefulWidget(),
       ),
@@ -42,21 +75,12 @@ class MyHomePage extends StatelessWidget {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: Text("Logout".tr),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Setting()),
                 );
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
               },
             ),
           ],

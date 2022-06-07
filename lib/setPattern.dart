@@ -1,8 +1,8 @@
-
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SetPattern extends StatefulWidget {
   @override
@@ -14,6 +14,13 @@ class _SetPatternState extends State<SetPattern> {
   List<int>? pattern;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  void saveShared(List<int> input) async {
+    List<String> strList = input.map((i) => i.toString()).toList();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('pattern', strList).then((bool success) async {
+      print('save pattern');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,7 @@ class _SetPatternState extends State<SetPattern> {
                 }
                 if (isConfirm) {
                   if (listEquals<int>(input, pattern)) {
+                    saveShared(input);
                     Navigator.of(context).pop(pattern);
                   } else {
                     context.replaceSnackbar(

@@ -1,48 +1,32 @@
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key, required this.userPhone}) : super(key: key);
+  final String userPhone;
+  @override
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage>
     with AutomaticKeepAliveClientMixin<RegisterPage> {
-  // ignore: deprecated_member_use
-  // late List<Text> devices = new List<Text>();
+  late String serial;
+  late String deviceSimNum;
 
   @override
   void initState() {
     super.initState();
     // print('initState Live');
     // devices.add(Text('asdsd'));
-  }
-
-  void loadDeviceLocally() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Fetch and decode data
-    // final String devicesString = await prefs.getString('devices_key');
-
-    // final List<Device> devices = Device.decode(devicesString);
-  }
-
-  void saveDeviceLocally() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Encode and store data in SharedPreferences
-    // final String encodedData = Device.encode([
-    //   Device(
-    //       serial: '027028362416', title: 'farshad', userPhone: '09127060772'),
-    // ]);
-    //
-    // await prefs.setString('devices_key', encodedData);
   }
 
   @override
@@ -52,14 +36,39 @@ class _RegisterPageState extends State<RegisterPage>
       fontWeight: FontWeight.w900,
     );
 
-    // final List<Text> devices = [
-    //   Text('Toyota'),
-    //   Text('VolksWagen'),
-    //   Text('Nissan'),
-    //   Text('Renault'),
-    //   Text('Mercedes'),
-    //   Text('BMW')
-    // ];
+    void addDevice() async {
+      try {
+        var request = http.MultipartRequest(
+            'POST', Uri.parse('https://130.185.77.83:4680/addDevice/'));
+        request.fields.addAll({
+          'serial': serial,
+          'userNum': widget.userPhone,
+          'deviceSimNum': deviceSimNum
+        });
+
+        http.StreamedResponse response = await request.send();
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          final responseData = await response.stream.toBytes();
+          final responseString = String.fromCharCodes(responseData);
+          print(responseString);
+          final json = jsonDecode(responseString);
+          // if (json != null) {
+          //   Fluttertoast.showToast(msg: "add-user-msg".tr);
+          //   Navigator.pushReplacement(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (_) => HomePage(), fullscreenDialog: false));
+          // }
+        } else {
+          print(response.reasonPhrase);
+        }
+      } catch (error) {}
+
+      //  Navigator.push(
+      // context, MaterialPageRoute(builder: (_) => HomePage()));
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -69,17 +78,33 @@ class _RegisterPageState extends State<RegisterPage>
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 200, bottom: 10),
-              // padding: EdgeInsets.symmetric(horizontal: 60),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "device".tr,
-                    hintText: "device-serial".tr),
-              ),
-            ),
+                padding: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 200, bottom: 10),
+                // padding: EdgeInsets.symmetric(horizontal: 60),
+                child: Column(
+                  children: [
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) => setState(() {
+                        serial = value;
+                      }),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "device".tr,
+                          hintText: "device-serial".tr),
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) => setState(() {
+                        deviceSimNum = value;
+                      }),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "device-sim-num".tr,
+                          hintText: "device-sim-num".tr),
+                    ),
+                  ],
+                )),
             Container(
               height: 50,
               width: 250,
@@ -87,14 +112,7 @@ class _RegisterPageState extends State<RegisterPage>
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () async {
-                  // final prefs = await SharedPreferences.getInstance();
-                  // prefs
-                  //     .setString('devices', devices.toString())
-                  //     .then((bool success) {
-                  //   print(success);
-                  // });
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  addDevice();
                 },
                 child: Text(
                   "Save".tr,

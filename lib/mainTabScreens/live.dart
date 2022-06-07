@@ -64,7 +64,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   @override
   void initState() {
     super.initState();
-    _determinePosition();
+    // _determinePosition();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       currentPos = (await fetch())!;
       if (currentPos == null) return;
@@ -83,7 +83,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     try {
       final prefs = await SharedPreferences.getInstance();
       serial = prefs.getString('serial')!;
-
+      print(serial);
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': serial});
@@ -109,7 +109,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
         child: Scaffold(
       key: _key,
       drawerEnableOpenDragGesture: true,
@@ -236,35 +235,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        // Zoom In
-        Switch(
-          value: isSwitched,
-          onChanged: (value) {
-            showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                      title: const Text('AlertDialog Title'),
-                      content: const Text('this is a demo alert diolog'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('Approve'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ));
-            setState(() {
-              isSwitched = value;
-              print(isSwitched);
-            });
-          },
-          activeTrackColor: Colors.lightGreenAccent,
-          activeColor: Colors.green,
-        ),
         const SizedBox(height: 5),
         // Zoom In
         FloatingActionButton(
+          heroTag: "btn0",
           child: const Icon(Icons.add_link),
           backgroundColor: Colors.red,
           onPressed: () {
@@ -278,6 +252,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         const SizedBox(height: 120),
         // Zoom In
         FloatingActionButton(
+          heroTag: "btn2",
           child: const Icon(Icons.location_searching),
           onPressed: () {
             CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
@@ -292,6 +267,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         const SizedBox(height: 5),
         // Zoom In
         FloatingActionButton(
+          heroTag: "btn2",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
             mapController.animateCamera(
@@ -304,6 +280,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
         // Zoom Out
         FloatingActionButton(
+          heroTag: "btn3",
           child: const Icon(Icons.zoom_out),
           onPressed: () {
             mapController.animateCamera(
@@ -315,6 +292,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
         // Change Style
         FloatingActionButton(
+          heroTag: "btn4",
           child: const Icon(Icons.satellite),
           onPressed: () {
             selectedStyle = selectedStyle == light ? sattlite : light;

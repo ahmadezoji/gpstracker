@@ -318,6 +318,7 @@ class _HistoryState extends State<History>
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
+          heroTag: "btn1",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
             mapController.animateCamera(
@@ -330,6 +331,7 @@ class _HistoryState extends State<History>
 
         // Zoom Out
         FloatingActionButton(
+          heroTag: "btn2",
           child: const Icon(Icons.zoom_out),
           onPressed: () {
             mapController.animateCamera(
@@ -341,6 +343,7 @@ class _HistoryState extends State<History>
 
         // Change Style
         FloatingActionButton(
+          heroTag: "btn3",
           child: const Icon(Icons.satellite),
           onPressed: () {
             selectedStyle = selectedStyle == light ? sattlite : light;
