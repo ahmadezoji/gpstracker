@@ -1,4 +1,5 @@
 import 'package:cargpstracker/check_pattern.dart';
+import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/setPattern.dart';
@@ -24,6 +25,17 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
   final bool switchVal = false;
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('phone', '').then((bool success) {
+      print(success);
+    });
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   void switchChange(BuildContext context, bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -77,10 +89,7 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text("Logout".tr),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting()),
-                );
+                _logout(context);
               },
             ),
           ],

@@ -102,11 +102,11 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   void getUserDevice() async {
     try {
-      // final prefs = await SharedPreferences.getInstance();
-      // String? phone = prefs.getString('phone');
-      String phone = '09195835135';
+      final prefs = await SharedPreferences.getInstance();
+      String? phone = prefs.getString('phone');
+      // String phone = '09195835135';
 
-      // if (phone == null) return;
+      if (phone == null) return;
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/getDeviceByUser/'));
       request.fields.addAll({

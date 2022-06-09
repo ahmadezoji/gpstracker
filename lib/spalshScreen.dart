@@ -37,17 +37,17 @@ class _SpalshScreenState extends State<SpalshScreen>
       // String phone = prefs.getString('phone')!;
       String phone = '09195835135';
 
-      if (phone != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else {
+      // if (phone != null) {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => HomePage()),
+      //   );
+      // } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
         );
-      }
+      // }
     } catch (error) {
       print('Error add project $error');
     }

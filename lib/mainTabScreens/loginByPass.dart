@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginByPassPage extends StatefulWidget {
   const LoginByPassPage({Key? key, required this.userPhone}) : super(key: key);
@@ -40,9 +41,13 @@ class _LoginByPassPageState extends State<LoginByPassPage>
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-        print(json);
+        print(json["status"]);
         if (json["status"] == true) {
-          Fluttertoast.showToast(msg: "sending-varify-code".tr);
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('phone', userPhone).then((bool success) {
+            print(success);
+          });
+
           Navigator.push(
               context,
               MaterialPageRoute(
