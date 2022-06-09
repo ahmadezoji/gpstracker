@@ -125,7 +125,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           devicesList.add(device);
           devicesListSerials.add(device.getSerial());
         }
-        serial = devicesListSerials[0];
+        serial = devicesListSerials[devicesList.length - 1];
         print('serial $serial');
         fetch();
         final prefs = await SharedPreferences.getInstance();
