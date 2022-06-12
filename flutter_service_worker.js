@@ -7,9 +7,9 @@ const RESOURCES = {
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "89d941433142bf1f25b6e516f142d8ac",
-"/": "89d941433142bf1f25b6e516f142d8ac",
-"main.dart.js": "a9b9aa7c07cdf738f54af89c2a218775",
+"index.html": "a26e5f58570725f362cc69205d45f7a7",
+"/": "a26e5f58570725f362cc69205d45f7a7",
+"main.dart.js": "9fd4f7017c22b7c587679d5b83b8a377",
 "version.json": "5c6efea802bc6455d4ed9496585b0f15",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "flutter.js": "0816e65a103ba8ba51b174eeeeb2cb67",
@@ -27,7 +27,7 @@ const RESOURCES = {
 "assets/assets/gps-pointer.json": "05b9173f571dbece8c0f0ffc8220bf54",
 "assets/assets/finish.png": "cc7faec3a76b00a82463fbc42b08d854",
 "assets/assets/custom-icon.png": "a5d3d56e9ff5f6226d8487ca8ec4585f",
-"assets/NOTICES": "3b2e30962f30ac5f2817ab6d6b9f4c23",
+"assets/NOTICES": "ac987fce55c23620cec46828b46f1754",
 "manifest.json": "c7c685fa0dd5e47b44b5549304857ce0"
 };
 
