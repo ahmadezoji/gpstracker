@@ -47,7 +47,6 @@ dependencies:
   get: ^4.6.1
   bottom_drawer: ^0.0.5
   pinput: ^2.2.7
-  geolocator: ^8.2.0
   pattern_lock: ^2.0.0
   mapbox_gl: ^0.16.0
 

@@ -30,7 +30,7 @@
             <!--            <meta-data android:name="mapbox_access_token" android:value="pk.eyJ1Ijoic2FhbWV6b2ppIiwiYSI6ImNrejc1cndiaTAwcjQyb3BiY3Q1a2RobmsifQ.dadvuGlP92fg1_vPacqAIQ"/>-->
             <meta-data
                 android:name="mapbox_access_token"
-                android:value="pk.eyJ1Ijoic2FhbWV6b2ppIiwiYSI6ImNsMTRyZ3JhejBkODQzZHF6aDEzdTRjZXUifQ.oWUQ_qCLoivX5tPvAsf0WQ" />
+                android:value="pk.eyJ1Ijoic2FhbWV6b2ppIiwiYSI6ImNsNDJvZ3RoeTB1NWMzZG82YnVodGU1d2EifQ.x3z9Smy3JJcwy-bNzHsZ6A" />
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+             This is used by the Flutter tool to generate GeneratedPlugigetFilimonRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
