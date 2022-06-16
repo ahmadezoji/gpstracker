@@ -36,7 +36,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Art'.tr,
+            label: 'Setting'.tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),

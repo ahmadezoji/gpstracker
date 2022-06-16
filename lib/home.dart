@@ -5,7 +5,9 @@ import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/setPattern.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cargpstracker/theme_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,10 +15,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: appTitle,
-      home: MyHomePage(title: appTitle),
-    );
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        body: MyHomePage(
+          title: 'GPS',
+        ),
+      );
+    });
   }
 }
 
@@ -58,43 +64,56 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title), actions: [
-        Switch(
-          value: false,
-          onChanged: (value) {
-            switchChange(context, value);
-          },
-          activeTrackColor: Colors.lightGreenAccent,
-          activeColor: Colors.green,
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title), actions: [
+          IconButton(
+              icon: Icon(themeNotifier.isDark
+                  ? Icons.nightlight_round
+                  : Icons.wb_sunny),
+              onPressed: () {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+                print("Theme change clicked");
+              }),
+          Switch(
+            value: false,
+            onChanged: (value) {
+              switchChange(context, value);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
+        ]),
+        body: const Center(
+          child: MyStatefulWidget(),
         ),
-      ]),
-      body: const Center(
-        child: MyStatefulWidget(),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+        drawer: Drawer(
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('Drawer Header'),
               ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: Text("Logout".tr),
-              onTap: () {
-                _logout(context);
-              },
-            ),
-          ],
+              ListTile(
+                title: Text("Logout".tr),
+                onTap: () {
+                  _logout(context);
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

@@ -4,11 +4,13 @@ class Device {
   final String serial;
   final String simPhone;
   final String title;
+  final String type;
 
   const Device({
     required this.serial,
     required this.title,
     required this.simPhone,
+    required this.type,
   });
 
   String getSerial() {
@@ -22,12 +24,16 @@ class Device {
   String getTitle() {
     return this.title;
   }
+  String getType() {
+    return this.type;
+  }
 
   factory Device.fromJson(Map<String, dynamic> jsonData) {
     return Device(
       serial: jsonData['serial'],
       title: jsonData['title'],
       simPhone: jsonData['simPhone'],
+      type: jsonData["type"],
     );
   }
 

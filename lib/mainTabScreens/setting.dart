@@ -122,6 +122,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
         for (var dev in json) {
           Device device = Device.fromJson(dev);
+          print(device.getType());
           devicesList.add(device);
           devicesListSerials.add(device.getSerial());
         }
@@ -178,7 +179,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     try {
       final String result = await platform.invokeMethod(
           'send', <String, dynamic>{
-        "phone": "09195835135",
+        "phone": "05346403281",
         "msg": "Hello! I'm sent programatically."
       }); //Replace a 'X' with 10 digit phone number
       print(result);

@@ -306,6 +306,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   Scaffold buildMap() {
     return Scaffold(
+      drawerEnableOpenDragGesture: true,
       body: MapboxMap(
           styleString: selectedStyle,
           accessToken: MyApp.ACCESS_TOKEN,

@@ -49,6 +49,7 @@ dependencies:
   pinput: ^2.2.7
   pattern_lock: ^2.0.0
   mapbox_gl: ^0.16.0
+  provider: ^6.0.3
 
 
 dev_dependencies:
