@@ -18,6 +18,7 @@ class _SpalshScreenState extends State<SpalshScreen>
     with TickerProviderStateMixin {
   late AnimationController controller;
   List<int>? pattern;
+
   @override
   void initState() {
     super.initState();
@@ -34,20 +35,18 @@ class _SpalshScreenState extends State<SpalshScreen>
   void pushPage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      // String phone = prefs.getString('phone')!;
-      String phone = '09195835135';
-
-      // if (phone != null) {
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => HomePage()),
-      //   );
-      // } else {
+      String? phone = prefs.getString('phone');
+      if (phone == null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
         );
-      // }
+      }else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
     } catch (error) {
       print('Error add project $error');
     }
