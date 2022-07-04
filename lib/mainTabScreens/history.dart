@@ -7,12 +7,17 @@ import 'package:cargpstracker/models/point.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
-import 'package:mapbox_gl/mapbox_gl.dart';
+
+// import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class History extends StatefulWidget {
   @override
@@ -27,8 +32,9 @@ class _HistoryState extends State<History>
   String selectedDate = ''; //Jalali.now().toJalaliDateTime();
   late Timestamp currentTimeStamp;
   late LatLng pos = new LatLng(41.025819, 29.230415);
-  late MapboxMapController mapController;
 
+  // late MapboxMapController mapController;
+  bool sattliteChecked = false;
   double _headerHeight = 60.0;
   double _bodyHeight = 180.0;
   BottomDrawerController _controller = BottomDrawerController();
@@ -49,9 +55,14 @@ class _HistoryState extends State<History>
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
   late Jalali tempPickedDate;
+  late double zoomLevel = 5.0;
+  late final MapController _mapController;
+  var interActiveFlags = InteractiveFlag.all;
+  late LatLng currentLatLng = new LatLng(35.699223, 51.337952);
 
   @override
   void initState() {
+    _mapController = MapController();
     super.initState();
   }
 
@@ -60,90 +71,90 @@ class _HistoryState extends State<History>
     return byteData.buffer.asUint8List();
   }
 
-  Future<void> _onMapCreated(MapboxMapController controller) async {
-    mapController = controller;
-    mapController.onCircleTapped.add(_onCircleTapped);
-    mapController.onLineTapped.add(_onLineTapped);
-  }
+  // Future<void> _onMapCreated(MapboxMapController controller) async {
+  //   mapController = controller;
+  //   mapController.onCircleTapped.add(_onCircleTapped);
+  //   mapController.onLineTapped.add(_onLineTapped);
+  // }
 
-  void _onLineTapped(Line line) {}
-  Future<void> _onCircleTapped(Circle circle) async {
-    int index = dirLatLons.indexOf(circle.options.geometry!, 0);
+  // void _onLineTapped(Line line) {}
+  // Future<void> _onCircleTapped(Circle circle) async {
+  //   int index = dirLatLons.indexOf(circle.options.geometry!, 0);
+  //
+  //   // Point p = dirArr.elementAt(int.parse(circle.id));
+  //   setState(() {
+  //     speed = dirArr[index].getSpeed();
+  //     mile = dirArr[index].getMileage();
+  //     heading = dirArr[index].getHeading();
+  //     date = dirArr[index].getDateTime();
+  //   });
+  // }
 
-    // Point p = dirArr.elementAt(int.parse(circle.id));
-    setState(() {
-      speed = dirArr[index].getSpeed();
-      mile = dirArr[index].getMileage();
-      heading = dirArr[index].getHeading();
-      date = dirArr[index].getDateTime();
-    });
-  }
-
-  Future<void> _add() async {
-    mapController.clearLines();
-    mapController.clearCircles();
-    // List<LatLng> points = [];
-    // for (Point point in dirArr) {
-    //   points.add(LatLng(point.getLat(), point.getLon()));
-    // }
-    CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
-        LatLng(
-          dirLatLons[0].latitude,
-          dirLatLons[0].longitude,
-        ),
-        11);
-    mapController.moveCamera(cameraUpdate);
-
-    mapController.addCircle(CircleOptions(
-        circleColor: 'yellow',
-        geometry: LatLng(dirLatLons[0].latitude, dirLatLons[0].longitude),
-        circleRadius: 8));
-
-    mapController.addLine(
-      LineOptions(
-        geometry: dirLatLons,
-        lineColor: "blue",
-        lineWidth: 2.0,
-        lineOpacity: 1.0,
-      ),
-    );
-    List<CircleOptions> list = [];
-    for (var i = 1; i < dirLatLons.length - 1; i++) {
-      list.add(CircleOptions(
-          circleColor: 'red',
-          geometry: LatLng(dirLatLons[i].latitude, dirLatLons[i].longitude),
-          circleRadius: 4));
-    }
-    mapController.addCircles(list, null);
-    // for (var i = 1; i < points.length - 1; i = i + 3) {
-    //   mapController.addCircle(CircleOptions(
-    //       circleColor: 'black',
-    //       geometry: LatLng(points[i].latitude, points[i].longitude),
-    //       circleRadius: 4));
-    // }
-
-    mapController.addCircle(CircleOptions(
-        circleColor: 'red',
-        geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
-            dirLatLons[dirLatLons.length - 1].longitude),
-        circleRadius: 8));
-    // var markerImage = await loadMarkerImage();
-    // mapController.addImage('marker', markerImage);
-    // mapController.addSymbol(SymbolOptions(
-    //   geometry: LatLng(
-    //       dirLatLons[dirLatLons.length - 1].latitude,
-    //       dirLatLons[dirLatLons.length - 1]
-    //           .longitude), // location is 0.0 on purpose for this example
-    //   iconImage: "marker",
-    //   iconSize: 2,
-    // ));
-
-    setState(() {
-      speed = dirArr[0].getSpeed();
-      mile = dirArr[0].getMileage();
-      heading = dirArr[0].getHeading();
-    });
-  }
+  // Future<void> _add() async {
+  //   mapController.clearLines();
+  //   mapController.clearCircles();
+  //   // List<LatLng> points = [];
+  //   // for (Point point in dirArr) {
+  //   //   points.add(LatLng(point.getLat(), point.getLon()));
+  //   // }
+  //   CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
+  //       LatLng(
+  //         dirLatLons[0].latitude,
+  //         dirLatLons[0].longitude,
+  //       ),
+  //       11);
+  //   mapController.moveCamera(cameraUpdate);
+  //
+  //   mapController.addCircle(CircleOptions(
+  //       circleColor: 'yellow',
+  //       geometry: LatLng(dirLatLons[0].latitude, dirLatLons[0].longitude),
+  //       circleRadius: 8));
+  //
+  //   mapController.addLine(
+  //     LineOptions(
+  //       geometry: dirLatLons,
+  //       lineColor: "blue",
+  //       lineWidth: 2.0,
+  //       lineOpacity: 1.0,
+  //     ),
+  //   );
+  //   List<CircleOptions> list = [];
+  //   for (var i = 1; i < dirLatLons.length - 1; i++) {
+  //     list.add(CircleOptions(
+  //         circleColor: 'red',
+  //         geometry: LatLng(dirLatLons[i].latitude, dirLatLons[i].longitude),
+  //         circleRadius: 4));
+  //   }
+  //   mapController.addCircles(list, null);
+  //   // for (var i = 1; i < points.length - 1; i = i + 3) {
+  //   //   mapController.addCircle(CircleOptions(
+  //   //       circleColor: 'black',
+  //   //       geometry: LatLng(points[i].latitude, points[i].longitude),
+  //   //       circleRadius: 4));
+  //   // }
+  //
+  //   mapController.addCircle(CircleOptions(
+  //       circleColor: 'red',
+  //       geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
+  //           dirLatLons[dirLatLons.length - 1].longitude),
+  //       circleRadius: 8));
+  //   // var markerImage = await loadMarkerImage();
+  //   // mapController.addImage('marker', markerImage);
+  //   // mapController.addSymbol(SymbolOptions(
+  //   //   geometry: LatLng(
+  //   //       dirLatLons[dirLatLons.length - 1].latitude,
+  //   //       dirLatLons[dirLatLons.length - 1]
+  //   //           .longitude), // location is 0.0 on purpose for this example
+  //   //   iconImage: "marker",
+  //   //   iconSize: 2,
+  //   // ));
+  //
+  //   setState(() {
+  //     speed = dirArr[0].getSpeed();
+  //     mile = dirArr[0].getMileage();
+  //     heading = dirArr[0].getHeading();
+  //   });
+  // }
 
   void fetch(String stamp) async {
     try {
@@ -162,12 +173,14 @@ class _HistoryState extends State<History>
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
+        print(json);
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
           dirArr.add(p);
         }
-        _add();
+        _mapController.move(dirLatLons[0], 11);
+        // _add();
       } else {
         print(response.reasonPhrase);
       }
@@ -188,6 +201,18 @@ class _HistoryState extends State<History>
   }
 
   Scaffold buildMap() {
+    var markers = <Marker>[
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: currentLatLng,
+        builder: (ctx) => new Container(
+            child: Icon(
+          Icons.motorcycle,
+          size: 40,
+        )),
+      ),
+    ];
     return Scaffold(
       endDrawer: Drawer(
           backgroundColor: Colors.white,
@@ -214,21 +239,41 @@ class _HistoryState extends State<History>
               ],
             ),
           )),
-      body: MapboxMap(
-          styleString: selectedStyle,
-          accessToken: MyApp.ACCESS_TOKEN,
-          onUserLocationUpdated: (userLocation) {
-            print("User location updated: ${userLocation.position}");
-          },
-          onMapCreated: _onMapCreated,
-          onMapClick: (point, latlng) {},
-          // onStyleLoadedCallback: () => fetch(
-          //     (Timestamp.fromDate(Jalali.now().toDateTime()))
-          //         .seconds
-          //         .toString()),
-          initialCameraPosition: CameraPosition(target: pos, zoom: 13)),
+      body: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+          zoom: zoomLevel,
+          interactiveFlags: interActiveFlags,
+        ),
+        layers: [
+          !sattliteChecked
+              ? TileLayerOptions(
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                )
+              : TileLayerOptions(
+                  urlTemplate:
+                      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token={accessToken}',
+                  additionalOptions: {'accessToken': MyApp.ACCESS_TOKEN},
+                ),
+          PolylineLayerOptions(
+            polylines: [
+              Polyline(
+                  points: dirLatLons, strokeWidth: 4.0, color: Colors.purple),
+            ],
+          ),
+        ],
+      ),
       floatingActionButton: _floatingBottons(),
     );
+  }
+
+  void zoomout() {
+    setState(() {
+      zoomLevel = zoomLevel + 1;
+    });
   }
 
   Widget _buildBottomDrawer(BuildContext context) {
@@ -321,10 +366,10 @@ class _HistoryState extends State<History>
           heroTag: "btn1",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
-            mapController.animateCamera(
-              CameraUpdate.zoomIn(),
-              // CameraUpdate.tiltTo(40),
-            );
+            // mapController.animateCamera(
+            //   CameraUpdate.zoomIn(),
+            //   // CameraUpdate.tiltTo(40),
+            // );
           },
         ),
         const SizedBox(height: 5),
@@ -334,9 +379,10 @@ class _HistoryState extends State<History>
           heroTag: "btn2",
           child: const Icon(Icons.zoom_out),
           onPressed: () {
-            mapController.animateCamera(
-              CameraUpdate.zoomOut(),
-            );
+            zoomout();
+            // mapController.animateCamera(
+            //   CameraUpdate.zoomOut(),
+            // );
           },
         ),
         const SizedBox(height: 5),
@@ -346,9 +392,11 @@ class _HistoryState extends State<History>
           heroTag: "btn3",
           child: const Icon(Icons.satellite),
           onPressed: () {
-            selectedStyle = selectedStyle == light ? sattlite : light;
-            fetch(currentTimeStamp.seconds.toString());
-            setState(() {});
+            // selectedStyle = selectedStyle == light ? sattlite : light;
+            // fetch(currentTimeStamp.seconds.toString());
+            setState(() {
+              sattliteChecked = !sattliteChecked;
+            });
           },
         ),
         const SizedBox(height: 100),

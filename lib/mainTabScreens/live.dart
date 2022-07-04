@@ -1,15 +1,22 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
+import 'package:cargpstracker/theme_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/main.dart';
 
 import 'package:cargpstracker/models/point.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:provider/provider.dart';
+// import 'package:mapbox_gl/mapbox_gl.dart';
+
 // import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class Live extends StatefulWidget {
   @override
@@ -21,7 +28,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
 
   bool bZoom = false;
-
+  bool sattliteChecked = false;
   final sattlite = 'mapbox://styles/mapbox/satellite-v9';
   final street = 'mapbox://styles/mapbox/streets-v11';
   final dart = 'mapbox://styles/mapbox/dark-v10';
@@ -48,11 +55,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       speed: 0.0,
       mileage: 0,
       heading: 0.0);
-  late MapboxMapController mapController;
-
-  void _onMapCreated(MapboxMapController controller) {
-    mapController = controller;
-  }
+  late LatLng currentLatLng = new LatLng(41.025819, 29.230415);
+  late final MapController _mapController;
+  var interActiveFlags = InteractiveFlag.all;
 
   @override
   void dispose() {
@@ -64,6 +69,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   @override
   void initState() {
     super.initState();
+    _mapController = MapController();
     // _determinePosition();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       currentPos = (await fetch())!;
@@ -72,9 +78,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         speed = currentPos.getSpeed();
         mile = currentPos.getMileage();
         heading = currentPos.getHeading();
+        currentLatLng = LatLng(currentPos.lat, currentPos.lon);
       });
-      // addSymbol(currentPos);
-      updateCircle(currentPos);
+      if (!bZoom) {
+        _mapController.move(currentLatLng, 11);
+        bZoom = true;
+      }
     });
     // print('initState Live');
   }
@@ -83,7 +92,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     try {
       final prefs = await SharedPreferences.getInstance();
       serial = prefs.getString('serial')!;
-      print(serial);
+
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': serial});
@@ -94,7 +103,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-
         return Point.fromJson(json["features"][0]);
       } else {
         print(response.reasonPhrase);
@@ -108,46 +116,17 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        child: Scaffold(
-      key: _key,
-      drawerEnableOpenDragGesture: true,
-      body: buildMap(),
-      extendBody: true,
-      bottomNavigationBar: _buildBottomDrawer(context),
-    ));
-  }
-
-  void addSymbol(Point newPos) {
-    mapController.clearSymbols();
-    // CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
-    //     LatLng(newPos.getLat(), newPos.getLon()), 11);
-
-    // mapController.moveCamera(cameraUpdate);
-    mapController.addSymbol(SymbolOptions(
-        geometry: LatLng(newPos.getLat(),
-            newPos.getLon()), // location is 0.0 on purpose for this example
-        iconImage: 'airport-15',
-        iconSize: 2,
-        iconRotate: newPos.getHeading()));
-  }
-
-  void updateCircle(Point pos) async {
-    if (!bZoom) {
-      CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
-          LatLng(
-            currentPos.getLat(),
-            currentPos.getLon(),
-          ),
-          11);
-      mapController.moveCamera(cameraUpdate);
-    }
-    bZoom = true;
-    mapController.clearCircles();
-    mapController.addCircle(CircleOptions(
-        circleColor: 'blue',
-        geometry: LatLng(pos.getLat(), pos.getLon()),
-        circleRadius: 8));
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return GestureDetector(
+          child: Scaffold(
+        key: _key,
+        drawerEnableOpenDragGesture: true,
+        body: buildMap(themeNotifier),
+        extendBody: true,
+        bottomNavigationBar: _buildBottomDrawer(context),
+      ));
+    });
   }
 
   Widget _buildBottomDrawer(BuildContext context) {
@@ -255,13 +234,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn2",
           child: const Icon(Icons.location_searching),
           onPressed: () {
-            CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
-                LatLng(
-                  currentPos.getLat(),
-                  currentPos.getLon(),
-                ),
-                11);
-            mapController.moveCamera(cameraUpdate);
+            _mapController.move(currentLatLng, 18);
           },
         ),
         const SizedBox(height: 5),
@@ -270,10 +243,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn2",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
-            mapController.animateCamera(
-              CameraUpdate.zoomIn(),
-              // CameraUpdate.tiltTo(40),
-            );
+            // mapController.animateCamera(
+            //   CameraUpdate.zoomIn(),
+            //   CameraUpdate.tiltTo(40),
+            // );
           },
         ),
         const SizedBox(height: 5),
@@ -283,9 +256,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn3",
           child: const Icon(Icons.zoom_out),
           onPressed: () {
-            mapController.animateCamera(
-              CameraUpdate.zoomOut(),
-            );
+            // mapController.animateCamera(
+            //   CameraUpdate.zoomOut(),
+            // );
           },
         ),
         const SizedBox(height: 5),
@@ -295,8 +268,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn4",
           child: const Icon(Icons.satellite),
           onPressed: () {
-            selectedStyle = selectedStyle == light ? sattlite : light;
-            setState(() {});
+            setState(() {
+              sattliteChecked = !sattliteChecked;
+            });
           },
         ),
         const SizedBox(height: 100),
@@ -304,87 +278,49 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     );
   }
 
-  Scaffold buildMap() {
+  Scaffold buildMap(ThemeModel themeNotifier) {
+    var markers = <Marker>[
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: currentLatLng,
+        builder: (ctx) => new Container(
+            child: Icon(
+          Icons.circle,
+          size: 18,
+          color: Colors.blue,
+        )),
+      ),
+    ];
     return Scaffold(
       drawerEnableOpenDragGesture: true,
-      body: MapboxMap(
-          styleString: selectedStyle,
-          accessToken: MyApp.ACCESS_TOKEN,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-              target: LatLng(defaultPos.getLat(), defaultPos.getLon()),
-              zoom: 15)),
+      body: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+          zoom: 5.0,
+          interactiveFlags: interActiveFlags,
+        ),
+        layers: [
+          // if(!sattliteChecked)
+          !sattliteChecked
+              ? TileLayerOptions(
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                )
+              : TileLayerOptions(
+                  urlTemplate:
+                      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token={accessToken}',
+                  additionalOptions: {'accessToken': MyApp.ACCESS_TOKEN},
+                ),
+          MarkerLayerOptions(markers: markers)
+        ],
+      ),
       floatingActionButton: _floatingBottons(),
     );
   }
 
-  /// Determine the current position of the device.
-  ///
-  /// When the location services are not enabled or permissions
-  // /// are denied the `Future` will return an error.
-  // Future<Position> _determinePosition() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-  //
-  //   // Test if location services are enabled.
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Location services are not enabled don't continue
-  //     // accessing the position and request users of the
-  //     // App to enable the location services.
-  //     return Future.error('Location services are disabled.');
-  //   }
-  //
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // Permissions are denied, next time you could try
-  //       // requesting permissions again (this is also where
-  //       // Android's shouldShowRequestPermissionRationale
-  //       // returned true. According to Android guidelines
-  //       // your App should show an explanatory UI now.
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-  //
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // Permissions are denied forever, handle appropriately.
-  //     return Future.error(
-  //         'Location permissions are permanently denied, we cannot request permissions.');
-  //   }
-  //
-  //   // When we reach here, permissions are granted and we can
-  //   // continue accessing the position of the device.
-  //   // Position pos = await Geolocator.getCurrentPosition();
-  //   // defaultPos.setLat(pos.latitude);
-  //   // defaultPos.setLon(pos.longitude);
-  //
-  //   return await Geolocator.getCurrentPosition();
-  // }
-
   @override
   bool get wantKeepAlive => true;
 }
-
-// showDialog<String>(
-// context: context,
-// builder: (BuildContext context) =>   AlertDialog(
-// title: const Text('AlertDialog Title'),
-// content: const Text('this is a demo alert diolog'),
-// actions: <Widget>[
-// TextButton(
-// child:  Text(pos.latitude.toString()),
-// onPressed: () {
-// Navigator.of(context).pop();
-// },
-// ),
-// TextButton(
-// child:  Text(pos.longitude.toString()),
-// onPressed: () {
-// Navigator.of(context).pop();
-// },
-// ),
-// ],
-// )
-// );
