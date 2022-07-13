@@ -36,6 +36,7 @@ class _SpalshScreenState extends State<SpalshScreen>
     try {
       final prefs = await SharedPreferences.getInstance();
       String? phone = prefs.getString('phone');
+      print(phone);
       if (phone == null) {
         Navigator.pushReplacement(
           context,

@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -52,82 +54,91 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Login Page"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Center(
-                child: Container(
-                    width: 200,
-                    height: 150,
-                    /*decoration: BoxDecoration(
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.blue;
+    late Color backColor = Theme.of(context).brightness == Brightness.dark
+        ? Color.fromARGB(255, 20, 20, 20)
+        : Colors.white;
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Login Page"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Center(
+                  child: Container(
+                      width: 200,
+                      height: 150,
+                      /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Image.asset('assets/flutter-logo.png')),
-              ),
-            ),
-            Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    userPhone = value;
-                  });
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'موبایل',
-                    hintText: 'شماره تماس'),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => LoginByPassPage(userPhone: userPhone),
-                        fullscreenDialog: false));
-              },
-              child: Text(
-                'Login With Password',
-                style: TextStyle(color: Colors.blue, fontSize: 15),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                onPressed: () {
-                  sendCode();
-                  // Navigator.pushReplacement(
-                  // context,
-                  // MaterialPageRoute(
-                  // builder: (_) => RegisterPage(), fullscreenDialog: false));
-                },
-                child: Text(
-                  "Login".tr,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                      child: Image.asset('assets/flutter-logo.png')),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 130,
-            ),
-            Text('New User? Create Account')
-          ],
+              Padding(
+                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      userPhone = value;
+                    });
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'موبایل',
+                      hintText: 'شماره تماس'),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => LoginByPassPage(userPhone: userPhone),
+                          fullscreenDialog: false));
+                },
+                child: Text(
+                  'Login With Password',
+                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                ),
+              ),
+              Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    sendCode();
+                    // Navigator.pushReplacement(
+                    // context,
+                    // MaterialPageRoute(
+                    // builder: (_) => RegisterPage(), fullscreenDialog: false));
+                  },
+                  child: Text(
+                    "Login".tr,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 130,
+              ),
+              Text('New User? Create Account')
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   @override

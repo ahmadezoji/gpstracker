@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginByPassPage extends StatefulWidget {
@@ -61,81 +63,90 @@ class _LoginByPassPageState extends State<LoginByPassPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("LoginByPass Page"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Center(
-                child: Container(
-                    width: 200,
-                    height: 150,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Image.asset('assets/flutter-logo.png')),
-              ),
-            ),
-            Padding(
-                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          userPhone = value;
-                        });
-                      },
-                      keyboardType: TextInputType.number,
-                      // controller: TextEditingController(
-                      //     text: widget.userPhone == null
-                      //         ? 'شماره تماس'
-                      //         : widget.userPhone),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'موبایل',
-                          hintText: 'شماره تماس'),
-                    ),
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'رمز عبور',
-                          hintText: 'رمز عبور'),
-                    ),
-                  ],
-                )),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                onPressed: () {
-                  loginWithPass();
-                },
-                child: Text(
-                  "Login".tr,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.blue;
+    late Color backColor = Theme.of(context).brightness == Brightness.dark
+        ? Color.fromARGB(255, 20, 20, 20)
+        : Colors.white;
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("LoginByPass Page"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Center(
+                  child: Container(
+                      width: 200,
+                      height: 150,
+                      child: Image.asset('assets/flutter-logo.png')),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                  //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            userPhone = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        // controller: TextEditingController(
+                        //     text: widget.userPhone == null
+                        //         ? 'شماره تماس'
+                        //         : widget.userPhone),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'موبایل',
+                            hintText: 'شماره تماس'),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'رمز عبور',
+                            hintText: 'رمز عبور'),
+                      ),
+                      SizedBox(height: 10)
+                    ],
+                  )),
+              Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    loginWithPass();
+                  },
+                  child: Text(
+                    "Login".tr,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   @override

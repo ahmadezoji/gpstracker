@@ -104,6 +104,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     try {
       final prefs = await SharedPreferences.getInstance();
       String? phone = prefs.getString('phone');
+      print(phone);
       // String phone = '09195835135';
 
       if (phone == null) return;
@@ -127,7 +128,10 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           devicesListSerials.add(device.getSerial());
         }
         serial = devicesListSerials[devicesList.length - 1];
-        print('serial $serial');
+        setState(() {
+          loading = true;
+        });
+
         fetch();
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('serial', devicesListSerials[0]).then((bool success) {
@@ -152,7 +156,6 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
         final json = convert.jsonDecode(responseString);
 
         setState(() {
-          loading = true;
           serial = json[0]["device_id_id"].toString();
           interval = json[0]["interval"].toString();
           static = json[0]["static"].toString();

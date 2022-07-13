@@ -60,6 +60,7 @@ class _HistoryState extends State<History>
   var interActiveFlags = InteractiveFlag.all;
   late LatLng currentLatLng = new LatLng(35.699223, 51.337952);
 
+  late double zoom = 11.0;
   @override
   void initState() {
     _mapController = MapController();
@@ -71,91 +72,6 @@ class _HistoryState extends State<History>
     return byteData.buffer.asUint8List();
   }
 
-  // Future<void> _onMapCreated(MapboxMapController controller) async {
-  //   mapController = controller;
-  //   mapController.onCircleTapped.add(_onCircleTapped);
-  //   mapController.onLineTapped.add(_onLineTapped);
-  // }
-
-  // void _onLineTapped(Line line) {}
-  // Future<void> _onCircleTapped(Circle circle) async {
-  //   int index = dirLatLons.indexOf(circle.options.geometry!, 0);
-  //
-  //   // Point p = dirArr.elementAt(int.parse(circle.id));
-  //   setState(() {
-  //     speed = dirArr[index].getSpeed();
-  //     mile = dirArr[index].getMileage();
-  //     heading = dirArr[index].getHeading();
-  //     date = dirArr[index].getDateTime();
-  //   });
-  // }
-
-  // Future<void> _add() async {
-  //   mapController.clearLines();
-  //   mapController.clearCircles();
-  //   // List<LatLng> points = [];
-  //   // for (Point point in dirArr) {
-  //   //   points.add(LatLng(point.getLat(), point.getLon()));
-  //   // }
-  //   CameraUpdate cameraUpdate = CameraUpdate.newLatLngZoom(
-  //       LatLng(
-  //         dirLatLons[0].latitude,
-  //         dirLatLons[0].longitude,
-  //       ),
-  //       11);
-  //   mapController.moveCamera(cameraUpdate);
-  //
-  //   mapController.addCircle(CircleOptions(
-  //       circleColor: 'yellow',
-  //       geometry: LatLng(dirLatLons[0].latitude, dirLatLons[0].longitude),
-  //       circleRadius: 8));
-  //
-  //   mapController.addLine(
-  //     LineOptions(
-  //       geometry: dirLatLons,
-  //       lineColor: "blue",
-  //       lineWidth: 2.0,
-  //       lineOpacity: 1.0,
-  //     ),
-  //   );
-  //   List<CircleOptions> list = [];
-  //   for (var i = 1; i < dirLatLons.length - 1; i++) {
-  //     list.add(CircleOptions(
-  //         circleColor: 'red',
-  //         geometry: LatLng(dirLatLons[i].latitude, dirLatLons[i].longitude),
-  //         circleRadius: 4));
-  //   }
-  //   mapController.addCircles(list, null);
-  //   // for (var i = 1; i < points.length - 1; i = i + 3) {
-  //   //   mapController.addCircle(CircleOptions(
-  //   //       circleColor: 'black',
-  //   //       geometry: LatLng(points[i].latitude, points[i].longitude),
-  //   //       circleRadius: 4));
-  //   // }
-  //
-  //   mapController.addCircle(CircleOptions(
-  //       circleColor: 'red',
-  //       geometry: LatLng(dirLatLons[dirLatLons.length - 1].latitude,
-  //           dirLatLons[dirLatLons.length - 1].longitude),
-  //       circleRadius: 8));
-  //   // var markerImage = await loadMarkerImage();
-  //   // mapController.addImage('marker', markerImage);
-  //   // mapController.addSymbol(SymbolOptions(
-  //   //   geometry: LatLng(
-  //   //       dirLatLons[dirLatLons.length - 1].latitude,
-  //   //       dirLatLons[dirLatLons.length - 1]
-  //   //           .longitude), // location is 0.0 on purpose for this example
-  //   //   iconImage: "marker",
-  //   //   iconSize: 2,
-  //   // ));
-  //
-  //   setState(() {
-  //     speed = dirArr[0].getSpeed();
-  //     mile = dirArr[0].getMileage();
-  //     heading = dirArr[0].getHeading();
-  //   });
-  // }
-
   void fetch(String stamp) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -165,15 +81,13 @@ class _HistoryState extends State<History>
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/history/'));
       request.fields.addAll({'serial': serial, 'timestamp': stamp});
-      // Map<String,String> headers= { "Accept": "application/json",
-      //     "Access-Control_Allow_Origin": "*"};
-      // request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-        print(json);
+        dirLatLons.clear();
+        dirArr.clear();
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
@@ -366,10 +280,10 @@ class _HistoryState extends State<History>
           heroTag: "btn1",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
-            // mapController.animateCamera(
-            //   CameraUpdate.zoomIn(),
-            //   // CameraUpdate.tiltTo(40),
-            // );
+            setState(() {
+              zoom = zoom + 1;
+            });
+            _mapController.move(_mapController.center,zoom);
           },
         ),
         const SizedBox(height: 5),
@@ -380,9 +294,10 @@ class _HistoryState extends State<History>
           child: const Icon(Icons.zoom_out),
           onPressed: () {
             zoomout();
-            // mapController.animateCamera(
-            //   CameraUpdate.zoomOut(),
-            // );
+            setState(() {
+              zoom = zoom - 1;
+            });
+            _mapController.move(_mapController.center,zoom);
           },
         ),
         const SizedBox(height: 5),

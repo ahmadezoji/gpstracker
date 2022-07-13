@@ -33,9 +33,10 @@ class MyHomePage extends StatelessWidget {
   final bool switchVal = false;
   void _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('phone', '').then((bool success) {
-      print(success);
-    });
+    prefs.remove('phone');
+    // prefs.setString('phone', '').then((bool success) {
+    //   print(success);
+    // });
 
     Navigator.pushReplacement(
       context,

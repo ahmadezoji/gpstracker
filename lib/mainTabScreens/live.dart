@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/theme_preference.dart';
 import 'package:http/http.dart' as http;
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/main.dart';
@@ -9,9 +11,6 @@ import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:mapbox_gl/mapbox_gl.dart';
-
-// import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -46,6 +45,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late double heading = 0.0;
   late double mile = 0;
 
+  late double zoom = 11.0;
+
   Point currentPos = new Point(
       lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
   Point defaultPos = Point(
@@ -59,6 +60,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
 
+  bool theme = false;
+  late ThemePreferences _preferences;
   @override
   void dispose() {
     // mapController.dispose();
@@ -66,9 +69,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     super.dispose();
   }
 
+  Future<bool> getTheme() async {
+    return await _preferences.getTheme();
+  }
+
   @override
   void initState() {
     super.initState();
+
+    print(getTheme());
+
     _mapController = MapController();
     // _determinePosition();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
@@ -149,8 +159,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Widget _buildBottomDrawerHead(BuildContext context) {
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.blue;
+
+    late Color backColor = Theme.of(context).brightness == Brightness.dark
+        ? Color.fromARGB(255, 20, 20, 20)
+        : Colors.white;
     return Container(
       height: _headerHeight,
+      color: backColor,
       child: Column(
         children: [
           Padding(
@@ -164,8 +182,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                 'Speed :  ${speed.toString()} km/h',
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                style: TextStyle(
+                    color: fontColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
               ),
               onPressed: () {
                 if (drawerOpen)
@@ -186,9 +206,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Widget _buildBottomDrawerBody(BuildContext context) {
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+    late Color backColor = Theme.of(context).brightness == Brightness.dark
+        ? Color.fromARGB(255, 20, 20, 20)
+        : Colors.white;
     return Container(
       width: double.infinity,
       height: _bodyHeight,
+      color: backColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -196,13 +223,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               'mile :  ${mile.toString()} mile',
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              style: TextStyle(
+                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
             ),
             Text(
               'heading : ${heading.toString()} ',
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              style: TextStyle(
+                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
             )
           ],
         ),
@@ -219,7 +248,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         FloatingActionButton(
           heroTag: "btn0",
           child: const Icon(Icons.add_link),
-          backgroundColor: Colors.red,
           onPressed: () {
             // Scaffold.of(context).openDrawer();
             /// open the bottom drawer.
@@ -243,10 +271,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn2",
           child: const Icon(Icons.zoom_in),
           onPressed: () {
-            // mapController.animateCamera(
-            //   CameraUpdate.zoomIn(),
-            //   CameraUpdate.tiltTo(40),
-            // );
+            setState(() {
+              zoom = zoom + 1;
+            });
+            _mapController.move(_mapController.center, zoom);
           },
         ),
         const SizedBox(height: 5),
@@ -256,9 +284,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           heroTag: "btn3",
           child: const Icon(Icons.zoom_out),
           onPressed: () {
-            // mapController.animateCamera(
-            //   CameraUpdate.zoomOut(),
-            // );
+            setState(() {
+              zoom = zoom - 1;
+            });
+            _mapController.move(_mapController.center, zoom);
           },
         ),
         const SizedBox(height: 5),
