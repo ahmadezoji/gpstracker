@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cargpstracker/bottomDrawer.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:http/http.dart' as http;
@@ -28,11 +29,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   bool bZoom = false;
   bool sattliteChecked = false;
-  final sattlite = 'mapbox://styles/mapbox/satellite-v9';
-  final street = 'mapbox://styles/mapbox/streets-v11';
-  final dart = 'mapbox://styles/mapbox/dark-v10';
-  final light = 'mapbox://styles/mapbox/light-v10';
-  String selectedStyle = 'mapbox://styles/mapbox/light-v10';
 
   late bool isSwitched = false;
   late Timer _timer;
@@ -44,6 +40,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late double speed = 0.0;
   late double heading = 0.0;
   late double mile = 0;
+  late String date = '';
 
   late double zoom = 11.0;
 
@@ -62,6 +59,13 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   bool theme = false;
   late ThemePreferences _preferences;
+
+  String light = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  String dark =
+      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
+  String sattlite =
+      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
+
   @override
   void dispose() {
     // mapController.dispose();
@@ -76,9 +80,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   @override
   void initState() {
     super.initState();
-
-    print(getTheme());
-
     _mapController = MapController();
     // _determinePosition();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
@@ -88,6 +89,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         speed = currentPos.getSpeed();
         mile = currentPos.getMileage();
         heading = currentPos.getHeading();
+        date = currentPos.getDateTime();
         currentLatLng = LatLng(currentPos.lat, currentPos.lon);
       });
       if (!bZoom) {
@@ -121,6 +123,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       // print('Error add project $error');
       return null;
     }
+
     return null;
   }
 
@@ -134,109 +137,14 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         drawerEnableOpenDragGesture: true,
         body: buildMap(themeNotifier),
         extendBody: true,
-        bottomNavigationBar: _buildBottomDrawer(context),
+        bottomNavigationBar: MyBottomDrawer(
+          speed: speed,
+          heading: heading,
+          mile: mile,
+          date: date,
+        ),
       ));
     });
-  }
-
-  Widget _buildBottomDrawer(BuildContext context) {
-    return BottomDrawer(
-      header: _buildBottomDrawerHead(context),
-      body: _buildBottomDrawerBody(context),
-      headerHeight: _headerHeight,
-      drawerHeight: _bodyHeight,
-      color: Colors.white,
-      controller: _controller,
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.15),
-          blurRadius: 60,
-          spreadRadius: 5,
-          offset: const Offset(2, -6), // changes position of shadow
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBottomDrawerHead(BuildContext context) {
-    late Color fontColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.white
-        : Colors.blue;
-
-    late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
-    return Container(
-      height: _headerHeight,
-      color: backColor,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: 10.0,
-              right: 10.0,
-              top: 10.0,
-            ),
-            child: TextButton(
-              child: Text(
-                'Speed :  ${speed.toString()} km/h',
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: fontColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-              ),
-              onPressed: () {
-                if (drawerOpen)
-                  _controller.close();
-                else
-                  _controller.open();
-              },
-            ),
-          ),
-          Spacer(),
-          Divider(
-            height: 1.0,
-            color: Colors.grey,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomDrawerBody(BuildContext context) {
-    late Color fontColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.white
-        : Colors.black;
-    late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
-    return Container(
-      width: double.infinity,
-      height: _bodyHeight,
-      color: backColor,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'mile :  ${mile.toString()} mile',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              'heading : ${heading.toString()} ',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   Column _floatingBottons() {
@@ -307,7 +215,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     );
   }
 
+  String getMapThem() {
+    return Theme.of(context).brightness == Brightness.dark ? dark : light;
+  }
+
   Scaffold buildMap(ThemeModel themeNotifier) {
+    StreamController<void> resetController = StreamController.broadcast();
     var markers = <Marker>[
       Marker(
         width: 80.0,
@@ -331,18 +244,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           interactiveFlags: interActiveFlags,
         ),
         layers: [
-          // if(!sattliteChecked)
-          !sattliteChecked
-              ? TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                )
-              : TileLayerOptions(
-                  urlTemplate:
-                      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token={accessToken}',
-                  additionalOptions: {'accessToken': MyApp.ACCESS_TOKEN},
-                ),
+          TileLayerOptions(
+            reset: resetController.stream,
+            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+            subdomains: ['a', 'b', 'c'],
+          ),
           MarkerLayerOptions(markers: markers)
         ],
       ),

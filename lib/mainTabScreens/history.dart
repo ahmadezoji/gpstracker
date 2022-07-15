@@ -1,23 +1,24 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
-import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:cargpstracker/main.dart';
 
+import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:cargpstracker/bottomDrawer.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/point.dart';
+import 'package:cargpstracker/theme_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_map/flutter_map.dart';
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:latlong2/latlong.dart';
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-import 'dart:convert';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class History extends StatefulWidget {
   @override
@@ -46,12 +47,12 @@ class _HistoryState extends State<History>
   late double mile = 0;
   late String date = '';
 
-  final sattlite = 'mapbox://styles/mapbox/satellite-v9';
-  final street = 'mapbox://styles/mapbox/streets-v11';
-  final dart = 'mapbox://styles/mapbox/dark-v10';
-  final light = 'mapbox://styles/mapbox/light-v10';
+  String light = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  String dark =
+      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
+  String sattlite =
+      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
 
-  String selectedStyle = 'mapbox://styles/mapbox/light-v10';
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
   late Jalali tempPickedDate;
@@ -93,6 +94,12 @@ class _HistoryState extends State<History>
           dirLatLons.add(LatLng(p.lat, p.lon));
           dirArr.add(p);
         }
+        setState(() {
+          speed = dirArr[0].speed;
+          mile = dirArr[0].mileage;
+          heading = dirArr[0].heading;
+          date = dirArr[0].dateTime;
+        });
         _mapController.move(dirLatLons[0], 11);
         // _add();
       } else {
@@ -105,16 +112,25 @@ class _HistoryState extends State<History>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _key,
-      drawerEnableOpenDragGesture: false,
-      body: buildMap(),
-      extendBody: true,
-      bottomNavigationBar: _buildBottomDrawer(context),
-    );
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        key: _key,
+        drawerEnableOpenDragGesture: false,
+        body: buildMap(),
+        extendBody: true,
+        bottomNavigationBar: MyBottomDrawer(
+            speed: speed, heading: heading, mile: mile, date: date),
+      );
+    });
+  }
+
+  String getMapThem() {
+    return Theme.of(context).brightness == Brightness.dark ? dark : light;
   }
 
   Scaffold buildMap() {
+    StreamController<void> resetController = StreamController.broadcast();
     var markers = <Marker>[
       Marker(
         width: 80.0,
@@ -161,17 +177,11 @@ class _HistoryState extends State<History>
           interactiveFlags: interActiveFlags,
         ),
         layers: [
-          !sattliteChecked
-              ? TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                )
-              : TileLayerOptions(
-                  urlTemplate:
-                      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token={accessToken}',
-                  additionalOptions: {'accessToken': MyApp.ACCESS_TOKEN},
-                ),
+          TileLayerOptions(
+            reset: resetController.stream,
+            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+            subdomains: ['a', 'b', 'c'],
+          ),
           PolylineLayerOptions(
             polylines: [
               Polyline(
@@ -190,88 +200,6 @@ class _HistoryState extends State<History>
     });
   }
 
-  Widget _buildBottomDrawer(BuildContext context) {
-    return BottomDrawer(
-      header: _buildBottomDrawerHead(context),
-      body: _buildBottomDrawerBody(context),
-      headerHeight: _headerHeight,
-      drawerHeight: _bodyHeight,
-      color: Colors.white,
-      controller: _controller,
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.15),
-          blurRadius: 60,
-          spreadRadius: 5,
-          offset: const Offset(2, -6), // changes position of shadow
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBottomDrawerHead(BuildContext context) {
-    return Container(
-      height: _headerHeight,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: 10.0,
-              right: 10.0,
-              top: 10.0,
-            ),
-            child: TextButton(
-              child: Text(
-                'Speed :  ${speed.toString()} km/h',
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Spacer(),
-          Divider(
-            height: 1.0,
-            color: Colors.grey,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomDrawerBody(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: _bodyHeight,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'mile :  ${mile.toString()} mile',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              'heading : ${heading.toString()} ',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              'dateTime : ${date.toString()} ',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   Column _floatingBottons() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -283,7 +211,7 @@ class _HistoryState extends State<History>
             setState(() {
               zoom = zoom + 1;
             });
-            _mapController.move(_mapController.center,zoom);
+            _mapController.move(_mapController.center, zoom);
           },
         ),
         const SizedBox(height: 5),
@@ -297,7 +225,7 @@ class _HistoryState extends State<History>
             setState(() {
               zoom = zoom - 1;
             });
-            _mapController.move(_mapController.center,zoom);
+            _mapController.move(_mapController.center, zoom);
           },
         ),
         const SizedBox(height: 5),
