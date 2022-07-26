@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -43,7 +43,9 @@ class MyHomePage extends StatelessWidget {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
-
+  
+  @override
+  init
   void switchChange(BuildContext context, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? savedStrList = prefs.getStringList('pattern');

@@ -3,6 +3,8 @@ import 'dart:core';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cargpstracker/bottomDrawer.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:http/http.dart' as http;
@@ -66,6 +68,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   String sattlite =
       'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
 
+  Device? currentDevice;
+
   @override
   void dispose() {
     // mapController.dispose();
@@ -81,6 +85,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   void initState() {
     super.initState();
     _mapController = MapController();
+    getCurrentDevice();
     // _determinePosition();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       currentPos = (await fetch())!;
@@ -100,14 +105,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     // print('initState Live');
   }
 
+  void getCurrentDevice() async {
+    Map<String, dynamic> map = await loadJson('device');
+    currentDevice = Device.fromJson(map);
+  }
+
   Future<Point?> fetch() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      serial = prefs.getString('serial')!;
-
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/live/'));
-      request.fields.addAll({'serial': serial});
+      request.fields.addAll({'serial': currentDevice!.serial});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
 
@@ -228,32 +235,42 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         point: currentLatLng,
         builder: (ctx) => new Container(
             child: Icon(
-          Icons.circle,
-          size: 18,
+          currentDevice!.type == 'Car' ? Icons.car_rental : Icons.two_wheeler,
+          size: 25,
           color: Colors.blue,
         )),
       ),
     ];
-    return Scaffold(
-      drawerEnableOpenDragGesture: true,
-      body: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-          zoom: 5.0,
-          interactiveFlags: interActiveFlags,
-        ),
-        layers: [
-          TileLayerOptions(
-            reset: resetController.stream,
-            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-            subdomains: ['a', 'b', 'c'],
+    if (currentDevice != null) {
+      return Scaffold(
+        drawerEnableOpenDragGesture: true,
+        body: FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+            zoom: 5.0,
+            interactiveFlags: interActiveFlags,
           ),
-          MarkerLayerOptions(markers: markers)
-        ],
-      ),
-      floatingActionButton: _floatingBottons(),
-    );
+          layers: [
+            TileLayerOptions(
+              reset: resetController.stream,
+              urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(markers: markers)
+          ],
+        ),
+        floatingActionButton: _floatingBottons(),
+      );
+    } else {
+      return Scaffold(
+        body: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [Center(child: Text('Please wait its loading...'))],
+        )),
+      );
+    }
   }
 
   @override

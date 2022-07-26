@@ -1,3 +1,4 @@
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   static const platform = const MethodChannel("platfrom.channel.message/info");
   int languageIndex = 0;
   bool valNotify = false;
-  String serial = '';
+  String serial = 'None';
   String interval = '1-60s';
   String static = '1-60m';
   String adminNum = '09127060772';
@@ -37,6 +38,16 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
     {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
   ];
+
+  Device? getCurrentDevice(String serial) {
+    try {
+      if (devicesList.length == 0) return null;
+      for (Device dev in devicesList) {
+        if (dev.serial == serial) return dev;
+      }
+    } catch (e) {}
+    return null;
+  }
 
   updateLanguage(Locale locale) {
     Get.back();
@@ -116,6 +127,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
       http.StreamedResponse response = await request.send();
 
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
@@ -123,20 +135,20 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
         for (var dev in json) {
           Device device = Device.fromJson(dev);
-          print(device.getType());
           devicesList.add(device);
           devicesListSerials.add(device.getSerial());
         }
-        serial = devicesListSerials[devicesList.length - 1];
+        serial = devicesListSerials[0];
+        // currentDevice = devicesList[0];
         setState(() {
           loading = true;
         });
 
-        fetch();
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('serial', devicesListSerials[0]).then((bool success) {
-          print(success);
-        });
+        // fetch();
+        // final prefs = await SharedPreferences.getInstance();
+        // prefs.setString('serial', devicesListSerials[0]).then((bool success) {
+        //   print(success);
+        // });
       } else {
         print(response.reasonPhrase);
       }
@@ -192,7 +204,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   }
 
   Future<void> applyChanges() async {
-    sendSms();
+    // sendSms();
     var request = http.MultipartRequest(
         'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
     request.fields.addAll({
@@ -213,11 +225,13 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('serial', serial).then((bool success) async {
-        print(serial);
-        print(await response.stream.bytesToString());
-      });
+      final rec =
+          await saveJson('device', Device.toMap(getCurrentDevice(serial)!));
+      print('write shared ${rec}');
+
+      Device device = (await loadJson('device')) as Device;
+
+      print('read shared ${device.toString()}');
     } else {
       print(response.reasonPhrase);
     }
@@ -303,87 +317,6 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
                 },
               ),
             ),
-
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // Row(
-            //   children: const [
-            //     Icon(
-            //       Icons.device_hub,
-            //       color: Colors.black,
-            //     ),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Text('Device',
-            //         style: TextStyle(
-            //             fontSize: 20,
-            //             color: Colors.black,
-            //             fontWeight: FontWeight.bold))
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            // Container(
-            //     decoration: BoxDecoration(
-            //       color: Colors.white,
-            //       borderRadius: BorderRadius.all(Radius.circular(20)),
-            //     ),
-            //     child: Expanded(
-            //         child: Column(
-            //           children: [
-            //             dropdown(),
-            //             buildDeviceOptions(context, 'Interval', interval,
-            //                 onChangeTextInterval),
-            //             buildDeviceOptions(
-            //                 context, 'Statics', static, onChangeTextStatic),
-            //             buildDeviceOptions(
-            //                 context, 'Alarm number', adminNum,
-            //                 onChangeTextAdminNum),
-            //             buildTableOptions(
-            //                 context, 'Time Zone', 'istanbul', 'tehran'),
-            //             buildTableOptions(
-            //                 context, 'Language', 'english', 'persian'),
-            //             buildSwitchOptions(
-            //                 'Fence Config', valNotify, onChangeFunction),
-            //             buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
-            //                 onChangeTextSpeedAlarm),
-            //           ],
-            //         ))),
-            // SizedBox(
-            //   height: 40,
-            // ),
-            // Row(
-            //   children: const [
-            //     Icon(
-            //       Icons.settings_applications,
-            //       color: Colors.black,
-            //     ),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Text('Application',
-            //         style:
-            //         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            // Container(
-            //     decoration: BoxDecoration(
-            //       color: Colors.white,
-            //       borderRadius: BorderRadius.all(Radius.circular(20)),
-            //     ),
-            //     child: Expanded(
-            //         child: Column(
-            //           children: [
-            //             buildDeviceOptions(context, 'Backup days', '5 days',
-            //                 onChangeTextSerial)
-            //           ],
-            //         ))),
           ],
         ),
       ));

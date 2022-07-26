@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/bottomDrawer.dart';
 import 'package:cargpstracker/main.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,9 +64,13 @@ class _HistoryState extends State<History>
   late LatLng currentLatLng = new LatLng(35.699223, 51.337952);
 
   late double zoom = 11.0;
+
+  Device? currentDevice;
+
   @override
   void initState() {
     _mapController = MapController();
+    getCurrentDevice();
     super.initState();
   }
 
@@ -73,15 +79,21 @@ class _HistoryState extends State<History>
     return byteData.buffer.asUint8List();
   }
 
+  void getCurrentDevice() async {
+    Map<String, dynamic> map = await loadJson('device');
+    currentDevice = Device.fromJson(map);
+  }
+
   void fetch(String stamp) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      serial = prefs.getString('serial')!;
+      // final prefs = await SharedPreferences.getInstance();
+      // serial = prefs.getString('serial')!;
       dirArr.clear();
 
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/history/'));
-      request.fields.addAll({'serial': serial, 'timestamp': stamp});
+      request.fields
+          .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
