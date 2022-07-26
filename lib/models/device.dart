@@ -24,6 +24,7 @@ class Device {
   String getTitle() {
     return this.title;
   }
+
   String getType() {
     return this.type;
   }
@@ -36,11 +37,16 @@ class Device {
       type: jsonData["type"],
     );
   }
+  @override
+  String toString() {
+    return 'device = ${title} , ${serial}';
+  }
 
   static Map<String, dynamic> toMap(Device device) => {
         'serial': device.serial,
         'title': device.title,
-        'userPhone': device.simPhone
+        'simPhone': device.simPhone,
+        'type': device.type
       };
 
   static String encode(List<Device> devices) => json.encode(
