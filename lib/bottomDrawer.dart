@@ -1,21 +1,7 @@
-import 'dart:async';
 import 'dart:core';
-import 'dart:convert';
-import 'dart:developer';
-import 'package:cargpstracker/theme_model.dart';
-import 'package:cargpstracker/theme_preference.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:cargpstracker/main.dart';
-
-import 'package:cargpstracker/models/point.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class MyBottomDrawer extends StatefulWidget {
   const MyBottomDrawer(

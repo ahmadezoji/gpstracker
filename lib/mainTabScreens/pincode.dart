@@ -1,6 +1,5 @@
 import 'dart:core';
 
-
 import 'package:flutter/material.dart';
 
 class PinCodePage extends StatefulWidget {

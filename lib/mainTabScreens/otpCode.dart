@@ -1,15 +1,13 @@
-import 'dart:core';
-
-import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/register.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:core';
 
+import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key, required this.code, required this.userPhone})

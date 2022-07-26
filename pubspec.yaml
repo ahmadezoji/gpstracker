@@ -50,6 +50,7 @@ dependencies:
   pattern_lock: ^2.0.0
 #  mapbox_gl: ^0.16.0
   provider: ^6.0.3
+  flutter_redux: ^0.10.0
 
 
 dev_dependencies:

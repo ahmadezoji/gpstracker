@@ -20,7 +20,6 @@ import 'package:latlong2/latlong.dart';
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class History extends StatefulWidget {
   @override

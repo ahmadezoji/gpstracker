@@ -1,13 +1,12 @@
+import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/check_pattern.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/setting.dart';
-import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/setPattern.dart';
+import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cargpstracker/theme_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -43,9 +42,6 @@ class MyHomePage extends StatefulWidget {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
-  
-  @override
-  init
   void switchChange(BuildContext context, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? savedStrList = prefs.getStringList('pattern');

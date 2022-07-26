@@ -3,7 +3,6 @@ import 'package:cargpstracker/models/device.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -227,7 +226,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     if (response.statusCode == 200) {
       final rec =
           await saveJson('device', Device.toMap(getCurrentDevice(serial)!));
-      print('write shared ${rec}');
+      print('write shared $rec');
 
       Device device = (await loadJson('device')) as Device;
 

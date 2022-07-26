@@ -1,13 +1,10 @@
-import 'dart:core';
-
-import 'package:cargpstracker/home.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:core';
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key, required this.userPhone}) : super(key: key);

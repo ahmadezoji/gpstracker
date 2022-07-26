@@ -3,11 +3,9 @@ import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
-import 'package:cargpstracker/mainTabScreens/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
