@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   @override
   void initState() {
     super.initState();
+    // SystemChrome.setEnabledSystemUIOverlays ([]);
     HttpOverrides.global = MyHttpOverrides();
     controller = AnimationController(
       vsync: this,

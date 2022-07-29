@@ -1,4 +1,5 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
@@ -21,9 +22,13 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage>
     with AutomaticKeepAliveClientMixin<OtpPage> {
   late String code;
+  Timer? countdownTimer;
+  Duration myDuration = Duration(seconds: 60);
+
   @override
   void initState() {
     super.initState();
+    startTimer();
     // print('initState Live');
     // devices.add(Text('asdsd'));
   }
@@ -58,8 +63,50 @@ class _OtpPageState extends State<OtpPage>
     } catch (error) {}
   }
 
+  void startTimer() {
+    myDuration = Duration(seconds: 10);
+    countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void setCountDown() {
+    final reduceSecondsBy = 1;
+    setState(() {
+      final seconds = myDuration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+      } else {
+        myDuration = Duration(seconds: seconds);
+      }
+    });
+  }
+
+  void resendCode() async {
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
+      request.fields.addAll({'phone': widget.userPhone});
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.toBytes();
+        final responseString = String.fromCharCodes(responseData);
+        final json = jsonDecode(responseString);
+        // print(json);
+        if (json["status"] == true) {
+          Fluttertoast.showToast(msg: "sending-varify-code".tr);
+          startTimer();
+        }
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {}
+  }
+
   @override
   Widget build(BuildContext context) {
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    final seconds = strDigits(myDuration.inSeconds.remainder(60));
     const TextStyle kStyle = TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.w900,
@@ -72,6 +119,8 @@ class _OtpPageState extends State<OtpPage>
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(
@@ -91,19 +140,34 @@ class _OtpPageState extends State<OtpPage>
                 ),
               ),
             ),
-            // Container(
-            //   height: 50,
-            //   width: 250,
-            //   decoration: BoxDecoration(
-            //       color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-            //   child: TextButton(
-            //     onPressed: () async {},
-            //     child: Text(
-            //       "Save".tr,
-            //       style: TextStyle(color: Colors.white, fontSize: 20),
-            //     ),
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 200.0),
+              child: Row(
+                children: [
+                  if (!countdownTimer!.isActive)
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.repeat),
+                      label: Text(
+                        'resend',
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                      onPressed: resendCode,
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(100, 50)),
+                    ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    '00:$seconds',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                        fontSize: 30),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

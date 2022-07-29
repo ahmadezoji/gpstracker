@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
     with AutomaticKeepAliveClientMixin<LoginByPassPage> {
   late String userPhone;
   late String password;
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -28,6 +30,17 @@ class _LoginByPassPageState extends State<LoginByPassPage>
 
   void loginWithPass() async {
     try {
+      if (userPhone.isEmpty) {
+        Fluttertoast.showToast(msg: 'please fill phone number');
+        return;
+      }
+      if (password.isEmpty) {
+        Fluttertoast.showToast(msg: 'please fill password');
+        return;
+      }
+      setState(() {
+        _isLoading = true;
+      });
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/loginByPass/'));
       request.fields.addAll({
@@ -51,6 +64,10 @@ class _LoginByPassPageState extends State<LoginByPassPage>
               context,
               MaterialPageRoute(
                   builder: (_) => HomePage(), fullscreenDialog: false));
+
+          setState(() {
+            _isLoading = false;
+          });
         }
       } else {
         print(response.reasonPhrase);
@@ -120,31 +137,45 @@ class _LoginByPassPageState extends State<LoginByPassPage>
                             labelText: 'رمز عبور',
                             hintText: 'رمز عبور'),
                       ),
-                      SizedBox(height: 10)
+                      SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        icon: _isLoading
+                            ? const CircularProgressIndicator()
+                            : const Icon(Icons.login),
+                        label: Text(
+                          _isLoading ? 'Loading...' : 'Login',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: _isLoading ? null : loginWithPass,
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(250, 50)),
+                      ),
                     ],
                   )),
-              Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    loginWithPass();
-                  },
-                  child: Text(
-                    "Login".tr,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-              ),
+              // Container(
+              //   height: 50,
+              //   width: 250,
+              //   decoration: BoxDecoration(
+              //       color: Colors.blue,
+              //       borderRadius: BorderRadius.circular(20)),
+              //   child: TextButton(
+              //     onPressed: () {
+              //       loginWithPass();
+              //     },
+              //     child: Text(
+              //       "Login".tr,
+              //       style: TextStyle(color: Colors.white, fontSize: 20),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
       );
     });
   }
+
+  // await Future.delayed(const Duration(seconds: 3));
 
   @override
   bool get wantKeepAlive => true;

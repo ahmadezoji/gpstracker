@@ -51,6 +51,7 @@ dependencies:
 #  mapbox_gl: ^0.16.0
   provider: ^6.0.3
   flutter_redux: ^0.10.0
+  sms_autofill: ^2.2.0
 
 
 dev_dependencies:

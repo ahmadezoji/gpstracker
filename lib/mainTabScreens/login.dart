@@ -17,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
   late String userPhone = '';
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -25,6 +26,13 @@ class _LoginPageState extends State<LoginPage>
 
   void sendCode() async {
     try {
+      if (userPhone.isEmpty) {
+        Fluttertoast.showToast(msg: 'please fill phone number');
+        return;
+      }
+      setState(() {
+        _isLoading = true;
+      });
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
       request.fields.addAll({'phone': userPhone});
@@ -43,6 +51,10 @@ class _LoginPageState extends State<LoginPage>
                   builder: (_) =>
                       OtpPage(code: json["code"], userPhone: userPhone),
                   fullscreenDialog: false));
+
+          setState(() {
+            _isLoading = false;
+          });
         }
       } else {
         print(response.reasonPhrase);
@@ -108,26 +120,32 @@ class _LoginPageState extends State<LoginPage>
                   style: TextStyle(color: Colors.blue, fontSize: 15),
                 ),
               ),
-              Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {
-                    sendCode();
-                    // Navigator.pushReplacement(
-                    // context,
-                    // MaterialPageRoute(
-                    // builder: (_) => RegisterPage(), fullscreenDialog: false));
-                  },
-                  child: Text(
-                    "Login".tr,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+              ElevatedButton.icon(
+                icon: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const Icon(Icons.login),
+                label: Text(
+                  _isLoading ? 'Loading...' : 'Login',
+                  style: const TextStyle(fontSize: 20),
                 ),
+                onPressed: _isLoading ? null : sendCode,
+                style: ElevatedButton.styleFrom(fixedSize: const Size(250, 50)),
               ),
+              // Container(
+              //   height: 50,
+              //   width: 250,
+              //   decoration: BoxDecoration(
+              //       color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+              //   child: TextButton(
+              //     onPressed: () {
+              //       sendCode();
+              //     },
+              //     child: Text(
+              //       "Login".tr,
+              //       style: TextStyle(color: Colors.white, fontSize: 20),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: 130,
               ),
