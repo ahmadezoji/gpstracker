@@ -46,7 +46,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: Image(image: AssetImage("assets/gpsplus.png")),
               label: 'Setting'.tr,
             ),
             BottomNavigationBarItem(

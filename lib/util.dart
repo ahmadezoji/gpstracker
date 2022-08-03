@@ -11,3 +11,4 @@ extension BuildContextX on BuildContext {
     );
   }
 }
+ const backColor = const Color(0xD9D9D9);

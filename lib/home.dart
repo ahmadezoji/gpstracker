@@ -1,8 +1,10 @@
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/check_pattern.dart';
+import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/setPattern.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,7 @@ class HomePage extends StatelessWidget {
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         body: MyHomePage(
-          title: 'GPS',
+          title: 'GPS+',
         ),
       );
     });
@@ -30,6 +32,7 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
   final bool switchVal = false;
+
   void _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('phone');
@@ -42,6 +45,7 @@ class MyHomePage extends StatelessWidget {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
+
   void switchChange(BuildContext context, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? savedStrList = prefs.getStringList('pattern');
@@ -66,7 +70,8 @@ class MyHomePage extends StatelessWidget {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        appBar: AppBar(title: Text(title), actions: [
+        appBar:
+            AppBar(title: Text(title), backgroundColor: backColor, actions: [
           IconButton(
               icon: Icon(themeNotifier.isDark
                   ? Icons.nightlight_round
@@ -89,29 +94,7 @@ class MyHomePage extends StatelessWidget {
         body: const Center(
           child: MyStatefulWidget(),
         ),
-        drawer: Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the drawer if there isn't enough vertical
-          // space to fit everything.
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Drawer Header'),
-              ),
-              ListTile(
-                title: Text("Logout".tr),
-                onTap: () {
-                  _logout(context);
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: LeftDrawer()
       );
     });
   }

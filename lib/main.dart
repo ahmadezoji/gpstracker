@@ -1,6 +1,7 @@
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
