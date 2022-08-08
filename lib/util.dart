@@ -11,4 +11,8 @@ extension BuildContextX on BuildContext {
     );
   }
 }
- const backColor = const Color(0xD9D9D9);
+
+const statusColor = Color.fromRGBO(201,201,201,1.0);
+const backgroundColor = Color.fromRGBO(217,217,217,1.0);
+const NabColor = Color(0xffa500);
+const lightIconColor = Color.fromRGBO(217,217,217,1.0);

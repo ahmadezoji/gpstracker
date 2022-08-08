@@ -1,5 +1,6 @@
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -253,72 +254,77 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
       ));
     } else {
       return Scaffold(
+          appBar: AppBar(
+          ),
           body: Container(
-        color: Colors.grey[200],
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: [
-            Column(
+            color: Colors.grey[200],
+            padding: const EdgeInsets.all(10),
+            child: ListView(
               children: [
-                dropdown(),
-                buildDeviceOptions(
-                    context, 'Interval', interval, onChangeTextInterval),
-                buildDeviceOptions(
-                    context, 'Statics', static, onChangeTextStatic),
-                buildDeviceOptions(
-                    context, 'Alarm number', adminNum, onChangeTextAdminNum),
-                buildTableOptions(context, 'Time Zone', 'istanbul', 'tehran'),
-                buildTableOptions(context, 'Language', 'english', 'persian'),
-                buildSwitchOptions('Fence Config', valNotify, onChangeFunction),
-                buildDeviceOptions(
-                    context, 'Alarm Speed', speedAlarm, onChangeTextSpeedAlarm),
+                Column(
+                  children: [
+                    dropdown(),
+                    buildDeviceOptions(
+                        context, 'Interval', interval, onChangeTextInterval),
+                    buildDeviceOptions(
+                        context, 'Statics', static, onChangeTextStatic),
+                    buildDeviceOptions(context, 'Alarm number', adminNum,
+                        onChangeTextAdminNum),
+                    buildTableOptions(
+                        context, 'Time Zone', 'istanbul', 'tehran'),
+                    buildTableOptions(
+                        context, 'Language', 'english', 'persian'),
+                    buildSwitchOptions(
+                        'Fence Config', valNotify, onChangeFunction),
+                    buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
+                        onChangeTextSpeedAlarm),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "change_lang".tr,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          var locale = Locale('en', 'US');
+                          Get.updateLocale(locale);
+                        },
+                        child: Text('English')),
+                    ElevatedButton(
+                        onPressed: () {
+                          var locale = Locale('fa', 'IR');
+                          Get.updateLocale(locale);
+                        },
+                        child: Text('فارسی')),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue,
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      'Apply'.tr,
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                    // color: Colors.blueAccent,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      applyChanges();
+                    },
+                  ),
+                ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "change_lang".tr,
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      var locale = Locale('en', 'US');
-                      Get.updateLocale(locale);
-                    },
-                    child: Text('English')),
-                ElevatedButton(
-                    onPressed: () {
-                      var locale = Locale('fa', 'IR');
-                      Get.updateLocale(locale);
-                    },
-                    child: Text('فارسی')),
-              ],
-            ),
-            SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
-              ),
-              child: TextButton(
-                child: Text(
-                  'Apply'.tr,
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
-                ),
-                // color: Colors.blueAccent,
-                // textColor: Colors.white,
-                onPressed: () {
-                  applyChanges();
-                },
-              ),
-            ),
-          ],
-        ),
-      ));
+          ));
     }
   }
 

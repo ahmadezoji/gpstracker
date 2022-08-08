@@ -1,7 +1,9 @@
 import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyBottomDrawer extends StatefulWidget {
   const MyBottomDrawer(
@@ -15,19 +17,28 @@ class MyBottomDrawer extends StatefulWidget {
   final double mile;
   final double heading;
   final String date;
+
   @override
   _MyBottomDrawerState createState() => _MyBottomDrawerState();
 }
 
 class _MyBottomDrawerState extends State<MyBottomDrawer>
     with AutomaticKeepAliveClientMixin<MyBottomDrawer> {
-  double _headerHeight = 60.0;
-  double _bodyHeight = 180.0;
+  double _headerHeight = 80.0;
+  double _bodyHeight = 250.0;
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
+  // List<Map<String, dynamic>> listOMaps = listOStuff
+  //     .map((something) => {
+  //   "what": something.what,
+  //   "the": something.the,
+  //   "fiddle": something.fiddle,
+  // })
+  //     .toList();
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -37,12 +48,12 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
       body: _buildBottomDrawerBody(context),
       headerHeight: _headerHeight,
       drawerHeight: _bodyHeight,
-      color: Colors.white,
+      color: Colors.transparent,
       controller: _controller,
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.15),
-          blurRadius: 60,
+          color: Colors.transparent,
+          blurRadius: 1,
           spreadRadius: 5,
           offset: const Offset(2, -6), // changes position of shadow
         ),
@@ -57,43 +68,44 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
 
     late Color backColor = Theme.of(context).brightness == Brightness.dark
         ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
-    return Container(
-      height: _headerHeight,
-      color: backColor,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: 10.0,
-              right: 10.0,
-              top: 10.0,
+        : backgroundColor;
+    return new Stack(
+      children: <Widget>[
+        // The containers in the background
+        new Column(
+          children: <Widget>[
+            new Container(
+              alignment: Alignment.center,
+              height: _headerHeight * 0.3,
+              color: Colors.transparent,
             ),
-            child: TextButton(
+            new Container(
+              alignment: Alignment.center,
+              height: _headerHeight * 0.7,
+              color: backgroundColor,
               child: Text(
-                'Speed :  ${widget.speed.toString()} km/h',
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: fontColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
+                "See All Vehicles",
+                style: TextStyle(color: Colors.black, fontSize: 16),
               ),
-              onPressed: () {
-                if (drawerOpen)
-                  _controller.close();
-                else
-                  _controller.open();
-              },
-            ),
-          ),
-          Spacer(),
-          Divider(
-            height: 1.0,
-            color: Colors.grey,
-          ),
-        ],
-      ),
+            )
+          ],
+        ),
+        new Container(
+          alignment: Alignment.topCenter,
+          padding: new EdgeInsets.only(top: 3, right: 20.0, left: 20.0),
+          child: new Container(
+              height: 50.0,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: new Stack(children: <Widget>[
+                new Image(image: AssetImage("assets/arrow-bg.png")),
+                new Positioned(
+                    child: new Image(image: AssetImage("assets/arrow.png")),
+                    left: 43,
+                    top: 10)
+              ])),
+        )
+      ],
     );
   }
 
@@ -103,37 +115,19 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         : Colors.black;
     late Color backColor = Theme.of(context).brightness == Brightness.dark
         ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
+        : backgroundColor;
     return Container(
       width: double.infinity,
       height: _bodyHeight,
       color: backColor,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'mile :  ${widget.mile.toString()} mile',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              'heading : ${widget.heading.toString()} ',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              'date : ${widget.date.toString()} ',
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: fontColor, fontWeight: FontWeight.bold, fontSize: 15),
-            )
-          ],
-        ),
+      child: GridView.count(
+        // Create a grid with 2 columns. If you change the scrollDirection to
+        // horizontal, this produces 2 rows.
+        crossAxisCount: 4,
+        // Generate 100 widgets that display their index in the List.
+        children: List.generate(5, (index) {
+          return Center(child: cardVehicle("car","assets/simpleCar.svg"));
+        }),
       ),
     );
   }
@@ -142,24 +136,39 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   bool get wantKeepAlive => true;
 }
 
+Widget cardVehicle(String vehicleName,String assetPath) {
+  return (Container(
+    alignment: Alignment.topCenter,
+    padding: EdgeInsets.all(9.0),
+    decoration: BoxDecoration(
+        color: Colors.white70, borderRadius: BorderRadius.circular(8)),
+    width: 65,
+    height: 65,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SvgPicture.asset(assetPath),
+        Text(vehicleName)
+      ],
+    )
+  ));
+}
 
-
-// Widget myBottomDrawer(
-//     BuildContext context, double speed, double mile, double heading) {
-//   return BottomDrawer(
-//     header: _buildBottomDrawerHead(context),
-//     body: _buildBottomDrawerBody(context),
-//     headerHeight: _headerHeight,
-//     drawerHeight: _bodyHeight,
-//     color: Colors.white,
-//     controller: _controller,
-//     boxShadow: [
-//       BoxShadow(
-//         color: Colors.black.withOpacity(0.15),
-//         blurRadius: 60,
-//         spreadRadius: 5,
-//         offset: const Offset(2, -6), // changes position of shadow
-//       ),
-//     ],
-//   );
-// }
+// Row(
+// mainAxisAlignment: MainAxisAlignment.end,
+// children: [
+// cardVehicle(),
+// SizedBox(
+// width: 5,
+// ),
+// cardVehicle(),
+// SizedBox(
+// width: 5,
+// ),
+// cardVehicle(),
+// SizedBox(
+// width: 5,
+// ),
+// cardVehicle()
+// ],
+// ),

@@ -10,6 +10,7 @@ import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -216,8 +217,9 @@ class _HistoryState extends State<History>
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn1",
-          child: const Icon(Icons.zoom_in),
+          child: const Icon(Icons.zoom_in,color: Colors.black),
           onPressed: () {
             setState(() {
               zoom = zoom + 1;
@@ -229,8 +231,9 @@ class _HistoryState extends State<History>
 
         // Zoom Out
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn2",
-          child: const Icon(Icons.zoom_out),
+          child: const Icon(Icons.zoom_out,color: Colors.black),
           onPressed: () {
             zoomout();
             setState(() {
@@ -243,8 +246,9 @@ class _HistoryState extends State<History>
 
         // Change Style
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn3",
-          child: const Icon(Icons.satellite),
+          child: const Icon(Icons.satellite,color: Colors.black),
           onPressed: () {
             // selectedStyle = selectedStyle == light ? sattlite : light;
             // fetch(currentTimeStamp.seconds.toString());

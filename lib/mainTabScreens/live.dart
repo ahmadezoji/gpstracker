@@ -10,7 +10,9 @@ import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -154,24 +156,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const SizedBox(height: 5),
-        // Zoom In
         FloatingActionButton(
-          heroTag: "btn0",
-          child: const Icon(Icons.add_link),
-          onPressed: () {
-            // Scaffold.of(context).openDrawer();
-            /// open the bottom drawer.
-            // _controller.open();
-            // _key.currentState!.openDrawer();
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        const SizedBox(height: 120),
-        // Zoom In
-        FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn2",
-          child: const Icon(Icons.location_searching),
+          child: const Icon(Icons.location_searching, color: Colors.black),
           onPressed: () {
             _mapController.move(currentLatLng, 18);
           },
@@ -179,8 +167,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         const SizedBox(height: 5),
         // Zoom In
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn2",
-          child: const Icon(Icons.zoom_in),
+          child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
               zoom = zoom + 1;
@@ -192,8 +181,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
         // Zoom Out
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn3",
-          child: const Icon(Icons.zoom_out),
+          child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
             setState(() {
               zoom = zoom - 1;
@@ -205,8 +195,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
         // Change Style
         FloatingActionButton(
+          backgroundColor: lightIconColor,
           heroTag: "btn4",
-          child: const Icon(Icons.satellite),
+          child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {
             setState(() {
               sattliteChecked = !sattliteChecked;

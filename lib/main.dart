@@ -18,13 +18,13 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeModel(),
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
-        return MaterialApp(
-          title: 'Flutter Demo',
-          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-          debugShowCheckedModeBanner: false,
-          home: SpalshScreen(),
-        );
-      }),
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+              debugShowCheckedModeBanner: false,
+              home: SpalshScreen(),
+            );
+          }),
     );
   }
 }

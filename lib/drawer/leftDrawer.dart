@@ -1,3 +1,4 @@
+import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,20 +30,22 @@ class LeftDrawerState extends State<LeftDrawer>
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              // image: DecorationImage(
-              //     image: AssetImage("assets/backDrawer.png"),
-              //     fit: BoxFit.cover),
-              color: Colors.blue,
+              image: DecorationImage(
+                  image: AssetImage("assets/backDrawer.png"),
+                  opacity: 0.2,
+                  fit: BoxFit.cover),
+              // color: Colors.blue,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image(image: AssetImage("assets/user_outline.png")),
                 Text("saam ezoji",
                     style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text("+905346403281",
                     style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal)),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
                 Text("saam.ezoji@gmailcm",
                     style:
                         TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
@@ -67,7 +70,14 @@ class LeftDrawerState extends State<LeftDrawer>
                 Text("   Setting".tr)
               ],
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          Setting(),
+                      fullscreenDialog: false));
+            },
           ),
           ListTile(
             title: Row(

@@ -21,7 +21,9 @@ class LocaleString extends Translations {
           "sending-varify-code": "sending code success",
           "add-user-msg": "your phone number registered",
           "device-sim-num": "Device sim card number",
-          "Logout": "Logout"
+          "Logout": "Logout",
+          "Plus" : "Plus"
+
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -40,7 +42,8 @@ class LocaleString extends Translations {
           "sending-varify-code": "کد مورد نظر ارسال شد",
           "add-user-msg": "موبایل شما در سامانه ثبت شد",
           "device-sim-num": "شماره سیم کارت دستگاه ",
-          "Logout": "خروج"
+          "Logout": "خروج",
+          "Plus" : "پلاس"
         },
       };
 }
