@@ -12,15 +12,13 @@ jobs:
   build:
     name: BuildIn
     runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
 
-    - name: Install Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.0.1'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter --version
 
     - name: Get dependencies
       run: flutter pub get
