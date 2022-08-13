@@ -217,17 +217,22 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     StreamController<void> resetController = StreamController.broadcast();
     var markers = <Marker>[
       Marker(
-        width: 80.0,
-        height: 80.0,
+        width: 80,
+        height: 80,
         point: currentLatLng,
-        builder: (ctx) => new Container(
-            child: Icon(
-          currentDevice!.type == 'Car' ? Icons.car_rental : Icons.two_wheeler,
-          size: 25,
-          color: Colors.blue,
-        )),
+        builder: (ctx) =>
+        new Container(
+            child: Container(
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: backgroundColor,),
+              child: Text('saam ezoji',
+                style: TextStyle(color: Colors.blue, fontSize: 27),),
+            )),
       ),
     ];
+
     if (currentDevice != null) {
       return Scaffold(
         drawerEnableOpenDragGesture: true,

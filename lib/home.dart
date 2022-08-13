@@ -1,5 +1,6 @@
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/check_pattern.dart';
+import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/setPattern.dart';
@@ -76,10 +77,11 @@ class MyHomePage extends StatelessWidget {
                 statusBarColor: statusColor,
 
                 // Status bar brightness (optional)
-                statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+                statusBarIconBrightness:
+                    Brightness.dark, // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
-              title: Text(title,style: TextStyle(color: Colors.black)),
+              title: Text(title, style: TextStyle(color: Colors.black)),
               iconTheme: IconThemeData(color: Colors.black),
               backgroundColor: NabColor, // status bar color
               actions: [
@@ -94,12 +96,22 @@ class MyHomePage extends StatelessWidget {
                       print("Theme change clicked");
                     }),
                 SizedBox(width: 10),
-                SvgPicture.asset(
-                  "assets/timezone.svg",
+                GestureDetector(
+                  onTap: () {
+                    showTimeZoneDlgBox(context);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/timezone.svg",
+                  ),
                 ),
                 SizedBox(width: 10),
-                SvgPicture.asset(
-                  "assets/lang.svg",
+                GestureDetector(
+                  onTap: () {
+                    showLangDlgBox(context);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/lang.svg",
+                  ),
                 ),
                 SizedBox(width: 30),
               ]),

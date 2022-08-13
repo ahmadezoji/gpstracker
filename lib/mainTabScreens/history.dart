@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
-import 'dart:typed_data';
-
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/bottomDrawer.dart';
 import 'package:cargpstracker/main.dart';
@@ -15,9 +13,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +53,8 @@ class _HistoryState extends State<History>
   String dark =
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
   String sattlite =
-      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
+      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp
+      .ACCESS_TOKEN}';
 
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
@@ -61,7 +62,7 @@ class _HistoryState extends State<History>
   late double zoomLevel = 5.0;
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
-  late LatLng currentLatLng = new LatLng(35.699223, 51.337952);
+  late LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
 
   late double zoom = 11.0;
 
@@ -124,37 +125,47 @@ class _HistoryState extends State<History>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      return Scaffold(
-        key: _key,
-        drawerEnableOpenDragGesture: false,
-        body: buildMap(),
-        extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(
-            speed: speed, heading: heading, mile: mile, date: date),
-      );
-    });
+          return Scaffold(
+            key: _key,
+            drawerEnableOpenDragGesture: false,
+            body: buildMap(),
+            extendBody: true,
+            bottomNavigationBar: MyBottomDrawer(
+                speed: speed, heading: heading, mile: mile, date: date),
+          );
+        });
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? dark : light;
+    return Theme
+        .of(context)
+        .brightness == Brightness.dark ? dark : light;
   }
 
   Scaffold buildMap() {
     StreamController<void> resetController = StreamController.broadcast();
     var markers = <Marker>[
       Marker(
-        width: 80.0,
-        height: 80.0,
+        width: 80,
+        height: 80,
         point: currentLatLng,
-        builder: (ctx) => new Container(
-            child: Icon(
-          Icons.motorcycle,
-          size: 40,
-        )),
+        builder: (ctx) =>
+        new Container(
+            child: Container(
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: backgroundColor,),
+              child: Text('saam ezoji',
+                style: TextStyle(color: Colors.blue, fontSize: 27),),
+            )),
       ),
     ];
+
+
     return Scaffold(
       endDrawer: Drawer(
           backgroundColor: Colors.white,
@@ -181,25 +192,41 @@ class _HistoryState extends State<History>
               ],
             ),
           )),
-      body: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-          zoom: zoomLevel,
-          interactiveFlags: interActiveFlags,
-        ),
-        layers: [
-          TileLayerOptions(
-            reset: resetController.stream,
-            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-            subdomains: ['a', 'b', 'c'],
+      body: Stack(
+        children: [
+          Tooltip(
+            message: 'I am a Tooltip',
+            child: Text('Hover over the text to show a tooltip.'),
           ),
-          PolylineLayerOptions(
-            polylines: [
-              Polyline(
-                  points: dirLatLons, strokeWidth: 4.0, color: Colors.purple),
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+              zoom: zoomLevel,
+              interactiveFlags: interActiveFlags,
+            ),
+            layers: [
+              MarkerLayerOptions(
+                  markers: markers
+              ),
+              TileLayerOptions(
+                reset: resetController.stream,
+                urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+                subdomains: ['a', 'b', 'c'],
+              ),
+              PolylineLayerOptions(
+                polylines: [
+                  Polyline(
+                      points: dirLatLons,
+                      strokeWidth: 4.0,
+                      color: Colors.purple),
+                ],
+
+              ),
+              // new MarkerLayerOptions(markers: markers),
             ],
           ),
+
         ],
       ),
       floatingActionButton: _floatingBottons(),
@@ -219,7 +246,7 @@ class _HistoryState extends State<History>
         FloatingActionButton(
           backgroundColor: lightIconColor,
           heroTag: "btn1",
-          child: const Icon(Icons.zoom_in,color: Colors.black),
+          child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
               zoom = zoom + 1;
@@ -233,7 +260,7 @@ class _HistoryState extends State<History>
         FloatingActionButton(
           backgroundColor: lightIconColor,
           heroTag: "btn2",
-          child: const Icon(Icons.zoom_out,color: Colors.black),
+          child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
             zoomout();
             setState(() {
@@ -248,7 +275,7 @@ class _HistoryState extends State<History>
         FloatingActionButton(
           backgroundColor: lightIconColor,
           heroTag: "btn3",
-          child: const Icon(Icons.satellite,color: Colors.black),
+          child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {
             // selectedStyle = selectedStyle == light ? sattlite : light;
             // fetch(currentTimeStamp.seconds.toString());
@@ -286,7 +313,7 @@ class _HistoryState extends State<History>
       });
 
       Timestamp myTimeStamp =
-          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+      Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
       currentTimeStamp = myTimeStamp;
       print(myTimeStamp.seconds.toString());
       fetch(myTimeStamp.seconds.toString());
