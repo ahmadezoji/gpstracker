@@ -125,7 +125,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         // horizontal, this produces 2 rows.
         crossAxisCount: 4,
         // Generate 100 widgets that display their index in the List.
-        children: List.generate(5, (index) {
+        children: List.generate(3, (index) {
           return Center(child: cardVehicle("car","assets/simpleCar.svg"));
         }),
       ),

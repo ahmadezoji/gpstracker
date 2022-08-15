@@ -46,8 +46,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
+        // body: Center(
+        //   child: _widgetOptions.elementAt(_selectedIndex),
+        // ),
+        body: IndexedStack(
+          children: <Widget>[
+            GpsPlus(),
+            Live(),
+            History(),
+          ],
+          index: _selectedIndex,
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: backgroundColor,

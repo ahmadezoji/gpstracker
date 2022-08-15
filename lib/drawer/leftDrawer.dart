@@ -1,3 +1,4 @@
+import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
@@ -42,13 +43,13 @@ class LeftDrawerState extends State<LeftDrawer>
                 Image(image: AssetImage("assets/user_outline.png")),
                 Text("saam ezoji",
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text("+905346403281",
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
                 Text("saam.ezoji@gmailcm",
                     style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
+                    TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
               ],
             ),
           ),
@@ -57,26 +58,24 @@ class LeftDrawerState extends State<LeftDrawer>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.account_circle, size: 32),
-                Text("   Profile".tr)
+                Text("   Profile".tr),
               ],
             ),
-            onTap: () {},
+            onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ProfilePage(userPhone: "09195835135"), fullscreenDialog: false));},
           ),
           ListTile(
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.settings, size: 32),
-                Text("   Setting".tr)
-              ],
+              children: [Icon(Icons.settings, size: 32), Text("   Setting".tr)],
             ),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) =>
-                          Setting(),
-                      fullscreenDialog: false));
+                      builder: (_) => Setting(), fullscreenDialog: false));
             },
           ),
           ListTile(

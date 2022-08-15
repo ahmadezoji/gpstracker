@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 class LocaleString extends Translations {
   @override
   // TODO: implement keys
-  Map<String, Map<String, String>> get keys => {
+  Map<String, Map<String, String>> get keys =>
+      {
         'en_US': {
           'App_Name': 'GPS Tracker',
           'Login': 'Login',
@@ -22,7 +23,15 @@ class LocaleString extends Translations {
           "add-user-msg": "your phone number registered",
           "device-sim-num": "Device sim card number",
           "Logout": "Logout",
-          "Plus" : "Plus"
+          "Plus": "Plus",
+          "car": "Car",
+          "motor": "Motor",
+          "truck": "Truck",
+          "username": "User Name",
+          "phone": "Phone Number",
+          "email": "Email Address",
+          "country": "Country Name",
+          "city": "City Name",
 
         },
         'fa_IR': {
@@ -43,7 +52,15 @@ class LocaleString extends Translations {
           "add-user-msg": "موبایل شما در سامانه ثبت شد",
           "device-sim-num": "شماره سیم کارت دستگاه ",
           "Logout": "خروج",
-          "Plus" : "پلاس"
+          "Plus": "پلاس",
+          "car": "خودروی سواری",
+          "motor": "موتور سیکلت",
+          "truck": "خودروی سنگین",
+          "username": "نام کاربری",
+          "phone": "شماره تماس",
+          "email": "آدرس ایمیل",
+          "country": "نام کشور",
+          "city": "نام شهر",
         },
       };
 }

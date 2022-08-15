@@ -1,9 +1,11 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +20,12 @@ class _AddVehicleState extends State<AddVehicle>
     with AutomaticKeepAliveClientMixin<AddVehicle> {
   late String serial;
   late String deviceSimNum;
+  late String type = "minicar";
+  static Map<String, String> devices = {
+    "car".tr: 'minicar',
+    "motor".tr: "minimotor",
+    "truck".tr: "minitruck"
+  };
 
   @override
   void initState() {
@@ -131,6 +139,81 @@ class _AddVehicleState extends State<AddVehicle>
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: DropdownButton<String>(
+                        items: devices
+                            .map((description, value) {
+                              return MapEntry(
+                                  description,
+                                  DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Container(
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            //                    <--- top side
+                                            color: BorderSpacerColor,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                      ),
+                                      width: 250,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/ellipse.svg',
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              SvgPicture.asset(
+                                                'assets/$value.svg',
+                                              ),
+                                            ],
+                                          ),
+                                          Text(description)
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                            })
+                            .values
+                            .toList(),
+                        value: type,
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              type = newValue;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blue,
+                        ),
+                        child: TextButton(
+                          child: Text(
+                            'Apply'.tr,
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                          // color: Colors.blueAccent,
+                          // textColor: Colors.white,
+                          onPressed: () {},
+                        ),
+                      ),
+                    )
                   ],
                 )),
           ],
