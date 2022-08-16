@@ -2,11 +2,14 @@ import 'dart:convert' as convert;
 
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting extends StatefulWidget {
@@ -240,92 +243,98 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 // buildDeviceOptions(context, 'Device serial', serial),
   @override
   Widget build(BuildContext context) {
-    if (loading == false) {
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          CircularProgressIndicator(
-            value: controller.value,
-            semanticsLabel: 'Linear progress indicator',
-          ),
-          Center(child: Text('Please wait its loading...'))
-        ],
-      ));
-    } else {
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      // if (loading == false) {
+      //   return Center(child: Center(child: Text('Please wait its loading...')));
+      // } else {
       return Scaffold(
           appBar: AppBar(
-          ),
-          body: Container(
-            color: Colors.grey[200],
-            padding: const EdgeInsets.all(10),
-            child: ListView(
-              children: [
-                Column(
-                  children: [
-                    dropdown(),
-                    buildDeviceOptions(
-                        context, 'Interval', interval, onChangeTextInterval),
-                    buildDeviceOptions(
-                        context, 'Statics', static, onChangeTextStatic),
-                    buildDeviceOptions(context, 'Alarm number', adminNum,
-                        onChangeTextAdminNum),
-                    buildTableOptions(
-                        context, 'Time Zone', 'istanbul', 'tehran'),
-                    buildTableOptions(
-                        context, 'Language', 'english', 'persian'),
-                    buildSwitchOptions(
-                        'Fence Config', valNotify, onChangeFunction),
-                    buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
-                        onChangeTextSpeedAlarm),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "change_lang".tr,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          var locale = Locale('en', 'US');
-                          Get.updateLocale(locale);
-                        },
-                        child: Text('English')),
-                    ElevatedButton(
-                        onPressed: () {
-                          var locale = Locale('fa', 'IR');
-                          Get.updateLocale(locale);
-                        },
-                        child: Text('فارسی')),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue,
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      'Apply'.tr,
-                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                    ),
-                    // color: Colors.blueAccent,
-                    // textColor: Colors.white,
-                    onPressed: () {
-                      applyChanges();
-                    },
-                  ),
-                ),
-              ],
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              // Status bar color
+              statusBarColor: statusColor,
+
+              // Status bar brightness (optional)
+              statusBarIconBrightness:
+                  Brightness.dark, // For Android (dark icons)
+              statusBarBrightness: Brightness.light, // For iOS (dark icons)
             ),
-          ));
-    }
+            title: Text("settings".tr, style: TextStyle(color: Colors.black)),
+            backgroundColor: NabColor, // status bar color
+          ),
+          body: loading == true
+              ? Container(
+                  color: Colors.grey[200],
+                  padding: const EdgeInsets.all(10),
+                  child: ListView(
+                    children: [
+                      Column(
+                        children: [
+                          dropdown(),
+                          buildDeviceOptions(context, 'Interval', interval,
+                              onChangeTextInterval),
+                          buildDeviceOptions(
+                              context, 'Statics', static, onChangeTextStatic),
+                          buildDeviceOptions(context, 'Alarm number', adminNum,
+                              onChangeTextAdminNum),
+                          buildTableOptions(
+                              context, 'Time Zone', 'istanbul', 'tehran'),
+                          buildTableOptions(
+                              context, 'Language', 'english', 'persian'),
+                          buildSwitchOptions(
+                              'Fence Config', valNotify, onChangeFunction),
+                          buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
+                              onChangeTextSpeedAlarm),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "change_lang".tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                var locale = Locale('en', 'US');
+                                Get.updateLocale(locale);
+                              },
+                              child: Text('English')),
+                          ElevatedButton(
+                              onPressed: () {
+                                var locale = Locale('fa', 'IR');
+                                Get.updateLocale(locale);
+                              },
+                              child: Text('فارسی')),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blue,
+                        ),
+                        child: TextButton(
+                          child: Text(
+                            'Apply'.tr,
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                          onPressed: () {
+                            applyChanges();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Center(child: Text('Please wait its loading...'))));
+      // }
+    });
   }
 
   Padding buildSwitchOptions(

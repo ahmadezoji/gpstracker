@@ -106,6 +106,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     // print('initState Live');
   }
 
+
   void getCurrentDevice() async {
     Map<String, dynamic> map = await loadJson('device');
     currentDevice = Device.fromJson(map);
@@ -183,13 +184,14 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
             child: Container(
               height: 150, //_screenWidth * 0.45,
               width: 250, //_screenWidth * 0.45,
-              decoration: BoxDecoration(),
+
               child: ClipRRect(
                 // make sure we apply clip it properly
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Container(
-                      color: Colors.grey.withOpacity(0.1),
+
+                      decoration: BoxDecoration( color: Colors.grey.withOpacity(0.1),borderRadius: BorderRadius.circular(14)),
                       child: Column(
                         children: [
                           Container(

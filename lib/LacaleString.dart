@@ -12,7 +12,7 @@ class LocaleString extends Translations {
           'Save': 'Save',
           'Live': 'Live',
           'History': 'History',
-          'Setting': 'Settings',
+          'Settings': 'Settings',
           'Apply': 'Apply',
           'Training': 'Training Mode',
           'alert-title': 'Switch On/Off Alert',
@@ -32,7 +32,8 @@ class LocaleString extends Translations {
           "email": "Email Address",
           "country": "Country Name",
           "city": "City Name",
-
+          "addVehicle" : "Add Vehicle",
+          "profile" : "Profile"
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -41,7 +42,7 @@ class LocaleString extends Translations {
           'Save': 'ذخیره',
           'Live': 'زنده',
           'History': 'تاریخچه',
-          'Setting': 'تنظیمات',
+          'Settings': 'تنظیمات',
           'Apply': 'قبول',
           'Training': 'نسخه آزمایش',
           'alert-title': 'هشدار خاموش کردن',
@@ -61,6 +62,8 @@ class LocaleString extends Translations {
           "email": "آدرس ایمیل",
           "country": "نام کشور",
           "city": "نام شهر",
+          "addVehicle" : "اضافه کردن دستگاه",
+          "profile" : "پروفایل"
         },
       };
 }

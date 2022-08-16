@@ -1,3 +1,4 @@
+import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,12 @@ class LeftDrawerState extends State<LeftDrawer>
                 Text("   Add new device".tr)
               ],
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => AddVehicle(), fullscreenDialog: false));
+            },
           ),
         ],
       ),
