@@ -1,7 +1,6 @@
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
-import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';

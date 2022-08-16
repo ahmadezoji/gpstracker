@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/bottomDrawer.dart';
 import 'package:cargpstracker/main.dart';
@@ -13,11 +14,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
@@ -73,6 +72,7 @@ class _HistoryState extends State<History>
     _mapController = MapController();
     getCurrentDevice();
     super.initState();
+    print('init history');
   }
 
   Future<Uint8List> loadMarkerImage() async {
@@ -165,72 +165,62 @@ class _HistoryState extends State<History>
       ),
     ];
 
-
     return Scaffold(
-      endDrawer: Drawer(
-          backgroundColor: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  //"${selectedDate.toJalaliDateTime()}".split(' ')[0],
-                  "$selectedDate".split(' ')[0],
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.normal),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text(
-                    'Select date',
+        endDrawer: Drawer(
+            backgroundColor: Colors.white,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    //"${selectedDate.toJalaliDateTime()}".split(' ')[0],
+                    "$selectedDate".split(' ')[0],
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                        fontSize: 25, fontWeight: FontWeight.normal),
                   ),
-                )
-              ],
-            ),
-          )),
-      body: Stack(
-        children: [
-          Tooltip(
-            message: 'I am a Tooltip',
-            child: Text('Hover over the text to show a tooltip.'),
-          ),
-          FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
-              center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              zoom: zoomLevel,
-              interactiveFlags: interActiveFlags,
-            ),
-            layers: [
-              MarkerLayerOptions(
-                  markers: markers
-              ),
-              TileLayerOptions(
-                reset: resetController.stream,
-                urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-                subdomains: ['a', 'b', 'c'],
-              ),
-              PolylineLayerOptions(
-                polylines: [
-                  Polyline(
-                      points: dirLatLons,
-                      strokeWidth: 4.0,
-                      color: Colors.purple),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text(
+                      'Select date',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  )
                 ],
-
               ),
-              // new MarkerLayerOptions(markers: markers),
-            ],
+            )),
+        body: FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+            zoom: zoomLevel,
+            interactiveFlags: interActiveFlags,
           ),
+          layers: [
+            MarkerLayerOptions(
+                markers: markers
+            ),
+            TileLayerOptions(
+              reset: resetController.stream,
+              urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+              subdomains: ['a', 'b', 'c'],
+            ),
+            PolylineLayerOptions(
+              polylines: [
+                Polyline(
+                    points: dirLatLons,
+                    strokeWidth: 4.0,
+                    color: Colors.purple),
+              ],
 
-        ],
-      ),
-      floatingActionButton: _floatingBottons(),
-    );
+            ),
+            // new MarkerLayerOptions(markers: markers),
+          ],
+        ),
+        floatingActionButton: _floatingBottons(),);
   }
 
   void zoomout() {
@@ -246,6 +236,15 @@ class _HistoryState extends State<History>
         FloatingActionButton(
           backgroundColor: lightIconColor,
           heroTag: "btn1",
+          child: const Icon(Icons.date_range, color: Colors.black),
+          onPressed: () {
+            _selectDate(context);
+          },
+        ),
+        const SizedBox(height: 50),
+        FloatingActionButton(
+          backgroundColor: lightIconColor,
+          heroTag: "btn1",
           child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
@@ -255,7 +254,6 @@ class _HistoryState extends State<History>
           },
         ),
         const SizedBox(height: 5),
-
         // Zoom Out
         FloatingActionButton(
           backgroundColor: lightIconColor,
@@ -270,7 +268,6 @@ class _HistoryState extends State<History>
           },
         ),
         const SizedBox(height: 5),
-
         // Change Style
         FloatingActionButton(
           backgroundColor: lightIconColor,

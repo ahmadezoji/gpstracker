@@ -1,11 +1,9 @@
+import 'package:cargpstracker/check_pattern.dart';
 import 'package:cargpstracker/setPattern.dart';
 import 'package:cargpstracker/theme_model.dart';
-import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:cargpstracker/check_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GpsPlus extends StatelessWidget {
@@ -46,7 +44,7 @@ class GpsPlus extends StatelessWidget {
                 switchChange(context, true);
               },
               child: SvgPicture.asset(
-                "assets/switchOnOff.svg",
+                "assets/switch-lock2.svg",
               ),
             ),
             SizedBox(height: 20),

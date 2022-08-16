@@ -5,6 +5,8 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'models/device.dart';
+
 class MyBottomDrawer extends StatefulWidget {
   const MyBottomDrawer(
       {Key? key,
@@ -28,17 +30,11 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   double _bodyHeight = 250.0;
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
-  // List<Map<String, dynamic>> listOMaps = listOStuff
-  //     .map((something) => {
-  //   "what": something.what,
-  //   "the": something.the,
-  //   "fiddle": something.fiddle,
-  // })
-  //     .toList();
+
   @override
   void initState() {
     super.initState();
-
+    print('init live');
   }
 
   @override
@@ -110,6 +106,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   }
 
   Widget _buildBottomDrawerBody(BuildContext context) {
+    late double _screenSize = MediaQuery.of(context).size.width;
     late Color fontColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.white
         : Colors.black;
@@ -123,11 +120,37 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
       child: GridView.count(
         // Create a grid with 2 columns. If you change the scrollDirection to
         // horizontal, this produces 2 rows.
-        crossAxisCount: 4,
+        crossAxisCount: (_screenSize / 60).round(),
+        crossAxisSpacing: 4,
         // Generate 100 widgets that display their index in the List.
-        children: List.generate(3, (index) {
-          return Center(child: cardVehicle("car","assets/simpleCar.svg"));
+        children: List.generate(5, (index) {
+          return _vehicleIcon(
+              context,
+              new Device(
+                  serial: "9999",
+                  title: "title",
+                  simPhone: "simPhone",
+                  type: "type"));
         }),
+      ),
+    );
+  }
+
+  Widget _vehicleIcon(BuildContext context, Device device) {
+    return Container(
+      width: 50,
+      height: 50,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5), color: Colors.white),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/minimotor.svg",
+          ),
+          Text(device.title,style: TextStyle(color: Colors.black,),)
+        ],
       ),
     );
   }
@@ -136,39 +159,16 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   bool get wantKeepAlive => true;
 }
 
-Widget cardVehicle(String vehicleName,String assetPath) {
+Widget cardVehicle(String vehicleName, String assetPath) {
   return (Container(
-    alignment: Alignment.topCenter,
-    padding: EdgeInsets.all(9.0),
-    decoration: BoxDecoration(
-        color: Colors.white70, borderRadius: BorderRadius.circular(8)),
-    width: 65,
-    height: 65,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SvgPicture.asset(assetPath),
-        Text(vehicleName)
-      ],
-    )
-  ));
+      alignment: Alignment.topCenter,
+      padding: EdgeInsets.all(9.0),
+      decoration: BoxDecoration(
+          color: Colors.white70, borderRadius: BorderRadius.circular(8)),
+      width: 65,
+      height: 65,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [SvgPicture.asset(assetPath), Text(vehicleName)],
+      )));
 }
-
-// Row(
-// mainAxisAlignment: MainAxisAlignment.end,
-// children: [
-// cardVehicle(),
-// SizedBox(
-// width: 5,
-// ),
-// cardVehicle(),
-// SizedBox(
-// width: 5,
-// ),
-// cardVehicle(),
-// SizedBox(
-// width: 5,
-// ),
-// cardVehicle()
-// ],
-// ),

@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.userPhone}) : super(key: key);

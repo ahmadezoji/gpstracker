@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ui';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/bottomDrawer.dart';
@@ -12,8 +13,8 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +80,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return await _preferences.getTheme();
   }
 
+  late double _screenWidth = MediaQuery.of(context).size.width;
+
   @override
   void initState() {
     super.initState();
@@ -132,6 +135,23 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return null;
   }
 
+  Future<void> getCurrentLocation() async {
+    currentPos = (await fetch())!;
+    if (currentPos == null) return;
+    setState(() {
+      speed = currentPos.getSpeed();
+      mile = currentPos.getMileage();
+      heading = currentPos.getHeading();
+      date = currentPos.getDateTime();
+      currentLatLng = LatLng(currentPos.lat, currentPos.lon);
+    });
+    print(currentLatLng);
+    if (!bZoom) {
+      _mapController.move(currentLatLng, 11);
+      bZoom = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
@@ -152,59 +172,187 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     });
   }
 
-  Column _floatingBottons() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+  Row _floatingBottons() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        FloatingActionButton(
-          backgroundColor: lightIconColor,
-          heroTag: "btn2",
-          child: const Icon(Icons.location_searching, color: Colors.black),
-          onPressed: () {
-            _mapController.move(currentLatLng, 18);
-          },
-        ),
-        const SizedBox(height: 5),
-        // Zoom In
-        FloatingActionButton(
-          backgroundColor: lightIconColor,
-          heroTag: "btn2",
-          child: const Icon(Icons.zoom_in, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              zoom = zoom + 1;
-            });
-            _mapController.move(_mapController.center, zoom);
-          },
-        ),
-        const SizedBox(height: 5),
+        Padding(
+            padding: EdgeInsets.only(top: 50, left: 30),
+            //blure box
+            child: Container(
+              height: 150, //_screenWidth * 0.45,
+              width: 250, //_screenWidth * 0.45,
+              decoration: BoxDecoration(),
+              child: ClipRRect(
+                // make sure we apply clip it properly
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                      color: Colors.grey.withOpacity(0.1),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: BorderSpacerColor,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: Text('YOUR CURRENT LOCATION',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 10,left: 5,right: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Speed : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('$speed km/h',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Interval : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('1000 ms',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'mile : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('$mile',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'date : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('$date',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'lat : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('${currentPos.lat}',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'lon : ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('${currentPos.lon}',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                _vehicleIcon(context, currentDevice!)
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                ),
+              ),
+            )),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              backgroundColor: lightIconColor,
+              heroTag: "btn2",
+              child: const Icon(Icons.location_searching, color: Colors.black),
+              onPressed: () {
+                getCurrentLocation();
+                _mapController.move(currentLatLng, 18);
+              },
+            ),
+            const SizedBox(height: 5),
+            // Zoom In
+            FloatingActionButton(
+              backgroundColor: lightIconColor,
+              heroTag: "btn2",
+              child: const Icon(Icons.zoom_in, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  zoom = zoom + 1;
+                });
+                _mapController.move(_mapController.center, zoom);
+              },
+            ),
+            const SizedBox(height: 5),
 
-        // Zoom Out
-        FloatingActionButton(
-          backgroundColor: lightIconColor,
-          heroTag: "btn3",
-          child: const Icon(Icons.zoom_out, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              zoom = zoom - 1;
-            });
-            _mapController.move(_mapController.center, zoom);
-          },
-        ),
-        const SizedBox(height: 5),
+            // Zoom Out
+            FloatingActionButton(
+              backgroundColor: lightIconColor,
+              heroTag: "btn3",
+              child: const Icon(Icons.zoom_out, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  zoom = zoom - 1;
+                });
+                _mapController.move(_mapController.center, zoom);
+              },
+            ),
+            const SizedBox(height: 5),
 
-        // Change Style
-        FloatingActionButton(
-          backgroundColor: lightIconColor,
-          heroTag: "btn4",
-          child: const Icon(Icons.satellite, color: Colors.black),
-          onPressed: () {
-            setState(() {
-              sattliteChecked = !sattliteChecked;
-            });
-          },
-        ),
-        const SizedBox(height: 100),
+            // Change Style
+            FloatingActionButton(
+              backgroundColor: lightIconColor,
+              heroTag: "btn4",
+              child: const Icon(Icons.satellite, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  sattliteChecked = !sattliteChecked;
+                });
+              },
+            ),
+            const SizedBox(height: 100),
+          ],
+        )
       ],
     );
   }
@@ -220,16 +368,17 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) =>
-        new Container(
+        builder: (ctx) => new Container(
             child: Container(
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: backgroundColor,),
-              child: Text('saam ezoji',
-                style: TextStyle(color: Colors.blue, fontSize: 27),),
-            )),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: backgroundColor,
+          ),
+          child: Text(
+            'saam ezoji',
+            style: TextStyle(color: Colors.blue, fontSize: 27),
+          ),
+        )),
       ),
     ];
 
@@ -239,17 +388,17 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         body: FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-            center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-            zoom: 5.0,
-            interactiveFlags: interActiveFlags,
-          ),
+              center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+              zoom: 5.0,
+              interactiveFlags: interActiveFlags,
+              enableMultiFingerGestureRace: true),
           layers: [
             TileLayerOptions(
               reset: resetController.stream,
               urlTemplate: sattliteChecked ? sattlite : getMapThem(),
               subdomains: ['a', 'b', 'c'],
             ),
-            MarkerLayerOptions(markers: markers)
+            // MarkerLayerOptions(markers: markers)
           ],
         ),
         floatingActionButton: _floatingBottons(),
@@ -263,6 +412,18 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         )),
       );
     }
+  }
+
+  Widget _vehicleIcon(BuildContext context, Device device) {
+    return Container(
+      width: 50,
+      height: 50,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),border: Border.all(color: Colors.blue,width: 1),color: Colors.white),
+      child: SvgPicture.asset(
+        "assets/minimotor.svg",
+      ),
+    );
   }
 
   @override

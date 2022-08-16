@@ -67,9 +67,7 @@ void showLangDlgBox(BuildContext context) {
       });
 }
 
-void showTimeZoneDlgBox(
-  BuildContext context,
-) {
+void showTimeZoneDlgBox(BuildContext context) {
   List<String> list = ["USA", "IRAN", "UAE", "UK"];
   showDialog<void>(
       context: context,
