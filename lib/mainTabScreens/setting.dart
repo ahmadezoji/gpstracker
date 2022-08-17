@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class Setting extends StatefulWidget {
   @override
   _SettingState createState() => _SettingState();
@@ -118,8 +119,6 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     try {
       final prefs = await SharedPreferences.getInstance();
       String? phone = prefs.getString('phone');
-      print(phone);
-      // String phone = '09195835135';
 
       if (phone == null) return;
       var request = http.MultipartRequest(
@@ -130,7 +129,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
       http.StreamedResponse response = await request.send();
 
-      print(response.statusCode);
+      print('sssssssssssssssssssss ${response.statusCode}');
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);

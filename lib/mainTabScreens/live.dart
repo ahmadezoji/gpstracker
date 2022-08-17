@@ -87,7 +87,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     super.initState();
     _mapController = MapController();
     getCurrentDevice();
-    // _determinePosition();
+    startTimer();
+  }
+
+  void startTimer() {
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       currentPos = (await fetch())!;
       if (currentPos == null) return;
@@ -103,9 +106,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         bZoom = true;
       }
     });
-    // print('initState Live');
   }
-
 
   void getCurrentDevice() async {
     Map<String, dynamic> map = await loadJson('device');
@@ -146,11 +147,17 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       date = currentPos.getDateTime();
       currentLatLng = LatLng(currentPos.lat, currentPos.lon);
     });
-    print(currentLatLng);
     if (!bZoom) {
       _mapController.move(currentLatLng, 11);
       bZoom = true;
     }
+  }
+
+  void _onSelectedDevice(Device device) {
+    setState(() {
+      currentDevice = device;
+    });
+    getCurrentLocation();
   }
 
   @override
@@ -164,10 +171,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         body: buildMap(themeNotifier),
         extendBody: true,
         bottomNavigationBar: MyBottomDrawer(
-          speed: speed,
-          heading: heading,
-          mile: mile,
-          date: date,
+          selectedDevice: _onSelectedDevice,
         ),
       ));
     });
@@ -190,8 +194,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Container(
-
-                      decoration: BoxDecoration( color: Colors.grey.withOpacity(0.1),borderRadius: BorderRadius.circular(14)),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(14)),
                       child: Column(
                         children: [
                           Container(
@@ -210,7 +215,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     fontSize: 12, fontWeight: FontWeight.bold)),
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 10,left: 5,right: 5),
+                            padding:
+                                EdgeInsets.only(top: 10, left: 5, right: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -370,17 +376,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) => new Container(
-            child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: backgroundColor,
-          ),
-          child: Text(
-            'saam ezoji',
-            style: TextStyle(color: Colors.blue, fontSize: 27),
-          ),
-        )),
+        builder: (ctx) => currentDevice?.type == "car"
+            ? Icon(
+                Icons.car_crash,
+                color: Colors.blue,
+              )
+            : Icon(
+                Icons.motorcycle,
+                color: Colors.blue,
+              ),
       ),
     ];
 
@@ -400,7 +404,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               urlTemplate: sattliteChecked ? sattlite : getMapThem(),
               subdomains: ['a', 'b', 'c'],
             ),
-            // MarkerLayerOptions(markers: markers)
+            MarkerLayerOptions(markers: markers)
           ],
         ),
         floatingActionButton: _floatingBottons(),
@@ -417,13 +421,41 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {
+    String getTypeAsset(String type) {
+      switch (type) {
+        case "car":
+          {
+            return "assets/minicar.svg";
+          }
+          break;
+
+        case "motor":
+          {
+            return "assets/minimotor.svg";
+          }
+          break;
+        case "truck":
+          {
+            return "assets/minitruck.svg";
+          }
+          break;
+        default:
+          {
+            return "assets/minicar.svg";
+          }
+          break;
+      }
+    }
     return Container(
       width: 50,
       height: 50,
       alignment: Alignment.center,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),border: Border.all(color: Colors.blue,width: 1),color: Colors.white),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: Colors.blue, width: 1),
+          color: Colors.white),
       child: SvgPicture.asset(
-        "assets/minimotor.svg",
+        getTypeAsset(device.type),
       ),
     );
   }

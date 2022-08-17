@@ -14,9 +14,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +54,7 @@ class _HistoryState extends State<History>
   String dark =
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
   String sattlite =
-      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp
-      .ACCESS_TOKEN}';
+      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
 
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
@@ -123,26 +124,27 @@ class _HistoryState extends State<History>
     }
   }
 
+  void _onSelectedDevice(Device device) {
+    currentDevice = device;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          return Scaffold(
-            key: _key,
-            drawerEnableOpenDragGesture: false,
-            body: buildMap(),
-            extendBody: true,
-            bottomNavigationBar: MyBottomDrawer(
-                speed: speed, heading: heading, mile: mile, date: date),
-          );
-        });
+      return Scaffold(
+        key: _key,
+        drawerEnableOpenDragGesture: false,
+        body: buildMap(),
+        extendBody: true,
+        bottomNavigationBar: MyBottomDrawer(selectedDevice: _onSelectedDevice),
+      );
+    });
   }
 
   String getMapThem() {
-    return Theme
-        .of(context)
-        .brightness == Brightness.dark ? dark : light;
+    return Theme.of(context).brightness == Brightness.dark ? dark : light;
   }
 
   Scaffold buildMap() {
@@ -152,75 +154,71 @@ class _HistoryState extends State<History>
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) =>
-        new Container(
+        builder: (ctx) => new Container(
             child: Container(
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: backgroundColor,),
-              child: Text('saam ezoji',
-                style: TextStyle(color: Colors.blue, fontSize: 27),),
-            )),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: backgroundColor,
+          ),
+          child: Text(
+            'saam ezoji',
+            style: TextStyle(color: Colors.blue, fontSize: 27),
+          ),
+        )),
       ),
     ];
 
     return Scaffold(
-        endDrawer: Drawer(
-            backgroundColor: Colors.white,
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    //"${selectedDate.toJalaliDateTime()}".split(' ')[0],
-                    "$selectedDate".split(' ')[0],
+      endDrawer: Drawer(
+          backgroundColor: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  //"${selectedDate.toJalaliDateTime()}".split(' ')[0],
+                  "$selectedDate".split(' ')[0],
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.normal),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text(
+                    'Select date',
                     style: TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.normal),
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _selectDate(context),
-                    child: Text(
-                      'Select date',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              ),
-            )),
-        body: FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-            zoom: zoomLevel,
-            interactiveFlags: interActiveFlags,
-          ),
-          layers: [
-            MarkerLayerOptions(
-                markers: markers
-            ),
-            TileLayerOptions(
-              reset: resetController.stream,
-              urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-              subdomains: ['a', 'b', 'c'],
-            ),
-            PolylineLayerOptions(
-              polylines: [
-                Polyline(
-                    points: dirLatLons,
-                    strokeWidth: 4.0,
-                    color: Colors.purple),
+                )
               ],
-
             ),
-            // new MarkerLayerOptions(markers: markers),
-          ],
+          )),
+      body: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+          zoom: zoomLevel,
+          interactiveFlags: interActiveFlags,
         ),
-        floatingActionButton: _floatingBottons(),);
+        layers: [
+          MarkerLayerOptions(markers: markers),
+          TileLayerOptions(
+            reset: resetController.stream,
+            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+            subdomains: ['a', 'b', 'c'],
+          ),
+          PolylineLayerOptions(
+            polylines: [
+              Polyline(
+                  points: dirLatLons, strokeWidth: 4.0, color: Colors.purple),
+            ],
+          ),
+          // new MarkerLayerOptions(markers: markers),
+        ],
+      ),
+      floatingActionButton: _floatingBottons(),
+    );
   }
 
   void zoomout() {
@@ -310,7 +308,7 @@ class _HistoryState extends State<History>
       });
 
       Timestamp myTimeStamp =
-      Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
       currentTimeStamp = myTimeStamp;
       print(myTimeStamp.seconds.toString());
       fetch(myTimeStamp.seconds.toString());

@@ -83,7 +83,7 @@ void showTimeZoneDlgBox(BuildContext context) {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   child: DropdownButton<String>(
                     value: "USA",
-                    icon: const Icon(Icons.offline_bolt),
+                    icon: const Icon(Icons.arrow_circle_down_sharp),
                     elevation: 16,
                     style: const TextStyle(color: Colors.deepPurple),
                     underline: Container(

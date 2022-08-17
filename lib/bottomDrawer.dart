@@ -10,16 +10,9 @@ import 'models/device.dart';
 class MyBottomDrawer extends StatefulWidget {
   const MyBottomDrawer(
       {Key? key,
-      required this.speed,
-      required this.mile,
-      required this.heading,
-      required this.date})
+      required this.selectedDevice})
       : super(key: key);
-  final double speed;
-  final double mile;
-  final double heading;
-  final String date;
-
+  final Function selectedDevice;
   @override
   _MyBottomDrawerState createState() => _MyBottomDrawerState();
 }
@@ -31,12 +24,22 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
 
+  List<Device> devices = [
+    new Device(
+        serial: "027028356897", title: "موتور", simPhone: "simPhone", type: "motor"),
+    new Device(
+        serial: "027028362416", title: "ماشین", simPhone: "simPhone", type: "car"),
+    new Device(
+        serial: "027028356897", title: "خاور", simPhone: "simPhone", type: "truck")
+  ];
+
   @override
   void initState() {
     super.initState();
-    print('init live');
   }
+  void onSelectedDevice(Device device){
 
+  }
   @override
   Widget build(BuildContext context) {
     return BottomDrawer(
@@ -123,36 +126,63 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         crossAxisCount: (_screenSize / 60).round(),
         crossAxisSpacing: 4,
         // Generate 100 widgets that display their index in the List.
-        children: List.generate(5, (index) {
-          return _vehicleIcon(
-              context,
-              new Device(
-                  serial: "9999",
-                  title: "title",
-                  simPhone: "simPhone",
-                  type: "type"));
+        children: List.generate(3, (index) {
+          return _vehicleIcon(context, devices[index]);
         }),
       ),
     );
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {
+    String getTypeAsset(String type) {
+      switch (type) {
+        case "car":
+          {
+            return "assets/minicar.svg";
+          }
+          break;
+
+        case "motor":
+          {
+            return "assets/minimotor.svg";
+          }
+          break;
+        case "truck":
+          {
+            return "assets/minitruck.svg";
+          }
+          break;
+        default:
+          {
+            return "assets/minicar.svg";
+          }
+          break;
+      }
+    }
     return Container(
-      width: 50,
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.white),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            "assets/minimotor.svg",
-          ),
-          Text(device.title,style: TextStyle(color: Colors.black,),)
-        ],
-      ),
-    );
+        width: 50,
+        height: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5), color: Colors.white),
+        child: GestureDetector(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  getTypeAsset(device.type),
+                ),
+                Text(
+                  device.title,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                )
+              ],
+            ),
+            onTap: () {
+              widget.selectedDevice(device);
+            }));
   }
 
   @override
