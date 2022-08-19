@@ -283,17 +283,6 @@ class _HistoryState extends State<History>
       ],
     );
   }
-
-  // void showDateDialog(BuildContext context) async {
-  //   LinearDatePicker(
-  //     dateChangeListener: (String selectedDate) {
-  //       print(selectedDate);
-  //     },
-  //     showMonthName: true,
-  //     isJalaali: true,
-  //   );
-  // }
-
   //change Flat to text button
   _selectDate(BuildContext context) async {
     Jalali? picked = await showPersianDatePicker(
@@ -306,6 +295,7 @@ class _HistoryState extends State<History>
       setState(() {
         selectedDate = picked.toJalaliDateTime();
       });
+      print(selectedDate);
 
       Timestamp myTimeStamp =
           Timestamp.fromDate(picked.toDateTime()); //To TimeStamp

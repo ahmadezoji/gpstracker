@@ -57,7 +57,7 @@ class LeftDrawerState extends State<LeftDrawer>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.account_circle, size: 32),
-                Text("   Profile".tr),
+                Text("profile".tr),
               ],
             ),
             onTap: () {Navigator.push(
@@ -68,7 +68,7 @@ class LeftDrawerState extends State<LeftDrawer>
           ListTile(
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Icon(Icons.settings, size: 32), Text("   Setting".tr)],
+              children: [Icon(Icons.settings, size: 32), Text("Settings".tr)],
             ),
             onTap: () {
               Navigator.push(
@@ -82,7 +82,7 @@ class LeftDrawerState extends State<LeftDrawer>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.add_circle, size: 32),
-                Text("   Add new device".tr)
+                Text("add-new-device".tr)
               ],
             ),
             onTap: () {

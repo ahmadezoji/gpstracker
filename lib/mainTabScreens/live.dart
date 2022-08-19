@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
@@ -15,6 +16,7 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +59,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late LatLng currentLatLng = new LatLng(41.025819, 29.230415);
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
+  static const double CHANGE_ZOOM = 12;
 
   bool theme = false;
   late ThemePreferences _preferences;
@@ -147,10 +150,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       date = currentPos.getDateTime();
       currentLatLng = LatLng(currentPos.lat, currentPos.lon);
     });
-    if (!bZoom) {
-      _mapController.move(currentLatLng, 11);
-      bZoom = true;
-    }
+    _mapController.move(currentLatLng, CHANGE_ZOOM);
+    // if (!bZoom) {
+    //   _mapController.move(currentLatLng, 11);
+    //   bZoom = true;
+    // }
   }
 
   void _onSelectedDevice(Device device) {
@@ -158,6 +162,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       currentDevice = device;
     });
     getCurrentLocation();
+    // _mapController.move(currentLatLng, CHANGE_ZOOM);
   }
 
   @override
@@ -178,15 +183,18 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Row _floatingBottons() {
+    // Locale myLocale = Localizations.localeOf(context);
+    print(Localizations.localeOf(context).toString());
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 50, left: 30),
+            padding: EdgeInsets.only(top: 50, left: 30,right: 30),
             //blure box
             child: Container(
-              height: 150, //_screenWidth * 0.45,
+              height: 180, //_screenWidth * 0.45,
               width: 250, //_screenWidth * 0.45,
 
               child: ClipRRect(
@@ -210,9 +218,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                 ),
                               ),
                             ),
-                            child: Text('YOUR CURRENT LOCATION',
+                            child: Text("currentBlurBoxTitle".tr,
                                 style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold)),
+                                    fontSize: 12, fontWeight: FontWeight.bold,fontFamily: 'IranSans')),
                           ),
                           Container(
                             padding:
@@ -226,10 +234,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'Speed : ',
+                                          "speed".tr + ' : ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('$speed km/h',
                                             style: TextStyle(fontSize: 12))
@@ -238,10 +246,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'Interval : ',
+                                          "interval".tr + ' : ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('1000 ms',
                                             style: TextStyle(fontSize: 12))
@@ -250,10 +258,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'mile : ',
+                                          "mile".tr + ': ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('$mile',
                                             style: TextStyle(fontSize: 12))
@@ -262,10 +270,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'date : ',
+                                          "date".tr + ': ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('$date',
                                             style: TextStyle(fontSize: 12))
@@ -274,10 +282,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'lat : ',
+                                          "lat".tr + ': ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('${currentPos.lat}',
                                             style: TextStyle(fontSize: 12))
@@ -286,10 +294,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
-                                          'lon : ',
+                                          "lon".tr + ': ',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
                                         ),
                                         Text('${currentPos.lon}',
                                             style: TextStyle(fontSize: 12))
@@ -315,7 +323,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               child: const Icon(Icons.location_searching, color: Colors.black),
               onPressed: () {
                 getCurrentLocation();
-                _mapController.move(currentLatLng, 18);
+                // _mapController.move(currentLatLng, 18);
               },
             ),
             const SizedBox(height: 5),
@@ -376,15 +384,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) => currentDevice?.type == "car"
-            ? Icon(
-                Icons.car_crash,
-                color: Colors.blue,
-              )
-            : Icon(
-                Icons.motorcycle,
-                color: Colors.blue,
-              ),
+        builder: (ctx) => Icon(
+          Icons.my_location,
+          color: Colors.blue,
+        ),
       ),
     ];
 
@@ -392,6 +395,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       return Scaffold(
         drawerEnableOpenDragGesture: true,
         body: FlutterMap(
+          children: [
+            Center(
+              child: Container(
+                width: 150,
+                height: 150,
+                color: Colors.yellow,
+              )
+            )
+          ],
           mapController: _mapController,
           options: MapOptions(
               center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
@@ -446,6 +458,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           break;
       }
     }
+
     return Container(
       width: 50,
       height: 50,

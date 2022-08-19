@@ -1,6 +1,8 @@
+import 'package:cargpstracker/LacaleString.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -17,10 +19,12 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeModel(),
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
-            return MaterialApp(
-              title: 'Flutter Demo',
-              theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+            return GetMaterialApp(
               debugShowCheckedModeBanner: false,
+              translations: LocaleString(),
+              locale: Locale('en','US'),
+              title: 'GPS+',
+              theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
               home: SpalshScreen(),
             );
           }),

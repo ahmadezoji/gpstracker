@@ -7,11 +7,11 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class Setting extends StatefulWidget {
   @override
@@ -101,7 +101,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
-    )..addListener(() {});
+    )
+      ..addListener(() {});
     controller.repeat(reverse: true);
 
     super.initState();
@@ -129,7 +130,6 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
       http.StreamedResponse response = await request.send();
 
-      print('sssssssssssssssssssss ${response.statusCode}');
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
@@ -207,35 +207,40 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   Future<void> applyChanges() async {
     // sendSms();
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
-    request.fields.addAll({
-      'serial': serial,
-      'timezone': timezone,
-      'language': language,
-      'speed': speedAlarm,
-      'notification': notifyType,
-      'apnName': 'test',
-      'apnUser': 'user',
-      'apnPass': '123',
-      'number': adminNum,
-      'fence': '',
-      'interval': interval,
-      'static': static
-    });
+    try{
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
+      request.fields.addAll({
+        'serial': serial,
+        'timezone': timezone,
+        'language': language,
+        'speed': speedAlarm,
+        'notification': notifyType,
+        'apnName': 'test',
+        'apnUser': 'user',
+        'apnPass': '123',
+        'number': adminNum,
+        'fence': '',
+        'interval': interval,
+        'static': static
+      });
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      final rec =
-          await saveJson('device', Device.toMap(getCurrentDevice(serial)!));
-      print('write shared $rec');
+      if (response.statusCode == 200) {
+        final rec =
+        await saveJson('device', Device.toMap(getCurrentDevice(serial)!));
+        print('write shared $rec');
 
-      Device device = (await loadJson('device')) as Device;
-
-      print('read shared ${device.toString()}');
-    } else {
-      print(response.reasonPhrase);
+        // Device device = (await loadJson('device')) as Device;
+        //
+        // print('read shared ${device.toString()}');
+        Fluttertoast.showToast(msg: "save-change-success".tr);
+      } else {
+        print(response.reasonPhrase);
+      }
+    } on Exception {
+      print('مشکل');
     }
   }
 
@@ -244,100 +249,107 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      // if (loading == false) {
-      //   return Center(child: Center(child: Text('Please wait its loading...')));
-      // } else {
-      return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              statusBarColor: statusColor,
+          // if (loading == false) {
+          //   return Center(child: Center(child: Text('Please wait its loading...')));
+          // } else {
+          return Scaffold(
+              appBar: AppBar(
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                  // Status bar color
+                  statusBarColor: statusColor,
 
-              // Status bar brightness (optional)
-              statusBarIconBrightness:
+                  // Status bar brightness (optional)
+                  statusBarIconBrightness:
                   Brightness.dark, // For Android (dark icons)
-              statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
-            title: Text("settings".tr, style: TextStyle(color: Colors.black)),
-            backgroundColor: NabColor, // status bar color
-          ),
-          body: loading == true
-              ? Container(
-                  color: Colors.grey[200],
-                  padding: const EdgeInsets.all(10),
-                  child: ListView(
-                    children: [
-                      Column(
-                        children: [
-                          dropdown(),
-                          buildDeviceOptions(context, 'Interval', interval,
-                              onChangeTextInterval),
-                          buildDeviceOptions(
-                              context, 'Statics', static, onChangeTextStatic),
-                          buildDeviceOptions(context, 'Alarm number', adminNum,
-                              onChangeTextAdminNum),
-                          buildTableOptions(
-                              context, 'Time Zone', 'istanbul', 'tehran'),
-                          buildTableOptions(
-                              context, 'Language', 'english', 'persian'),
-                          buildSwitchOptions(
-                              'Fence Config', valNotify, onChangeFunction),
-                          buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
-                              onChangeTextSpeedAlarm),
-                        ],
+                  statusBarBrightness: Brightness.light, // For iOS (dark icons)
+                ),
+                title: Text(
+                    "settings".tr, style: TextStyle(color: Colors.black)),
+                backgroundColor: NabColor, // status bar color
+              ),
+              body: loading == true
+                  ? Container(
+                color: Colors.grey[200],
+                padding: const EdgeInsets.all(10),
+                child: ListView(
+                  children: [
+                    Column(
+                      children: [
+                        dropdown(),
+                        buildDeviceOptions(context, 'Interval', interval,
+                            onChangeTextInterval),
+                        buildDeviceOptions(
+                            context, 'Statics', static, onChangeTextStatic),
+                        buildDeviceOptions(context, 'Alarm number', adminNum,
+                            onChangeTextAdminNum),
+                        buildTableOptions(
+                            context, 'Time Zone', 'istanbul', 'tehran'),
+                        buildTableOptions(
+                            context, 'Language', 'english', 'persian'),
+                        buildSwitchOptions(
+                            'Fence Config', valNotify, onChangeFunction),
+                        buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
+                            onChangeTextSpeedAlarm),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "change_lang".tr,
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      var locale = Locale('en', 'US');
+                                      Get.updateLocale(locale);
+                                    },
+                                    child: Text('English')),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      var locale = Locale('fa', 'IR');
+                                      Get.updateLocale(locale);
+                                    },
+                                    child: Text('فارسی')),
+                              ],
+                            ),
+                        )
+
+                      ],
+                    ),
+
+                    SizedBox(height: 20),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "change_lang".tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                var locale = Locale('en', 'US');
-                                Get.updateLocale(locale);
-                              },
-                              child: Text('English')),
-                          ElevatedButton(
-                              onPressed: () {
-                                var locale = Locale('fa', 'IR');
-                                Get.updateLocale(locale);
-                              },
-                              child: Text('فارسی')),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue,
+                      child: TextButton(
+                        child: Text(
+                          'Apply'.tr,
+                          style:
+                          TextStyle(fontSize: 20.0, color: Colors.white),
                         ),
-                        child: TextButton(
-                          child: Text(
-                            'Apply'.tr,
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            applyChanges();
-                          },
-                        ),
+                        onPressed: () {
+                          applyChanges();
+                        },
                       ),
-                    ],
-                  ),
-                )
-              : Center(
+                    ),
+                  ],
+                ),
+              )
+                  : Center(
                   child: Center(child: Text('Please wait its loading...'))));
-      // }
-    });
+          // }
+        });
   }
 
-  Padding buildSwitchOptions(
-      String title, bool value, Function onChangedMethod) {
+  Padding buildSwitchOptions(String title, bool value,
+      Function onChangedMethod) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Row(
@@ -403,8 +415,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
         )));
   }
 
-  GestureDetector buildDeviceOptions(
-      BuildContext context, String title, String hint, Function onChagne) {
+  GestureDetector buildDeviceOptions(BuildContext context, String title,
+      String hint, Function onChagne) {
     return GestureDetector(
       onTap: () {},
       child: Padding(
@@ -437,8 +449,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     );
   }
 
-  GestureDetector buildTableOptions(
-      BuildContext context, String title, String option1, String option2) {
+  GestureDetector buildTableOptions(BuildContext context, String title,
+      String option1, String option2) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -486,9 +498,9 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   Widget trailingWidget(int index) {
     return (languageIndex == index)
         ? Icon(
-            Icons.check,
-            color: Colors.blue,
-          )
+      Icons.check,
+      color: Colors.blue,
+    )
         : Icon(null);
   }
 

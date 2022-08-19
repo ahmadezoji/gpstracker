@@ -2,46 +2,42 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+enum languages { english, farsi }
+
 void showLangDlgBox(BuildContext context) {
-  String? lang = "En";
   showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        int? selectedRadio = 0;
         return AlertDialog(
-          title: Text("Language",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: Text('فارسی ',
-                    style: Theme.of(context).textTheme.subtitle1),
-                leading: Radio(
-                  value: 0,
-                  groupValue: "English",
-                  activeColor: Color(0xFF6200EE),
-                  onChanged: (Object? value) {
-                    lang = value as String?;
-                    var locale = Locale('fa', 'IR');
-                    Get.updateLocale(locale);
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text('English ',
-                    style: Theme.of(context).textTheme.subtitle1),
-                leading: Radio(
-                  value: 1,
-                  groupValue: "English",
-                  activeColor: Color(0xFF6200EE),
-                  onChanged: (Object? value) {
-                    lang = value as String?;
-                    var locale = Locale('en', 'US');
-                    Get.updateLocale(locale);
-                  },
-                ),
-              )
-            ],
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    title: const Text('english'),
+                    leading: Radio<int>(
+                      value: 0,
+                      groupValue: selectedRadio,
+                      onChanged: (int? value) {
+                        setState(() => selectedRadio = value);
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text("فارسی"),
+                    leading: Radio<int>(
+                      value: 1,
+                      groupValue: selectedRadio,
+                      onChanged: (int? value) {
+                        setState(() => selectedRadio = value);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
           actions: [
             Container(
@@ -58,6 +54,8 @@ void showLangDlgBox(BuildContext context) {
                 // color: Colors.blueAccent,
                 // textColor: Colors.white,
                 onPressed: () {
+                  var locale = selectedRadio == 0 ?  Locale('en', 'US') : Locale('fa', 'IR') ;
+                  Get.updateLocale(locale);
                   Navigator.of(context).pop();
                 },
               ),
@@ -66,6 +64,66 @@ void showLangDlgBox(BuildContext context) {
         );
       });
 }
+
+// void showLangDlgBox(BuildContext context) {
+//   String? lang = "En";
+//   showDialog<void>(
+//       context: context,
+//       builder: (BuildContext context) {
+//         languages? currentLang = languages.english;
+//         return AlertDialog(
+//           title: Text("Language",
+//               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+//           content: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               ListTile(
+//                 title: const Text('english'),
+//                 leading: Radio<languages>(
+//                   value: languages.english,
+//                   groupValue: currentLang,
+//                   onChanged: (languages? value) {
+//                     // setState(() => currentLang = value);
+//                   },
+//                 ),
+//               ),
+//               ListTile(
+//                 title: const Text("فارسی"),
+//                 leading: Radio<languages>(
+//                   value: languages.farsi,
+//                   groupValue: currentLang,
+//                   onChanged: (languages? value) {
+//                     currentLang = value;
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//           actions: [
+//             Container(
+//               width: 100,
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(10),
+//                 color: Colors.blue,
+//               ),
+//               child: TextButton(
+//                 child: Text(
+//                   'Apply'.tr,
+//                   style: TextStyle(fontSize: 16.0, color: Colors.white),
+//                 ),
+//                 // color: Colors.blueAccent,
+//                 // textColor: Colors.white,
+//                 onPressed: () {
+//                   var locale = Locale('en', 'US');
+//                   Get.updateLocale(locale);
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//             ),
+//           ],
+//         );
+//       });
+// }
 
 void showTimeZoneDlgBox(BuildContext context) {
   List<String> list = ["USA", "IRAN", "UAE", "UK"];
