@@ -65,66 +65,6 @@ void showLangDlgBox(BuildContext context) {
       });
 }
 
-// void showLangDlgBox(BuildContext context) {
-//   String? lang = "En";
-//   showDialog<void>(
-//       context: context,
-//       builder: (BuildContext context) {
-//         languages? currentLang = languages.english;
-//         return AlertDialog(
-//           title: Text("Language",
-//               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-//           content: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               ListTile(
-//                 title: const Text('english'),
-//                 leading: Radio<languages>(
-//                   value: languages.english,
-//                   groupValue: currentLang,
-//                   onChanged: (languages? value) {
-//                     // setState(() => currentLang = value);
-//                   },
-//                 ),
-//               ),
-//               ListTile(
-//                 title: const Text("فارسی"),
-//                 leading: Radio<languages>(
-//                   value: languages.farsi,
-//                   groupValue: currentLang,
-//                   onChanged: (languages? value) {
-//                     currentLang = value;
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//           actions: [
-//             Container(
-//               width: 100,
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(10),
-//                 color: Colors.blue,
-//               ),
-//               child: TextButton(
-//                 child: Text(
-//                   'Apply'.tr,
-//                   style: TextStyle(fontSize: 16.0, color: Colors.white),
-//                 ),
-//                 // color: Colors.blueAccent,
-//                 // textColor: Colors.white,
-//                 onPressed: () {
-//                   var locale = Locale('en', 'US');
-//                   Get.updateLocale(locale);
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ),
-//           ],
-//         );
-//       });
-// }
-
 void showTimeZoneDlgBox(BuildContext context) {
   List<String> list = ["USA", "IRAN", "UAE", "UK"];
   showDialog<void>(

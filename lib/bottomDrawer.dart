@@ -19,6 +19,7 @@ class MyBottomDrawer extends StatefulWidget {
 
 class _MyBottomDrawerState extends State<MyBottomDrawer>
     with AutomaticKeepAliveClientMixin<MyBottomDrawer> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
   double _headerHeight = 80.0;
   double _bodyHeight = 250.0;
   BottomDrawerController _controller = BottomDrawerController();
@@ -43,6 +44,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   @override
   Widget build(BuildContext context) {
     return BottomDrawer(
+      key: _key,
       header: _buildBottomDrawerHead(context),
       body: _buildBottomDrawerBody(context),
       headerHeight: _headerHeight,
@@ -63,11 +65,13 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   Widget _buildBottomDrawerHead(BuildContext context) {
     late Color fontColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : Colors.blue;
+        : Colors.black;
 
     late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
+        ? backNavBarDark
         : backgroundColor;
+
+
     return new Stack(
       children: <Widget>[
         // The containers in the background
@@ -81,28 +85,30 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
             new Container(
               alignment: Alignment.center,
               height: _headerHeight * 0.7,
-              color: backgroundColor,
+              color: backColor,
+
               child: Text(
                 "See All Vehicles",
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(color: fontColor, fontSize: 14),
               ),
             )
           ],
         ),
         new Container(
           alignment: Alignment.topCenter,
-          padding: new EdgeInsets.only(top: 3, right: 20.0, left: 20.0),
+          // padding: new EdgeInsets.only(top: 2),
           child: new Container(
               height: 50.0,
-              width: MediaQuery.of(context).size.width,
+              // width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
-              child: new Stack(children: <Widget>[
-                new Image(image: AssetImage("assets/arrow-bg.png")),
-                new Positioned(
-                    child: new Image(image: AssetImage("assets/arrow.png")),
-                    left: 43,
-                    top: 10)
-              ])),
+              child:  new Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: backColor ,),
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.only(top: 5),
+                child:  new Icon(Scaffold.of(context).isDrawerOpen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+              )),
         )
       ],
     );
@@ -114,7 +120,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         ? Colors.white
         : Colors.black;
     late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
+        ? backNavBarDark
         : backgroundColor;
     return Container(
       width: double.infinity,
@@ -123,8 +129,9 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
       child: GridView.count(
         // Create a grid with 2 columns. If you change the scrollDirection to
         // horizontal, this produces 2 rows.
-        crossAxisCount: (_screenSize / 60).round(),
-        crossAxisSpacing: 4,
+        padding: EdgeInsets.all(10),
+        crossAxisCount: (_screenSize / 80).round(),
+        crossAxisSpacing: 10,
         // Generate 100 widgets that display their index in the List.
         children: List.generate(3, (index) {
           return _vehicleIcon(context, devices[index]);
@@ -171,6 +178,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
               children: [
                 SvgPicture.asset(
                   getTypeAsset(device.type),
+                  color: Colors.black,
                 ),
                 Text(
                   device.title,

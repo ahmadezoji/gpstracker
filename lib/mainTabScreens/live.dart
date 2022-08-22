@@ -19,6 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
 class Live extends StatefulWidget {
@@ -48,7 +49,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late double zoom = 11.0;
 
   Point currentPos = new Point(
-      lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
+      lat: 0.0,
+      lon: 0.0,
+      dateTime: '',
+      speed: 0.0,
+      mileage: 0.0,
+      heading: 0.0);
   Point defaultPos = Point(
       lat: 41.025819,
       lon: 29.230415,
@@ -68,7 +74,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   String dark =
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
   String sattlite =
-      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
+      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp
+      .ACCESS_TOKEN}';
 
   Device? currentDevice;
 
@@ -83,7 +90,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return await _preferences.getTheme();
   }
 
-  late double _screenWidth = MediaQuery.of(context).size.width;
+  late double _screenWidth = MediaQuery
+      .of(context)
+      .size
+      .width;
 
   @override
   void initState() {
@@ -169,33 +179,53 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      return GestureDetector(
-          child: Scaffold(
-        key: _key,
-        drawerEnableOpenDragGesture: true,
-        body: buildMap(themeNotifier),
-        extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(
-          selectedDevice: _onSelectedDevice,
-        ),
-      ));
-    });
+          return GestureDetector(
+              child: Scaffold(
+                key: _key,
+                drawerEnableOpenDragGesture: true,
+                body: buildMap(themeNotifier),
+                extendBody: true,
+                bottomNavigationBar: MyBottomDrawer(
+                  selectedDevice: _onSelectedDevice,
+                ),
+              ));
+        });
   }
 
   Row _floatingBottons() {
+    const textStyle = TextStyle(
+        fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
+    Color btnColor = Theme.of(context).brightness == Brightness.dark ?  Colors.blue : lightIconColor;
     // Locale myLocale = Localizations.localeOf(context);
-    print(Localizations.localeOf(context).toString());
+    // print(Localizations.localeOf(context).toString());
+    final List<Locale> systemLocales = window.locales;
+    // DateTime dt = DateTime.parse(date);
+    // print(dt.toLocal());
 
+    late double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    late double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 50, left: 30,right: 30),
+            padding: EdgeInsets.only(top: 50,
+                left: Directionality.of(context) == TextDirection.ltr ? 20 : 0,
+                right: Directionality.of(context) == TextDirection.rtl
+                    ? 20
+                    : 0),
+            // padding: EdgeInsets.all(0.1*screenWidth),
+
             //blure box
             child: Container(
               height: 180, //_screenWidth * 0.45,
-              width: 250, //_screenWidth * 0.45,
+              width: 270, //_screenWidth * 0.45,
 
               child: ClipRRect(
                 // make sure we apply clip it properly
@@ -219,14 +249,14 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                               ),
                             ),
                             child: Text("currentBlurBoxTitle".tr,
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold,fontFamily: 'IranSans')),
+                                style: textStyle),
                           ),
                           Container(
                             padding:
-                                EdgeInsets.only(top: 10, left: 5, right: 5),
+                            EdgeInsets.only(top: 10, left: 5, right: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,9 +265,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "speed".tr + ' : ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
                                         Text('$speed km/h',
                                             style: TextStyle(fontSize: 12))
@@ -247,9 +275,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "interval".tr + ' : ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
                                         Text('1000 ms',
                                             style: TextStyle(fontSize: 12))
@@ -259,9 +285,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "mile".tr + ': ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
                                         Text('$mile',
                                             style: TextStyle(fontSize: 12))
@@ -271,11 +295,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "date".tr + ': ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
-                                        Text('$date',
+                                        //dt.toJalali().toString()
+                                        Text(date,
                                             style: TextStyle(fontSize: 12))
                                       ],
                                     ),
@@ -283,11 +306,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "lat".tr + ': ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
-                                        Text('${currentPos.lat}',
+                                        Text(
+                                            '${currentPos.lat.toStringAsFixed(
+                                                5)}',
                                             style: TextStyle(fontSize: 12))
                                       ],
                                     ),
@@ -295,11 +318,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       children: [
                                         Text(
                                           "lon".tr + ': ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,fontFamily: 'IranSans'),
+                                          style: textStyle,
                                         ),
-                                        Text('${currentPos.lon}',
+                                        Text(
+                                            '${currentPos.lon.toStringAsFixed(
+                                                5)}',
                                             style: TextStyle(fontSize: 12))
                                       ],
                                     ),
@@ -318,7 +341,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              backgroundColor: lightIconColor,
+              backgroundColor: btnColor,
               heroTag: "btn2",
               child: const Icon(Icons.location_searching, color: Colors.black),
               onPressed: () {
@@ -329,7 +352,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
             const SizedBox(height: 5),
             // Zoom In
             FloatingActionButton(
-              backgroundColor: lightIconColor,
+              backgroundColor: btnColor,
               heroTag: "btn2",
               child: const Icon(Icons.zoom_in, color: Colors.black),
               onPressed: () {
@@ -343,7 +366,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
             // Zoom Out
             FloatingActionButton(
-              backgroundColor: lightIconColor,
+              backgroundColor: btnColor,
               heroTag: "btn3",
               child: const Icon(Icons.zoom_out, color: Colors.black),
               onPressed: () {
@@ -357,9 +380,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
             // Change Style
             FloatingActionButton(
-              backgroundColor: lightIconColor,
+              backgroundColor: btnColor,
               heroTag: "btn4",
-              child: const Icon(Icons.satellite, color: Colors.black),
+              child: const Icon(Icons.layers, color: Colors.black),
               onPressed: () {
                 setState(() {
                   sattliteChecked = !sattliteChecked;
@@ -374,7 +397,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? dark : light;
+    return Theme
+        .of(context)
+        .brightness == Brightness.dark ? dark : light;
   }
 
   Scaffold buildMap(ThemeModel themeNotifier) {
@@ -384,10 +409,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) => Icon(
-          Icons.my_location,
-          color: Colors.blue,
-        ),
+        builder: (ctx) =>
+            Icon(
+              Icons.my_location,
+              color: Colors.blue,
+            ),
       ),
     ];
 
@@ -397,12 +423,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         body: FlutterMap(
           children: [
             Center(
-              child: Container(
-                width: 150,
-                height: 150,
-                color: Colors.yellow,
-              )
-            )
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  color: Colors.yellow,
+                ))
           ],
           mapController: _mapController,
           options: MapOptions(
@@ -425,9 +450,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       return Scaffold(
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [Center(child: Text('Please wait its loading...'))],
-        )),
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [Center(child: Text('Please wait its loading...'))],
+            )),
       );
     }
   }

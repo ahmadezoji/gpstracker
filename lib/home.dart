@@ -13,7 +13,6 @@ import 'package:get/get.dart';
 enum languages { english, farsi }
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-  static const appTitle = 'GPS Tracker';
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +49,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          languages? currentLang = languages.english;
-
+          late Color fontColor = Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black;
           return Scaffold(
           appBar: AppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
@@ -63,15 +63,15 @@ class MyHomePage extends StatelessWidget {
                     Brightness.dark, // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
-              title: Text(title, style: TextStyle(color: Colors.black,fontFamily: 'IranSans')),
-              iconTheme: IconThemeData(color: Colors.black),
+              title: Text(title, style: TextStyle(color: fontColor,fontFamily: 'IranSans')),
+              // iconTheme: IconThemeData(color: fontColor),
               backgroundColor: NabColor,
               // status bar color
               actions: [
                 IconButton(
                     icon: Icon(themeNotifier.isDark
                         ? Icons.nightlight_round
-                        : Icons.wb_sunny),
+                        : Icons.wb_sunny,color: fontColor,),
                     onPressed: () {
                       themeNotifier.isDark
                           ? themeNotifier.isDark = false
@@ -84,7 +84,7 @@ class MyHomePage extends StatelessWidget {
                     showTimeZoneDlgBox(context);
                   },
                   child: SvgPicture.asset(
-                    "assets/timezone.svg",
+                    "assets/timezone.svg",color: fontColor
                   ),
                 ),
                 SizedBox(width: 10),
@@ -93,7 +93,7 @@ class MyHomePage extends StatelessWidget {
                     showLangDlgBox(context);
                   },
                   child: SvgPicture.asset(
-                    "assets/lang.svg",
+                    "assets/lang.svg",color: fontColor
                   ),
                 ),
                 SizedBox(width: 30),

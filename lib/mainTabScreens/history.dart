@@ -228,11 +228,13 @@ class _HistoryState extends State<History>
   }
 
   Column _floatingBottons() {
+    Color btnColor = Theme.of(context).brightness == Brightness.dark ?  Colors.blue : lightIconColor;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
-          backgroundColor: lightIconColor,
+          backgroundColor: btnColor,
           heroTag: "btn1",
           child: const Icon(Icons.date_range, color: Colors.black),
           onPressed: () {
@@ -241,7 +243,7 @@ class _HistoryState extends State<History>
         ),
         const SizedBox(height: 50),
         FloatingActionButton(
-          backgroundColor: lightIconColor,
+          backgroundColor: btnColor,
           heroTag: "btn1",
           child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
@@ -254,7 +256,7 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Zoom Out
         FloatingActionButton(
-          backgroundColor: lightIconColor,
+          backgroundColor: btnColor,
           heroTag: "btn2",
           child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
@@ -268,7 +270,7 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Change Style
         FloatingActionButton(
-          backgroundColor: lightIconColor,
+          backgroundColor: btnColor,
           heroTag: "btn3",
           child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {

@@ -40,7 +40,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ? Colors.white
             : Colors.black;
     late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
+        ? backNavBarDark
         : backgroundColor;
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
@@ -57,7 +57,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           index: _selectedIndex,
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: backgroundColor,
+          backgroundColor: backColor,
           items: <BottomNavigationBarItem>[
             // BottomNavigationBarItem(
             //   icon: Image(image: AssetImage("assets/gpsplus.png")),

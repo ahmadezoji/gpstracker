@@ -6,7 +6,7 @@ class LocaleString extends Translations {
   Map<String, Map<String, String>> get keys =>
       {
         'en_US': {
-          'App_Name': 'GPS Tracker',
+          'App_Name': 'GPS+',
           'Login': 'Login',
           'Registration': 'Registeration',
           'Save': 'Save',
