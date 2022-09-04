@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 
 class CheckPattern extends StatefulWidget {
@@ -26,14 +27,14 @@ class _CheckPatternState extends State<CheckPattern>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Check Pattern"),
+        title: Text("check-pattern".tr),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Flexible(
             child: Text(
-              "Draw Your pattern",
+              "draw-your-pattern".tr,
               style: TextStyle(fontSize: 26),
             ),
           ),

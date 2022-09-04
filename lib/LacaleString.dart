@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 class LocaleString extends Translations {
   @override
   // TODO: implement keys
-  Map<String, Map<String, String>> get keys =>
-      {
+  Map<String, Map<String, String>> get keys => {
         'en_US': {
           'App_Name': 'GPS+',
           'Login': 'Login',
@@ -32,17 +31,20 @@ class LocaleString extends Translations {
           "email": "Email Address",
           "country": "Country Name",
           "city": "City Name",
-          "addVehicle" : "Add Vehicle",
-          "profile" : "Profile",
-          "save-change-success" : "Save changes successful",
-          "add-new-device" : "Add new device",
-          "speed" : "Speed",
+          "addVehicle": "Add Vehicle",
+          "profile": "Profile",
+          "save-change-success": "Save changes successful",
+          "add-new-device": "Add new device",
+          "speed": "Speed",
           "interval": "Interval time",
-          "mile" : "Mile",
-          "date" : "DateTime",
-          "lat" : "latitude",
-          "lon" : "longitude",
-          "currentBlurBoxTitle" : "YOUR CURRENT LOCATION",
+          "mile": "Mile",
+          "date": "DateTime",
+          "lat": "latitude",
+          "lon": "longitude",
+          "currentBlurBoxTitle": "YOUR CURRENT LOCATION",
+          "draw-your-pattern": "Draw Your pattern",
+          "Check Pattern": "Check Pattern",
+          "timezone": "Time Zone"
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -71,17 +73,20 @@ class LocaleString extends Translations {
           "email": "آدرس ایمیل",
           "country": "نام کشور",
           "city": "نام شهر",
-          "addVehicle" : "اضافه کردن دستگاه",
-          "profile" : "پروفایل",
-          "save-change-success" : "ثبت تغییرات موفق بود",
-          "add-new-device" : "ثبت دستگاه جدبد",
-          "speed" : "سرعت ",
+          "addVehicle": "اضافه کردن دستگاه",
+          "profile": "پروفایل",
+          "save-change-success": "ثبت تغییرات موفق بود",
+          "add-new-device": "ثبت دستگاه جدبد",
+          "speed": "سرعت ",
           "interval": "فاصله زمانی",
-          "mile" : "جهت",
-          "date" : "تاریخ و زمان",
-          "lat" : "عرض جغرافیایی",
-          "lon" : "طول جغرافیایی",
-          "currentBlurBoxTitle" : "موقعین فعلی دستگاه شما",
+          "mile": "جهت",
+          "date": "تاریخ و زمان",
+          "lat": "عرض جغرافیایی",
+          "lon": "طول جغرافیایی",
+          "currentBlurBoxTitle": "موقعین فعلی دستگاه شما",
+          "draw-your-pattern": "الگوی خود را بکشید",
+          "check-pattern": "اعتبار سنجی",
+          "timezone": "منطقه زمانی"
         },
       };
 }

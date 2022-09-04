@@ -1,5 +1,6 @@
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 enum languages { english, farsi }
@@ -54,7 +55,9 @@ void showLangDlgBox(BuildContext context) {
                 // color: Colors.blueAccent,
                 // textColor: Colors.white,
                 onPressed: () {
-                  var locale = selectedRadio == 0 ?  Locale('en', 'US') : Locale('fa', 'IR') ;
+                  var locale = selectedRadio == 0
+                      ? Locale('en', 'US')
+                      : Locale('fa', 'IR');
                   Get.updateLocale(locale);
                   Navigator.of(context).pop();
                 },
@@ -67,44 +70,70 @@ void showLangDlgBox(BuildContext context) {
 
 void showTimeZoneDlgBox(BuildContext context) {
   List<String> list = ["USA", "IRAN", "UAE", "UK"];
+  Color backColor = Theme.of(context).brightness == Brightness.dark
+      ? backNavBarDark
+      : backgroundColor;
+  Color fontColor = Theme.of(context).brightness == Brightness.dark
+      ? Colors.white
+      : Colors.black;
   showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        String? selectedZone = "";
         return AlertDialog(
-          title: Text("Language",
+          title: Text("timezone".tr,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  child: DropdownButton<String>(
-                    value: "USA",
-                    icon: const Icon(Icons.arrow_circle_down_sharp),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (String? newValue) {},
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    elevation: 20,
+                    style: const TextStyle(color: Colors.blue, fontSize: 14),
+                    // underline: Container(
+                    //   height: 2,
+                    //   color: Colors.deepPurpleAccent,
+                    // ),
                     items: list.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
-                        value: value,
+                        value: selectedZone,
+                        alignment: Alignment.center,
                         child: Container(
                           margin: EdgeInsets.all(2),
                           decoration: BoxDecoration(
-                              color: backgroundColor,
+                              color: backColor,
                               borderRadius: BorderRadius.circular(8.0)),
                           alignment: Alignment.center,
-                          width: 150,
-                          child: Text(value),
+                          width: 200,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 5, right: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/ellipse.svg',
+                                ),
+                                Text(
+                                  value,
+                                  style: TextStyle(fontSize: 12),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     }).toList(),
-                  ))
-            ],
+                    onChanged: (String? newValue) {
+                      print(newValue);
+                      setState(() => selectedZone = newValue);
+                    },
+                  )
+                ],
+              );
+            },
           ),
           actions: [
             Container(
@@ -121,7 +150,8 @@ void showTimeZoneDlgBox(BuildContext context) {
                 // color: Colors.blueAccent,
                 // textColor: Colors.white,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  print(selectedZone);
+                  // Navigator.of(context).pop();
                 },
               ),
             ),
@@ -129,3 +159,51 @@ void showTimeZoneDlgBox(BuildContext context) {
         );
       });
 }
+
+//
+// StatefulBuilder(
+// builder: (BuildContext context, StateSetter setState)
+// {
+// return  DropdownButton<String>(
+// icon: const Icon(Icons.arrow_drop_down),
+// elevation: 20,
+// style: const TextStyle(color: Colors.blue,fontSize: 14),
+// // underline: Container(
+// //   height: 2,
+// //   color: Colors.deepPurpleAccent,
+// // ),
+// items: list.map<DropdownMenuItem<String>>((String value) {
+// return DropdownMenuItem<String>(
+// value: selectedZone,
+// alignment: Alignment.center,
+// child: Container(
+// margin: EdgeInsets.all(2),
+// decoration: BoxDecoration(
+// color: backColor,
+// borderRadius: BorderRadius.circular(8.0)
+// ),
+// alignment: Alignment.center,
+// width: 200,
+// child: Padding(
+// padding: EdgeInsets.only(left: 5,right: 5),
+// child: Row(
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// crossAxisAlignment: CrossAxisAlignment.start,
+// children: [
+// SvgPicture.asset(
+// 'assets/ellipse.svg',
+// ),
+// Text(value,style: TextStyle(fontSize: 12),)
+// ],
+// ),
+// ),
+// ),
+// );
+// }).toList(),
+// onChanged: (String? newValue) {
+// print(newValue);
+// setState(() => selectedZone = newValue);
+// },
+// );
+// }
+// ),

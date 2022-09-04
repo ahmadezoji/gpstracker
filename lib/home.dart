@@ -10,7 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+
 enum languages { english, farsi }
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -44,15 +46,17 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
+    var scaffoldKey = GlobalKey<ScaffoldState>();
+    print(scaffoldKey.currentState);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          late Color fontColor = Theme.of(context).brightness == Brightness.dark
-              ? Colors.white
-              : Colors.black;
-          return Scaffold(
+      late Color fontColor = Theme.of(context).brightness == Brightness.dark
+          ? Colors.white
+          : Colors.black;
+      return Scaffold(
+          key: scaffoldKey,
           appBar: AppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
                 // Status bar color
@@ -63,15 +67,19 @@ class MyHomePage extends StatelessWidget {
                     Brightness.dark, // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
-              title: Text(title, style: TextStyle(color: fontColor,fontFamily: 'IranSans')),
+              title: Text(title,
+                  style: TextStyle(color: fontColor, fontFamily: 'IranSans')),
               // iconTheme: IconThemeData(color: fontColor),
               backgroundColor: NabColor,
               // status bar color
               actions: [
                 IconButton(
-                    icon: Icon(themeNotifier.isDark
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny,color: fontColor,),
+                    icon: Icon(
+                      themeNotifier.isDark
+                          ? Icons.nightlight_round
+                          : Icons.wb_sunny,
+                      color: fontColor,
+                    ),
                     onPressed: () {
                       themeNotifier.isDark
                           ? themeNotifier.isDark = false
@@ -83,18 +91,15 @@ class MyHomePage extends StatelessWidget {
                   onTap: () {
                     showTimeZoneDlgBox(context);
                   },
-                  child: SvgPicture.asset(
-                    "assets/timezone.svg",color: fontColor
-                  ),
+                  child:
+                      SvgPicture.asset("assets/timezone.svg", color: fontColor),
                 ),
                 SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
                     showLangDlgBox(context);
                   },
-                  child: SvgPicture.asset(
-                    "assets/lang.svg",color: fontColor
-                  ),
+                  child: SvgPicture.asset("assets/lang.svg", color: fontColor),
                 ),
                 SizedBox(width: 30),
               ]),

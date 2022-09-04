@@ -8,9 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'models/device.dart';
 
 class MyBottomDrawer extends StatefulWidget {
-  const MyBottomDrawer(
-      {Key? key,
-      required this.selectedDevice})
+  const MyBottomDrawer({Key? key, required this.selectedDevice})
       : super(key: key);
   final Function selectedDevice;
   @override
@@ -27,20 +25,28 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
 
   List<Device> devices = [
     new Device(
-        serial: "027028356897", title: "موتور", simPhone: "simPhone", type: "motor"),
+        serial: "027028356897",
+        title: "موتور",
+        simPhone: "simPhone",
+        type: "motor"),
     new Device(
-        serial: "027028362416", title: "ماشین", simPhone: "simPhone", type: "car"),
+        serial: "027028362416",
+        title: "ماشین",
+        simPhone: "simPhone",
+        type: "car"),
     new Device(
-        serial: "027028356897", title: "خاور", simPhone: "simPhone", type: "truck")
+        serial: "027028356897",
+        title: "خاور",
+        simPhone: "simPhone",
+        type: "truck")
   ];
 
   @override
   void initState() {
     super.initState();
   }
-  void onSelectedDevice(Device device){
 
-  }
+  void onSelectedDevice(Device device) {}
   @override
   Widget build(BuildContext context) {
     return BottomDrawer(
@@ -70,8 +76,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
     late Color backColor = Theme.of(context).brightness == Brightness.dark
         ? backNavBarDark
         : backgroundColor;
-
-
+    // print(_key.currentState!);
     return new Stack(
       children: <Widget>[
         // The containers in the background
@@ -86,7 +91,6 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
               alignment: Alignment.center,
               height: _headerHeight * 0.7,
               color: backColor,
-
               child: Text(
                 "See All Vehicles",
                 style: TextStyle(color: fontColor, fontSize: 14),
@@ -101,13 +105,18 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
               height: 50.0,
               // width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
-              child:  new Container(
+              child: new Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: backColor ,),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: backColor,
+                ),
                 alignment: Alignment.topCenter,
                 padding: EdgeInsets.only(top: 5),
-                child:  new Icon(Scaffold.of(context).isDrawerOpen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+                child: new Icon(Scaffold.of(context).isDrawerOpen
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_up),
               )),
         )
       ],
@@ -166,6 +175,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
           break;
       }
     }
+
     return Container(
         width: 50,
         height: 50,

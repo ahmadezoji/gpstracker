@@ -24,10 +24,14 @@ class _SetPatternState extends State<SetPattern> {
 
   @override
   Widget build(BuildContext context) {
+    late Color notSelectedColor =
+    Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Check Pattern"),
+        title: Text("Set Pattern"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -40,6 +44,7 @@ class _SetPatternState extends State<SetPattern> {
           ),
           Flexible(
             child: PatternLock(
+              notSelectedColor: notSelectedColor,
               selectedColor: Colors.amber,
               pointRadius: 12,
               onInputComplete: (List<int> input) {

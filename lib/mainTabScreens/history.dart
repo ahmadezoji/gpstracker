@@ -91,7 +91,7 @@ class _HistoryState extends State<History>
       // final prefs = await SharedPreferences.getInstance();
       // serial = prefs.getString('serial')!;
       dirArr.clear();
-
+      print(currentDevice!.serial);
       var request = http.MultipartRequest(
           'POST', Uri.parse('https://130.185.77.83:4680/history/'));
       request.fields
@@ -228,7 +228,9 @@ class _HistoryState extends State<History>
   }
 
   Column _floatingBottons() {
-    Color btnColor = Theme.of(context).brightness == Brightness.dark ?  Colors.blue : lightIconColor;
+    Color btnColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.blue
+        : lightIconColor;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -285,6 +287,7 @@ class _HistoryState extends State<History>
       ],
     );
   }
+
   //change Flat to text button
   _selectDate(BuildContext context) async {
     Jalali? picked = await showPersianDatePicker(
