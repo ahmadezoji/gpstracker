@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage>
         _isLoading = true;
       });
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
       request.fields.addAll({'phone': userPhone});
       http.StreamedResponse response = await request.send();
 

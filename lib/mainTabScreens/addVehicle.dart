@@ -39,7 +39,7 @@ class _AddVehicleState extends State<AddVehicle>
   void addDevice() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/addDevice/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/addDevice/'));
       request.fields.addAll({
         'serial': serial,
         'userNum': 'widget.userPhone',
@@ -73,92 +73,89 @@ class _AddVehicleState extends State<AddVehicle>
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          return Scaffold(
-            appBar: AppBar(
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                // Status bar color
-                statusBarColor: statusColor,
+      return Scaffold(
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            // Status bar color
+            statusBarColor: statusColor,
 
-                // Status bar brightness (optional)
-                statusBarIconBrightness:
+            // Status bar brightness (optional)
+            statusBarIconBrightness:
                 Brightness.dark, // For Android (dark icons)
-                statusBarBrightness: Brightness.light, // For iOS (dark icons)
-              ),
-              title: Text("addVehicle".tr, style: TextStyle(color: Colors.black)),
-              backgroundColor: NabColor, // status bar color
-            ),
-            backgroundColor: Colors.white,
-            body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15.0, right: 15.0, top: 50.0, bottom: 10),
-                      // padding: EdgeInsets.symmetric(horizontal: 60),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) =>
-                                  setState(() {
-                                    serial = value;
-                                  }),
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                filled: true,
-                                fillColor: textFeildColor,
-                                labelText: "Serial".tr,
-                              ),
+            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+          ),
+          title: Text("addVehicle".tr, style: TextStyle(color: Colors.black)),
+          backgroundColor: NabColor, // status bar color
+        ),
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 50.0, bottom: 10),
+                  // padding: EdgeInsets.symmetric(horizontal: 60),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => setState(() {
+                            serial = value;
+                          }),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
                             ),
+                            filled: true,
+                            fillColor: textFeildColor,
+                            labelText: "Serial".tr,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) =>
-                                  setState(() {
-                                    serial = value;
-                                  }),
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                filled: true,
-                                fillColor: textFeildColor,
-                                hintText: "+98",
-                                labelText: "SimCard Number".tr,
-                              ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => setState(() {
+                            serial = value;
+                          }),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
                             ),
+                            filled: true,
+                            fillColor: textFeildColor,
+                            hintText: "+98",
+                            labelText: "SimCard Number".tr,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextField(
-                              onChanged: (value) =>
-                                  setState(() {
-                                    serial = value;
-                                  }),
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                filled: true,
-                                fillColor: textFeildColor,
-                                labelText: "Car Name".tr,
-                              ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                          onChanged: (value) => setState(() {
+                            serial = value;
+                          }),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
                             ),
+                            filled: true,
+                            fillColor: textFeildColor,
+                            labelText: "Car Name".tr,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: DropdownButton<String>(
-                              items: devices
-                                  .map((description, value) {
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: DropdownButton<String>(
+                          items: devices
+                              .map((description, value) {
                                 return MapEntry(
                                     description,
                                     DropdownMenuItem<String>(
@@ -177,7 +174,7 @@ class _AddVehicleState extends State<AddVehicle>
                                         width: 250,
                                         child: Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
@@ -198,47 +195,44 @@ class _AddVehicleState extends State<AddVehicle>
                                       ),
                                     ));
                               })
-                                  .values
-                                  .toList(),
-                              value: type,
-                              onChanged: (String? newValue) {
-                                if (newValue != null) {
-                                  setState(() {
-                                    type = newValue;
-                                  });
-                                }
-                              },
-                            ),
+                              .values
+                              .toList(),
+                          value: type,
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              setState(() {
+                                type = newValue;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.blue,
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  'Apply'.tr,
-                                  style:
-                                  TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                ),
-                                // color: Colors.blueAccent,
-                                // textColor: Colors.white,
-                                onPressed: () {},
-                              ),
+                          child: TextButton(
+                            child: Text(
+                              'Apply'.tr,
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white),
                             ),
-                          )
-                        ],
-                      )),
-                ],
-              ),
-            ),
-          );
-        }
-
-    );
+                            // color: Colors.blueAccent,
+                            // textColor: Colors.white,
+                            onPressed: () {},
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   @override

@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.Manifest.permission.WRITE_EXTERNAL_STORAGE"/>
+    <permission android:protectionLevel="signature"
+        android:name="com.example.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.example.permission.C2D_MESSAGE" />
+
+
     <uses-feature android:name="android.hardware.telephony"
         android:required="true"/>
     <application
@@ -46,5 +52,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+<!--        <meta-data-->
+<!--            android:name="firebase_messaging_auto_init_enabled"-->
+<!--            android:value="false" />-->
+<!--        <meta-data-->
+<!--            android:name="firebase_analytics_collection_enabled"-->
+<!--            android:value="false" />-->
+
     </application>
 </manifest>

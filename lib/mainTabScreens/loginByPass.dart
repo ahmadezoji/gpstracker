@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginByPassPage extends StatefulWidget {
   const LoginByPassPage({Key? key, required this.userPhone}) : super(key: key);
   final String userPhone;
+
   @override
   _LoginByPassPageState createState() => _LoginByPassPageState();
 }
@@ -21,6 +22,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
   late String userPhone;
   late String password;
   bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
         _isLoading = true;
       });
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/loginByPass/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/loginByPass/'));
       request.fields.addAll({
         'phone': userPhone,
         'password': password,
@@ -63,15 +65,19 @@ class _LoginByPassPageState extends State<LoginByPassPage>
               context,
               MaterialPageRoute(
                   builder: (_) => HomePage(), fullscreenDialog: false));
-
-          setState(() {
-            _isLoading = false;
-          });
+        } else {
+          Fluttertoast.showToast(msg: 'username or password not correct ');
         }
       } else {
+        Fluttertoast.showToast(msg: 'network connection problem');
         print(response.reasonPhrase);
       }
-    } catch (error) {}
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'network connection problem');
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

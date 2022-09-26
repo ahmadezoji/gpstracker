@@ -48,7 +48,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   late double zoom = 11.0;
 
-  Point currentPos = new Point(
+  Point? currentPos = new Point(
       lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
   Point defaultPos = Point(
       lat: 41.025819,
@@ -90,38 +90,26 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   void initState() {
     super.initState();
     _mapController = MapController();
-    getCurrentDevice();
     startTimer();
   }
-
-  void startTimer() {
+  void startTimer() async {
+    await   getCurrentDevice();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
       getCurrentLocation();
-      // currentPos = (await fetch())!;
-      // if (currentPos == null) return;
-      // setState(() {
-      //   speed = currentPos.getSpeed();
-      //   mile = currentPos.getMileage();
-      //   heading = currentPos.getHeading();
-      //   date = currentPos.getDateTime();
-      //   currentLatLng = LatLng(currentPos.lat, currentPos.lon);
-      // });
-      // if (!bZoom) {
-      //   _mapController.move(currentLatLng, 11);
-      //   bZoom = true;
-      // }
     });
+    // _mapController.move(currentLatLng, CHANGE_ZOOM);
   }
 
-  void getCurrentDevice() async {
+  Future<void> getCurrentDevice() async {
     Map<String, dynamic> map = await loadJson('device');
+    print('map $map');
     currentDevice = Device.fromJson(map);
   }
 
-  Future<Point?> fetch() async {
+  Future<void> getCurrentLocation() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/live/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': currentDevice!.serial});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
@@ -130,41 +118,40 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-        return Point.fromJson(json["features"][0]);
+        // return Point.fromJson(json["features"][0]);
+        var curPoint = Point.fromJson(json["features"][0]);
+        setState(() {
+          currentPos = curPoint;
+          speed = curPoint.getSpeed();
+          mile = curPoint.getMileage();
+          heading = curPoint.getHeading();
+          date = curPoint.getDateTime();
+          currentLatLng = LatLng(curPoint.lat, curPoint.lon);
+        });
       } else {
         print(response.reasonPhrase);
       }
     } catch (error) {
       // print('Error add project $error');
       return null;
+      // return new Point(
+      //     lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
     }
-
     return null;
+    // return new Point(
+    //     lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
   }
 
-  Future<void> getCurrentLocation() async {
-    currentPos = (await fetch())!;
-    if (currentPos == null) return;
-    setState(() {
-      speed = currentPos.getSpeed();
-      mile = currentPos.getMileage();
-      heading = currentPos.getHeading();
-      date = currentPos.getDateTime();
-      currentLatLng = LatLng(currentPos.lat, currentPos.lon);
-    });
+  void updatePoint() async {
+    await getCurrentLocation();
     _mapController.move(currentLatLng, CHANGE_ZOOM);
-    // if (!bZoom) {
-    //   _mapController.move(currentLatLng, 11);
-    //   bZoom = true;
-    // }
   }
 
-  void _onSelectedDevice(Device device) {
+  Future<void> _onSelectedDevice(Device device) async {
     setState(() {
       currentDevice = device;
     });
-    getCurrentLocation();
-    // _mapController.move(currentLatLng, CHANGE_ZOOM);
+    updatePoint();
   }
 
   @override
@@ -298,7 +285,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                           style: textStyle,
                                         ),
                                         Text(
-                                            '${currentPos.lat.toStringAsFixed(5)}',
+                                            '${currentPos!.lat.toStringAsFixed(5)}',
                                             style: TextStyle(fontSize: 12))
                                       ],
                                     ),
@@ -309,7 +296,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                           style: textStyle,
                                         ),
                                         Text(
-                                            '${currentPos.lon.toStringAsFixed(5)}',
+                                            '${currentPos!.lon.toStringAsFixed(5)}',
                                             style: TextStyle(fontSize: 12))
                                       ],
                                     ),
@@ -332,8 +319,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               heroTag: "btn2",
               child: const Icon(Icons.location_searching, color: Colors.black),
               onPressed: () {
-                getCurrentLocation();
-                // _mapController.move(currentLatLng, 18);
+                updatePoint();
               },
             ),
             const SizedBox(height: 5),
@@ -416,7 +402,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           mapController: _mapController,
           options: MapOptions(
               center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              zoom: 5.0,
               interactiveFlags: interActiveFlags,
               enableMultiFingerGestureRace: true),
           layers: [

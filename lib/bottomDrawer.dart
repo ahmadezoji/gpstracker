@@ -25,7 +25,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
 
   List<Device> devices = [
     new Device(
-        serial: "027028356897",
+        serial: "027028360584",
         title: "موتور",
         simPhone: "simPhone",
         type: "motor"),
@@ -35,7 +35,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         simPhone: "simPhone",
         type: "car"),
     new Device(
-        serial: "027028356897",
+        serial: "027028362416",
         title: "خاور",
         simPhone: "simPhone",
         type: "truck")
@@ -46,7 +46,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
     super.initState();
   }
 
-  void onSelectedDevice(Device device) {}
+
   @override
   Widget build(BuildContext context) {
     return BottomDrawer(
@@ -57,6 +57,10 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
       drawerHeight: _bodyHeight,
       color: Colors.transparent,
       controller: _controller,
+      callback: (val) => {
+        //drawer status
+        print(val)
+      },
       boxShadow: [
         BoxShadow(
           color: Colors.transparent,

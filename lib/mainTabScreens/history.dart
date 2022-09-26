@@ -93,7 +93,7 @@ class _HistoryState extends State<History>
       dirArr.clear();
       print(currentDevice!.serial);
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/history/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
       request.fields
           .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();

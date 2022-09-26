@@ -3,9 +3,12 @@ import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -27,6 +30,49 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    initFirebase();
+    super.initState();
+  }
+
+  void initFirebase() async {
+    // final fcmToken = await FirebaseMessaging.instance.getToken();
+    // FirebaseMessaging.instance.onTokenRefresh
+    //     .listen((fcmToken) {
+    // })
+    //     .onError((err) {
+    //   // Error getting token.
+    // });
+    //
+    // await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+
   }
 
   @override

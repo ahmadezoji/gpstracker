@@ -52,6 +52,7 @@ dependencies:
   flutter_redux: ^0.10.0
   sms_autofill: ^2.2.0
   flutter_svg: ^1.1.2
+  firebase_messaging: ^13.0.0
 
 
 dev_dependencies:
