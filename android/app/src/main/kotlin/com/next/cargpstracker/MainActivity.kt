@@ -38,7 +38,7 @@ class MainActivity : FlutterActivity() {
             }
             val newToken: String = task.result
             Log.d("newToken", newToken)
-            sendRegistrationToServer(token)
+//            sendRegistrationToServer(token)
 
         })
 //        GeneratedPluginRegistrant.registerWith(FlutterEngine(this))

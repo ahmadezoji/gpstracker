@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="160" height="161" viewBox="0 0 160 161">
+  <defs>
+    <filter id="fence-config-banner-3" x="0" y="0" width="160" height="161" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3a28f0"/>
+      <stop offset="1" stop-color="#1edfce"/>
+    </linearGradient>
+  </defs>
+  <g id="fence-config-banner" transform="translate(6 6)">
+    <g transform="matrix(1, 0, 0, 1, -6, -6)" filter="url(#fence-config-banner-3)">
+      <rect id="fence-config-banner-3-2" data-name="fence-config-banner-3" width="142" height="143" rx="10" transform="translate(6 6)" fill="#fff"/>
+    </g>
+    <rect id="Rectangle_25-2" data-name="Rectangle 25-2" width="142" height="143" rx="10" fill="url(#linear-gradient)"/>
+    <path id="Intersection_7-2" data-name="Intersection 7-2" d="M64,35.5A70.3,70.3,0,0,1,68.4,11H143a10,10,0,0,1,10,10v81.2a67.6,67.6,0,0,1-19.5,2.8A69.5,69.5,0,0,1,64,35.5Z" transform="translate(-11 -11)" fill="#fff" opacity="0.1"/>
+    <path id="Intersection_6-2" data-name="Intersection 6-2" d="M73.4,154A126.6,126.6,0,0,1,11,92.7V21A10,10,0,0,1,21,11H143a10,10,0,0,1,10,10V144a10,10,0,0,1-10,10Z" transform="translate(-11 -11)" fill="#fff" opacity="0.1"/>
+    <g id="fence-config-icon">
+      <path id="Vector" d="M74.3,69.7V77a1.9,1.9,0,0,1-1.9,1.8H68.5v5.7a1.9,1.9,0,0,1-1.9,1.8,1.8,1.8,0,0,1-1.8-1.8h0V78.8h-4A1.8,1.8,0,0,1,59,77h0V69.7a1.9,1.9,0,0,1,1.8-1.9h4v-20A1.8,1.8,0,0,1,66.6,46a1.9,1.9,0,0,1,1.9,1.8h0v20h3.9a2,2,0,0,1,1.9,1.9Zm-3.7,5.4V71.5H62.7v3.6h7.9Z" transform="translate(-11 -11)" fill="#fff"/>
+      <path id="Vector-2" d="M88.3,53.5a1.8,1.8,0,0,1,1.8,1.7v7.4a1.9,1.9,0,0,1-1.8,1.9h-4v20a1.8,1.8,0,0,1-1.8,1.8,1.9,1.9,0,0,1-1.9-1.8h0v-20H76.7a2,2,0,0,1-1.9-1.9h0V55.4a2,2,0,0,1,1.9-1.9h3.9V47.8A1.9,1.9,0,0,1,82.5,46a1.8,1.8,0,0,1,1.8,1.8h0v5.7Zm-1.9,3.7H78.5v3.6h7.9Z" transform="translate(-11 -11)" fill="#fff"/>
+      <path id="Vector-3" d="M106,69.7V77a1.8,1.8,0,0,1-1.8,1.8h-4v5.7a1.8,1.8,0,0,1-1.8,1.8,1.9,1.9,0,0,1-1.9-1.8V78.8H92.6A1.9,1.9,0,0,1,90.7,77h0V69.7a2,2,0,0,1,1.9-1.9h3.9v-20A1.9,1.9,0,0,1,98.4,46a1.8,1.8,0,0,1,1.8,1.8v20h4a1.9,1.9,0,0,1,1.8,1.9Zm-3.7,1.8H94.4v3.6h7.9Z" transform="translate(-11 -11)" fill="#fff"/>
+    </g>
+    <g id="Fence_Config" data-name="Fence Config">
+      <text id="Fence_Confg" data-name="Fence Confg" transform="translate(23 106.8)" fill="#fff" font-size="16" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">Fence Confg</tspan></text>
+    </g>
+  </g>
+</svg>

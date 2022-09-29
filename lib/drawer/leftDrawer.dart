@@ -1,8 +1,10 @@
+import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LeftDrawer extends StatefulWidget {
   const LeftDrawer({Key? key}) : super(key: key);
@@ -17,7 +19,17 @@ class LeftDrawerState extends State<LeftDrawer>
   void initState() {
     super.initState();
   }
+  void logout()async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('phone', '').then((bool success) {
+      print(success);
+    });
 
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => HomePage(userLogined: false,), fullscreenDialog: false));
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -90,6 +102,18 @@ class LeftDrawerState extends State<LeftDrawer>
                   context,
                   MaterialPageRoute(
                       builder: (_) => AddVehicle(), fullscreenDialog: false));
+            },
+          ),
+          ListTile(
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.logout, size: 32),
+                Text("Logout".tr)
+              ],
+            ),
+            onTap: () {
+             logout();
             },
           ),
         ],

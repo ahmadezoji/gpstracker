@@ -23,12 +23,13 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-class Live extends StatefulWidget {
+class LiveDemo extends StatefulWidget {
   @override
-  _LiveState createState() => _LiveState();
+  _LiveDemoState createState() => _LiveDemoState();
 }
 
-class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
+class _LiveDemoState extends State<LiveDemo>
+    with AutomaticKeepAliveClientMixin<LiveDemo> {
   String serial = '';
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
 
@@ -72,7 +73,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   String sattlite =
       'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
 
-  Device? currentDevice;
+  Device? currentDevice = null;
+  late int liveDemoIndex = 0;
+
   @override
   void dispose() {
     // mapController.dispose();
@@ -94,9 +97,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   void startTimer() async {
-    await getCurrentDevice();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
-      getCurrentLocation();
+      // getCurrentLocation();
+      getLiveDemoLocation();
     });
     // _mapController.move(currentLatLng, CHANGE_ZOOM);
   }
@@ -107,53 +110,31 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     currentDevice = Device.fromJson(map);
   }
 
-  Future<void> getCurrentLocation() async {
-    try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
-      request.fields.addAll({'serial': currentDevice!.serial});
-      // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = jsonDecode(responseString);
-        // return Point.fromJson(json["features"][0]);
-        var curPoint = Point.fromJson(json["features"][0]);
-        setState(() {
-          currentPos = curPoint;
-          speed = curPoint.getSpeed();
-          mile = curPoint.getMileage();
-          heading = curPoint.getHeading();
-          date = curPoint.getDateTime();
-          currentLatLng = LatLng(curPoint.lat, curPoint.lon);
-        });
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {
-      // print('Error add project $error');
-      return null;
-      // return new Point(
-      //     lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
-    }
-    return null;
-    // return new Point(
-    //     lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
+  Future<String> getJson() {
+    return rootBundle.loadString('assets/liveDemo.json');
   }
 
-  void updatePoint() async {
-    await getCurrentLocation();
-    _mapController.move(currentLatLng, CHANGE_ZOOM);
-  }
-
-  Future<void> _onSelectedDevice(Device device) async {
+  void getLiveDemoLocation() async {
+    var my_data = json.decode(await getJson());
+    var curStr = await my_data["features"][liveDemoIndex];
+    var curPoint = Point.fromJson(curStr);
+    liveDemoIndex < my_data["features"].length - 1
+        ? liveDemoIndex = liveDemoIndex + 1
+        : liveDemoIndex = 0;
     setState(() {
-      currentDevice = device;
+      currentPos = curPoint;
+      speed = curPoint.getSpeed();
+      mile = curPoint.getMileage();
+      heading = curPoint.getHeading();
+      date = curPoint.getDateTime();
+      currentLatLng = LatLng(curPoint.lat, curPoint.lon);
     });
-    updatePoint();
+    if (liveDemoIndex % 10 == 0) {
+      _mapController.move(currentLatLng, CHANGE_ZOOM);
+    }
   }
+
+  Future<void> _onSelectedDevice(Device device) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -178,12 +159,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     Color btnColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.blue
         : lightIconColor;
-
-    // Locale myLocale = Localizations.localeOf(context);
-    // print(Localizations.localeOf(context).toString());
-    final List<Locale> systemLocales = window.locales;
-    // DateTime dt = DateTime.parse(date);
-    // print(dt.toLocal());
 
     late double screenWidth = MediaQuery.of(context).size.width;
     late double screenHeight = MediaQuery.of(context).size.height;
@@ -303,7 +278,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     ),
                                   ],
                                 ),
-                                _vehicleIcon(context, currentDevice!)
+                                // _vehicleIcon(context, currentDevice!)
                               ],
                             ),
                           )
@@ -319,9 +294,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               backgroundColor: btnColor,
               heroTag: "btn2",
               child: const Icon(Icons.location_searching, color: Colors.black),
-              onPressed: () {
-                updatePoint();
-              },
+              onPressed: () {},
             ),
             const SizedBox(height: 5),
             // Zoom In
@@ -387,44 +360,33 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         ),
       ),
     ];
-
-    if (currentDevice != null) {
-      return Scaffold(
-        drawerEnableOpenDragGesture: true,
-        body: FlutterMap(
-          children: [
-            Center(
-                child: Container(
-              width: 150,
-              height: 150,
-              color: Colors.yellow,
-            ))
-          ],
-          mapController: _mapController,
-          options: MapOptions(
-              center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              interactiveFlags: interActiveFlags,
-              enableMultiFingerGestureRace: true),
-          layers: [
-            TileLayerOptions(
-              reset: resetController.stream,
-              urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-              subdomains: ['a', 'b', 'c'],
-            ),
-            MarkerLayerOptions(markers: markers)
-          ],
-        ),
-        floatingActionButton: _floatingBottons(),
-      );
-    } else {
-      return Scaffold(
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [Center(child: Text('Please wait its loading...'))],
-        )),
-      );
-    }
+    return Scaffold(
+      drawerEnableOpenDragGesture: true,
+      body: FlutterMap(
+        children: [
+          Center(
+              child: Container(
+            width: 150,
+            height: 150,
+            color: Colors.yellow,
+          ))
+        ],
+        mapController: _mapController,
+        options: MapOptions(
+            center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+            interactiveFlags: interActiveFlags,
+            enableMultiFingerGestureRace: true),
+        layers: [
+          TileLayerOptions(
+            reset: resetController.stream,
+            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+            subdomains: ['a', 'b', 'c'],
+          ),
+          MarkerLayerOptions(markers: markers)
+        ],
+      ),
+      floatingActionButton: _floatingBottons(),
+    );
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {

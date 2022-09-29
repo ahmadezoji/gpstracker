@@ -44,7 +44,8 @@ class LocaleString extends Translations {
           "currentBlurBoxTitle": "YOUR CURRENT LOCATION",
           "draw-your-pattern": "Draw Your pattern",
           "Check Pattern": "Check Pattern",
-          "timezone": "Time Zone"
+          "timezone": "Time Zone",
+          "login":"Login"
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -86,7 +87,8 @@ class LocaleString extends Translations {
           "currentBlurBoxTitle": "موقعین فعلی دستگاه شما",
           "draw-your-pattern": "الگوی خود را بکشید",
           "check-pattern": "اعتبار سنجی",
-          "timezone": "منطقه زمانی"
+          "timezone": "منطقه زمانی",
+          "login":"ورود"
         },
       };
 }

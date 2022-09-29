@@ -7,8 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GpsPlus extends StatelessWidget {
-  const GpsPlus({Key? key}) : super(key: key);
+class GpsPlusDemo extends StatelessWidget {
+  const GpsPlusDemo({Key? key}) : super(key: key);
 
   void switchChange(BuildContext context, bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -28,7 +28,6 @@ class GpsPlus extends StatelessWidget {
               fullscreenDialog: false));
     }
   }
-
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIOverlays([]);
@@ -50,7 +49,7 @@ class GpsPlus extends StatelessWidget {
                 switchChange(context, true);
               },
               child: SvgPicture.asset(
-                "assets/switch-lock-banner.svg",
+                "assets/switch-lock2.svg",
               ),
             ),
             SizedBox(height: 20),

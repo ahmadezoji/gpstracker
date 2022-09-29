@@ -64,7 +64,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => HomePage(), fullscreenDialog: false));
+                  builder: (_) => HomePage(userLogined: json["status"],), fullscreenDialog: false));
         } else {
           Fluttertoast.showToast(msg: 'username or password not correct ');
         }

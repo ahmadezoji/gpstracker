@@ -1,13 +1,18 @@
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
+import 'package:cargpstracker/mainTabScreens/GpsPlusDemo.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
+import 'package:cargpstracker/mainTabScreens/historyDemo.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
+import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 class MyStatefulWidget extends StatefulWidget {
@@ -20,22 +25,28 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    GpsPlus(),
-    Live(),
-    History(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  late bool userLogined = false;
+
   @override
   void initState() {
     initFirebase();
+    init();
     super.initState();
+  }
+
+  void init() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? phone = prefs.getString('phone');
+    if (phone == null)
+      userLogined = false;
+    else
+      userLogined = true;
   }
 
   void initFirebase() async {
@@ -64,30 +75,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       sound: true,
     );
 
-
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
     }
+  }
 
+  Future<bool> getLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? phone = prefs.getString('phone');
+    if (phone == null)
+      return false;
+    else
+      return true;
   }
 
   @override
   Widget build(BuildContext context) {
-    late Color selectedFontColor =
-        Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black;
-    late Color unselectedFontColor =
-        Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
-            : Colors.black;
-    late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? backNavBarDark
-        : backgroundColor;
+    late bool isDark = Theme.of(context).brightness == Brightness.dark;
+    late Color selectedFontColor = isDark ? Colors.white : Colors.black;
+    late Color unselectedFontColor = isDark ? Colors.white : Colors.black;
+    late Color backColor = isDark ? backNavBarDark : backgroundColor;
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
@@ -96,9 +108,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // ),
         body: IndexedStack(
           children: <Widget>[
-            GpsPlus(),
-            Live(),
-            History(),
+            !userLogined ? GpsPlusDemo() : GpsPlus(),
+            !userLogined ? LiveDemo() : Live(),
+            !userLogined ? HistoryDemo() : History(),
           ],
           index: _selectedIndex,
         ),
@@ -106,8 +118,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           backgroundColor: backColor,
           items: <BottomNavigationBarItem>[
             // BottomNavigationBarItem(
-            //   icon: Image(image: AssetImage("assets/gpsplus.png")),
+            //   activeIcon: isDark ? SvgPicture.asset("assets/dark/plus-icon-selected.svg"):SvgPicture.asset("assets/light/plus-icon-selected.svg"),
+            //   icon: isDark ? SvgPicture.asset("assets/dark/plus-icon.svg"):SvgPicture.asset("assets/light/plus-icon.svg"),
             //   label: 'Plus'.tr,
+            // ),
+            // BottomNavigationBarItem(
+            //   activeIcon: isDark ? SvgPicture.asset("assets/dark/live-icon-selected.svg"):SvgPicture.asset("assets/light/live-icon-selected.svg"),
+            //   icon: isDark ? SvgPicture.asset("assets/dark/live-icon.svg"):SvgPicture.asset("assets/light/live-icon.svg"),
+            //   label: 'Live'.tr,
+            // ),
+            // BottomNavigationBarItem(
+            //   activeIcon: isDark ? SvgPicture.asset("assets/dark/history-icon-selected.svg"):SvgPicture.asset("assets/light/history-icon-selected.svg"),
+            //   icon: isDark ? SvgPicture.asset("assets/dark/history-icon.svg"):SvgPicture.asset("assets/light/history-icon.svg"),
+            //   label: 'History'.tr,
             // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -126,7 +149,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           selectedItemColor: selectedFontColor,
           onTap: _onItemTapped,
           // fixedColor: Colors.red,
-          selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 20),
+          selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 16),
           unselectedFontSize: 16,
           selectedIconTheme:
               IconThemeData(color: Colors.blue, opacity: 1.0, size: 30.0),

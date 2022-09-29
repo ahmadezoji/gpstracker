@@ -16,6 +16,7 @@ class _SpalshScreenState extends State<SpalshScreen>
     with TickerProviderStateMixin {
   late AnimationController controller;
   List<int>? pattern;
+  late bool userLogined = false;
 
   @override
   void initState() {
@@ -31,22 +32,35 @@ class _SpalshScreenState extends State<SpalshScreen>
     Timer(Duration(seconds: 3), () => pushPage());
   }
 
+  void init() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? phone = prefs.getString('phone');
+    if (phone == null || phone == '')
+      userLogined = false;
+    else
+      userLogined = true;
+  }
+
   void pushPage() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      String? phone = prefs.getString('phone');
-      print(phone);
-      if (phone == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-        );
-      }else{
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>new  HomePage(userLogined: userLogined,)),
+      );
+      // final prefs = await SharedPreferences.getInstance();
+      // String? phone = prefs.getString('phone');
+      // print(phone);
+      // if (phone == null) {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => LoginPage()),
+      //   );
+      // } else {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => HomePage()),
+      //   );
+      // }
     } catch (error) {
       print('Error add project $error');
     }
@@ -63,15 +77,17 @@ class _SpalshScreenState extends State<SpalshScreen>
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Lottie.asset('assets/gps-pointer.json'),
-            CircularProgressIndicator(
-              value: controller.value,
-              semanticsLabel: 'Linear progress indicator',
-            ),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Lottie.asset('assets/splash-screen.json'),
+              CircularProgressIndicator(
+                value: controller.value,
+                semanticsLabel: 'Linear progress indicator',
+              ),
+            ],
+          ),
         ),
       ),
     );

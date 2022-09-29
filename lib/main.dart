@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               translations: LocaleString(),
               locale: Locale('en','US'),
-              title: 'GPS+',
+              title: 'App_Name'.tr,
               theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
               home: SpalshScreen(),
             );
