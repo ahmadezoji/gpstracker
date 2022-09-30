@@ -75,6 +75,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:9.+"
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.8'
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
 }

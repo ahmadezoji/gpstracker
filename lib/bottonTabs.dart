@@ -6,7 +6,7 @@ import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -35,7 +35,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   void initState() {
-    initFirebase();
+    // initFirebase();
     init();
     super.initState();
   }
@@ -49,41 +49,41 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       userLogined = true;
   }
 
-  void initFirebase() async {
-    // final fcmToken = await FirebaseMessaging.instance.getToken();
-    // FirebaseMessaging.instance.onTokenRefresh
-    //     .listen((fcmToken) {
-    // })
-    //     .onError((err) {
-    //   // Error getting token.
-    // });
-    //
-    // await FirebaseMessaging.instance.setAutoInitEnabled(true);
-
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
+  // void initFirebase() async {
+  //   // final fcmToken = await FirebaseMessaging.instance.getToken();
+  //   // FirebaseMessaging.instance.onTokenRefresh
+  //   //     .listen((fcmToken) {
+  //   // })
+  //   //     .onError((err) {
+  //   //   // Error getting token.
+  //   // });
+  //   //
+  //   // await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  //
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  //
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('User granted permission');
+  //   } else if (settings.authorizationStatus ==
+  //       AuthorizationStatus.provisional) {
+  //     print('User granted provisional permission');
+  //   } else {
+  //     print('User declined or has not accepted permission');
+  //   }
+  // }
 
   Future<bool> getLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
