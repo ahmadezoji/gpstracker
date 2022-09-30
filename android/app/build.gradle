@@ -29,7 +29,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -75,6 +75,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:9.+"
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.8'
 }
