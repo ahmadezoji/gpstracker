@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   location: ^4.1.1
-  flutter_map: any # or the latest version on Pub
+  flutter_map: ^2.2.0 # or the latest version on Pub
   fluttertoast: ^8.0.8
   http: ^0.13.4
   persian_datetime_picker: ^2.4.0
