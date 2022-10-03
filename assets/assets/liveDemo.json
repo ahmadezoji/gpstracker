@@ -1,0 +1,2683 @@
+{
+    "type": "FeatureCollection",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "EPSG:4326"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:07.825Z",
+                "speed": 54.0,
+                "heading": 92.97,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.283501666666666,
+                    35.75342
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:17.669Z",
+                "speed": 28.9,
+                "heading": 70.35,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.28474333333333,
+                    35.75349666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:37.672Z",
+                "speed": 53.1,
+                "heading": 90.99,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.286005,
+                    35.75353833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:40.230Z",
+                "speed": 60.7,
+                "heading": 91.25,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.287823333333336,
+                    35.753505
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:48.942Z",
+                "speed": 98.1,
+                "heading": 90.5,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.290191666666665,
+                    35.75346166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:30:59.796Z",
+                "speed": 88.5,
+                "heading": 92.41,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.293101666666665,
+                    35.75335333333334
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:07.884Z",
+                "speed": 85.7,
+                "heading": 90.78,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.29583,
+                    35.753285
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:17.792Z",
+                "speed": 82.4,
+                "heading": 90.46,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.29846,
+                    35.753256666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:27.962Z",
+                "speed": 83.1,
+                "heading": 91.36,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.301003333333334,
+                    35.75322333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:37.877Z",
+                "speed": 83.5,
+                "heading": 90.75,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.30357166666667,
+                    35.75319666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:49.541Z",
+                "speed": 81.3,
+                "heading": 90.87,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.306095,
+                    35.75315833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:31:57.593Z",
+                "speed": 77.5,
+                "heading": 89.63,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.30851833333333,
+                    35.753148333333336
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:11.756Z",
+                "speed": 79.3,
+                "heading": 89.63,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.310855,
+                    35.75317
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:18.862Z",
+                "speed": 73.8,
+                "heading": 91.11,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.31321,
+                    35.75317
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:27.545Z",
+                "speed": 71.3,
+                "heading": 94.28,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.315308333333334,
+                    35.753085
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:39.092Z",
+                "speed": 77.7,
+                "heading": 95.87,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.317636666666665,
+                    35.75293833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:49.051Z",
+                "speed": 67.2,
+                "heading": 0.2,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.32026166666667,
+                    35.75265666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:32:59.568Z",
+                "speed": 67.6,
+                "heading": 1.25,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.322255,
+                    35.752341666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:09.136Z",
+                "speed": 54.3,
+                "heading": 1.01,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.32416666666666,
+                    35.75203
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:19.223Z",
+                "speed": 57.9,
+                "heading": 0.59,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.325851666666665,
+                    35.75177166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:29.237Z",
+                "speed": 60.7,
+                "heading": 99.1,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.327675,
+                    35.751506666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:39.111Z",
+                "speed": 70.4,
+                "heading": 97.66,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.32961,
+                    35.75129
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:49.171Z",
+                "speed": 66.0,
+                "heading": 94.44,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.33179833333333,
+                    35.751108333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:33:59.110Z",
+                "speed": 70.5,
+                "heading": 93.7,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.333843333333334,
+                    35.750976666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:11.208Z",
+                "speed": 80.5,
+                "heading": 89.53,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.336175,
+                    35.75092
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:23.436Z",
+                "speed": 79.1,
+                "heading": 87.76,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.338631666666664,
+                    35.75098333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:31.569Z",
+                "speed": 72.8,
+                "heading": 87.5,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.34097666666667,
+                    35.751063333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:47.363Z",
+                "speed": 72.1,
+                "heading": 89.36,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.34319833333333,
+                    35.751125
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:49.490Z",
+                "speed": 80.4,
+                "heading": 90.86,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.345573333333334,
+                    35.75112166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:34:59.787Z",
+                "speed": 82.7,
+                "heading": 93.07,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.348128333333335,
+                    35.75105
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:08.960Z",
+                "speed": 83.4,
+                "heading": 96.45,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.35067,
+                    35.750886666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:22.002Z",
+                "speed": 81.2,
+                "heading": 98.88,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.35314666666667,
+                    35.75062
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:30.147Z",
+                "speed": 75.6,
+                "heading": 1.2,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.35554166666667,
+                    35.75027
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:39.018Z",
+                "speed": 78.7,
+                "heading": 99.28,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.35789333333334,
+                    35.74992
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:50.861Z",
+                "speed": 77.8,
+                "heading": 97.03,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.360283333333335,
+                    35.749635
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:35:58.852Z",
+                "speed": 77.8,
+                "heading": 95.84,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.36268,
+                    35.749426666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:08.885Z",
+                "speed": 78.6,
+                "heading": 94.37,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.365046666666665,
+                    35.749246666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:19.565Z",
+                "speed": 79.8,
+                "heading": 92.59,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.36742666666667,
+                    35.74912666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:28.850Z",
+                "speed": 74.7,
+                "heading": 87.48,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.369845,
+                    35.74912
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:38.760Z",
+                "speed": 75.8,
+                "heading": 84.82,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37216333333333,
+                    35.749255
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:48.792Z",
+                "speed": 82.1,
+                "heading": 82.43,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.374586666666666,
+                    35.749476666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:36:58.768Z",
+                "speed": 74.7,
+                "heading": 86.72,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37704333333333,
+                    35.749633333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:08.713Z",
+                "speed": 69.1,
+                "heading": 87.64,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37920666666667,
+                    35.749736666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:18.986Z",
+                "speed": 61.8,
+                "heading": 85.13,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381186666666665,
+                    35.749825
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:33.526Z",
+                "speed": 58.3,
+                "heading": 86.98,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383023333333334,
+                    35.74996333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:39.559Z",
+                "speed": 47.6,
+                "heading": 7.57,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38459,
+                    35.74993666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:44.552Z",
+                "speed": 53.6,
+                "heading": 44.69,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.385191666666664,
+                    35.74955166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:37:49.540Z",
+                "speed": 59.8,
+                "heading": 62.1,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.385531666666665,
+                    35.74889
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:00.965Z",
+                "speed": 62.3,
+                "heading": 88.71,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38565,
+                    35.747258333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:13.704Z",
+                "speed": 70.8,
+                "heading": 0.43,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.3851,
+                    35.74565666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:33.438Z",
+                "speed": 74.8,
+                "heading": 97.98,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38422,
+                    35.743775
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:33.460Z",
+                "speed": 69.4,
+                "heading": 89.57,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383635,
+                    35.741996666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:43.346Z",
+                "speed": 74.4,
+                "heading": 82.22,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383448333333334,
+                    35.740228333333334
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:38:53.503Z",
+                "speed": 87.1,
+                "heading": 81.16,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383383333333335,
+                    35.738171666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:01.771Z",
+                "speed": 91.2,
+                "heading": 81.37,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383316666666666,
+                    35.73594666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:11.807Z",
+                "speed": 77.9,
+                "heading": 80.27,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38329,
+                    35.73390166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:25.310Z",
+                "speed": 76.8,
+                "heading": 79.94,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383271666666666,
+                    35.73197
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:32.110Z",
+                "speed": 78.6,
+                "heading": 82.21,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383228333333335,
+                    35.729976666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:43.131Z",
+                "speed": 64.2,
+                "heading": 93.79,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382915,
+                    35.72786333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:39:54.132Z",
+                "speed": 67.5,
+                "heading": 5.93,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38220166666667,
+                    35.726328333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:04.088Z",
+                "speed": 73.7,
+                "heading": 9.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381155,
+                    35.72472833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:14.040Z",
+                "speed": 62.4,
+                "heading": 9.19,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38014,
+                    35.723236666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:24.021Z",
+                "speed": 65.2,
+                "heading": 4.02,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37927,
+                    35.72182
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:33.935Z",
+                "speed": 61.1,
+                "heading": 98.48,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.378598333333336,
+                    35.720395
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:45.606Z",
+                "speed": 67.9,
+                "heading": 88.69,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37817833333333,
+                    35.718755
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:40:53.569Z",
+                "speed": 61.5,
+                "heading": 81.99,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.377975,
+                    35.71716166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:41:03.639Z",
+                "speed": 65.7,
+                "heading": 81.62,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37792666666667,
+                    35.715543333333336
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:41:13.568Z",
+                "speed": 60.2,
+                "heading": 81.45,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37786833333333,
+                    35.71391833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:41:23.512Z",
+                "speed": 65.7,
+                "heading": 81.86,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37781,
+                    35.712336666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:41:26.519Z",
+                "speed": 71.4,
+                "heading": 79.48,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37779833333333,
+                    35.711816666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:43:36.455Z",
+                "speed": 50.4,
+                "heading": 74.1,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379113333333336,
+                    35.69130333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:43:46.446Z",
+                "speed": 30.0,
+                "heading": 75.45,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379215,
+                    35.69025166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:00.366Z",
+                "speed": 34.5,
+                "heading": 78.72,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37920833333333,
+                    35.68948
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:10.174Z",
+                "speed": 51.1,
+                "heading": 76.49,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379266666666666,
+                    35.68841166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:18.443Z",
+                "speed": 52.5,
+                "heading": 76.73,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37938,
+                    35.68723833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:27.962Z",
+                "speed": 56.8,
+                "heading": 76.86,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379506666666664,
+                    35.685853333333334
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:37.511Z",
+                "speed": 58.4,
+                "heading": 75.49,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37965333333333,
+                    35.68437333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:44:43.380Z",
+                "speed": 59.4,
+                "heading": 74.58,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37979166666667,
+                    35.683506666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:00.274Z",
+                "speed": 50.6,
+                "heading": 75.55,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.380055,
+                    35.68159333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:18.124Z",
+                "speed": 42.6,
+                "heading": 69.37,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.380185,
+                    35.680555
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:18.844Z",
+                "speed": 41.6,
+                "heading": 67.52,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38036833333334,
+                    35.67954
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:27.698Z",
+                "speed": 16.7,
+                "heading": 12.19,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38033166666666,
+                    35.67883666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:37.341Z",
+                "speed": 20.9,
+                "heading": 75.42,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37971,
+                    35.67883833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:47.219Z",
+                "speed": 26.8,
+                "heading": 74.42,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379083333333334,
+                    35.67886
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:45:57.293Z",
+                "speed": 17.3,
+                "heading": 69.21,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37842,
+                    35.678873333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:46:07.194Z",
+                "speed": 22.2,
+                "heading": 73.77,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37778333333333,
+                    35.678931666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:46:38.527Z",
+                "speed": 22.1,
+                "heading": 74.63,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.377075,
+                    35.67899333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:46:41.191Z",
+                "speed": 22.1,
+                "heading": 73.05,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.376356666666666,
+                    35.679048333333334
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:46:41.208Z",
+                "speed": 25.4,
+                "heading": 76.13,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37558666666666,
+                    35.67910166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:46:46.851Z",
+                "speed": 23.5,
+                "heading": 73.56,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.374806666666665,
+                    35.67914833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:04.156Z",
+                "speed": 24.6,
+                "heading": 56.84,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37452666666667,
+                    35.679525
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:06.807Z",
+                "speed": 33.2,
+                "heading": 54.46,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37443,
+                    35.68026
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:18.932Z",
+                "speed": 27.8,
+                "heading": 55.29,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37434666666667,
+                    35.68104666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:39.952Z",
+                "speed": 27.0,
+                "heading": 75.89,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37464166666667,
+                    35.68141333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:40.648Z",
+                "speed": 34.0,
+                "heading": 83.46,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.375573333333335,
+                    35.68154333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:48.911Z",
+                "speed": 32.7,
+                "heading": 83.19,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37679,
+                    35.68169666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:47:59.469Z",
+                "speed": 30.7,
+                "heading": 82.68,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.37760333333333,
+                    35.681803333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:48:09.491Z",
+                "speed": 42.9,
+                "heading": 82.98,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.378688333333336,
+                    35.68193333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:48:19.516Z",
+                "speed": 40.3,
+                "heading": 82.35,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.379985,
+                    35.68204333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:48:29.384Z",
+                "speed": 36.6,
+                "heading": 83.43,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381115,
+                    35.682051666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:48:39.479Z",
+                "speed": 37.2,
+                "heading": 85.19,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382265,
+                    35.682145
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:48:49.372Z",
+                "speed": 16.7,
+                "heading": 14.18,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38312,
+                    35.68217333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:49:04.318Z",
+                "speed": 16.6,
+                "heading": 67.05,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38334,
+                    35.681645
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:49:10.566Z",
+                "speed": 13.8,
+                "heading": 68.63,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383498333333335,
+                    35.681156666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:49:20.513Z",
+                "speed": 16.9,
+                "heading": 72.99,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383678333333336,
+                    35.680638333333334
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:49:32.422Z",
+                "speed": 15.3,
+                "heading": 67.55,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383855,
+                    35.680175
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:49:40.548Z",
+                "speed": 4.5,
+                "heading": 59.14,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.383993333333336,
+                    35.67989
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:00.523Z",
+                "speed": 9.9,
+                "heading": 75.65,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38408833333333,
+                    35.67962
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:10.744Z",
+                "speed": 26.3,
+                "heading": 68.33,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.384233333333334,
+                    35.67910166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:20.753Z",
+                "speed": 19.2,
+                "heading": 53.08,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38427333333333,
+                    35.67864
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:30.409Z",
+                "speed": 32.8,
+                "heading": 75.28,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38333333333333,
+                    35.678671666666666
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:40.206Z",
+                "speed": 27.2,
+                "heading": 75.2,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38241166666667,
+                    35.67872333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:50:50.385Z",
+                "speed": 30.7,
+                "heading": 71.85,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381676666666664,
+                    35.67874833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:00.367Z",
+                "speed": 10.0,
+                "heading": 53.66,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38124833333333,
+                    35.67886166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:10.316Z",
+                "speed": 17.4,
+                "heading": 56.63,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38115333333333,
+                    35.679271666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:20.338Z",
+                "speed": 11.6,
+                "heading": 10.93,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381116666666664,
+                    35.67988
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:30.249Z",
+                "speed": 22.5,
+                "heading": 82.27,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38160666666667,
+                    35.680055
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:40.334Z",
+                "speed": 9.3,
+                "heading": 66.59,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381915,
+                    35.679915
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:51:50.294Z",
+                "speed": 7.5,
+                "heading": 73.7,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381975,
+                    35.679543333333335
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:52:00.206Z",
+                "speed": 3.1,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382063333333335,
+                    35.679568333333336
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:52:28.441Z",
+                "speed": 4.6,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382235,
+                    35.679435
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:21.459Z",
+                "speed": 3.3,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38192,
+                    35.679671666666664
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:24.445Z",
+                "speed": 3.3,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38193,
+                    35.67968666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:29.657Z",
+                "speed": 10.7,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38202833333333,
+                    35.67948833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:34.447Z",
+                "speed": 13.9,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382088333333336,
+                    35.679285
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:42.392Z",
+                "speed": 8.9,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38229,
+                    35.67885166666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:47.475Z",
+                "speed": 9.3,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38223166666667,
+                    35.679005
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:53:57.432Z",
+                "speed": 6.9,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38218,
+                    35.67919666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:54:11.468Z",
+                "speed": 2.1,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38226,
+                    35.679541666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:54:21.515Z",
+                "speed": 5.5,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382153333333335,
+                    35.679645
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:54:26.548Z",
+                "speed": 11.4,
+                "heading": 18.61,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38207,
+                    35.679561666666665
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:03.592Z",
+                "speed": 10.3,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38214166666667,
+                    35.679205
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:04.310Z",
+                "speed": 7.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38211666666667,
+                    35.67921833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:12.186Z",
+                "speed": 5.2,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382015,
+                    35.67922
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:23.143Z",
+                "speed": 1.5,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.381978333333336,
+                    35.67932666666667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:38.725Z",
+                "speed": 1.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38204666666667,
+                    35.679405
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:55:57.813Z",
+                "speed": 4.2,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38207333333333,
+                    35.67940333333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:56:13.453Z",
+                "speed": 2.1,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.382081666666664,
+                    35.67946
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T19:58:36.197Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T20:48:36.230Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T21:38:36.107Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T22:33:02.591Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-13T23:23:02.244Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T00:12:59.706Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T01:03:01.750Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T01:53:00.192Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T02:43:00.963Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T03:33:01.228Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T04:23:01.261Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T05:13:00.450Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T06:03:00.869Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T06:53:01.427Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T07:43:01.745Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T08:33:01.434Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T09:23:01.867Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T10:13:01.189Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T11:03:03.507Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T11:53:01.751Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T12:43:02.948Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T13:33:05.412Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T14:23:02.613Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T15:13:03.072Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T16:03:03.231Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T16:53:04.599Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T17:43:05.472Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T18:33:05.787Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "time": "2022-09-14T19:23:06.452Z",
+                "speed": 6.0,
+                "heading": 0.0,
+                "mileage": 0.0
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.38157,
+                    35.67986833333333
+                ]
+            }
+        }
+    ]
+}
