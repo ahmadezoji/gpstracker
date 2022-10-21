@@ -66,12 +66,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   bool theme = false;
   late ThemePreferences _preferences;
 
-  String light = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  String dark =
-      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
-  String sattlite =
-      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
-
   Device? currentDevice;
   @override
   void dispose() {
@@ -371,7 +365,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? dark : light;
+    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap(ThemeModel themeNotifier) {
@@ -406,10 +400,18 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
               interactiveFlags: interActiveFlags,
               enableMultiFingerGestureRace: true),
           layers: [
+            // TileLayerOptions(
+            //   reset: resetController.stream,
+            //   urlTemplate: sattliteChecked ? sattlite : getMapThem(),
+            //   subdomains: ['a', 'b', 'c'],
+            // ),
             TileLayerOptions(
-              reset: resetController.stream,
-              urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-              subdomains: ['a', 'b', 'c'],
+              urlTemplate:
+                  "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+              additionalOptions: {
+                'mapStyleId': AppConstants.mapBoxStyleId,
+                'accessToken': AppConstants.mapBoxAccessToken,
+              },
             ),
             MarkerLayerOptions(markers: markers)
           ],

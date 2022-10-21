@@ -50,12 +50,6 @@ class _HistoryDemoState extends State<HistoryDemo>
   late double mile = 0;
   late String date = '';
 
-  String light = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  String dark =
-      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
-  String sattlite =
-      'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=${MyApp.ACCESS_TOKEN}';
-
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
   late Jalali tempPickedDate;
@@ -95,8 +89,7 @@ class _HistoryDemoState extends State<HistoryDemo>
       dirArr.clear();
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://130.185.77.83:4680/history/'));
-      request.fields
-          .addAll({'serial': '027028362416', 'timestamp': stamp});
+      request.fields.addAll({'serial': '027028362416', 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes();
@@ -145,7 +138,7 @@ class _HistoryDemoState extends State<HistoryDemo>
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? dark : light;
+    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap() {
@@ -205,9 +198,12 @@ class _HistoryDemoState extends State<HistoryDemo>
         layers: [
           MarkerLayerOptions(markers: markers),
           TileLayerOptions(
-            reset: resetController.stream,
-            urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-            subdomains: ['a', 'b', 'c'],
+            urlTemplate:
+                "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+            additionalOptions: {
+              'mapStyleId': AppConstants.mapBoxStyleId,
+              'accessToken': AppConstants.mapBoxAccessToken,
+            },
           ),
           PolylineLayerOptions(
             polylines: [

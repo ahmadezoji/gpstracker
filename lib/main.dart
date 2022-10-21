@@ -23,8 +23,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  static const String ACCESS_TOKEN =
-      'pk.eyJ1Ijoic2FhbWV6b2ppIiwiYSI6ImNsNDJvZ3RoeTB1NWMzZG82YnVodGU1d2EifQ.x3z9Smy3JJcwy-bNzHsZ6A';
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +30,15 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeModel(),
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
-            return GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              translations: LocaleString(),
-              locale: Locale('en','US'),
-              title: 'App_Name'.tr,
-              theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-              home: SpalshScreen(),
-            );
-          }),
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          translations: LocaleString(),
+          locale: Locale('en', 'US'),
+          title: 'App_Name'.tr,
+          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+          home: SpalshScreen(),
+        );
+      }),
     );
   }
 }
