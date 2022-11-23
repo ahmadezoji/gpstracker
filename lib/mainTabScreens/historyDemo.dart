@@ -52,8 +52,11 @@ class _HistoryDemoState extends State<HistoryDemo>
 
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
+  List<CircleMarker> circleMarkers = [];
+  // List<LatLng> markers;
   late Jalali tempPickedDate;
   late double zoomLevel = 5.0;
+  late bool showPoint = false;
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
   late LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
@@ -96,10 +99,12 @@ class _HistoryDemoState extends State<HistoryDemo>
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
         dirLatLons.clear();
+        circleMarkers.clear();
         dirArr.clear();
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
+          circleMarkers.add(CircleMarker(point: LatLng(p.lat, p.lon), radius: 2,color: Colors.blue));
           dirArr.add(p);
         }
         setState(() {
@@ -127,18 +132,23 @@ class _HistoryDemoState extends State<HistoryDemo>
     super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      return Scaffold(
-        key: _key,
-        drawerEnableOpenDragGesture: false,
-        body: buildMap(),
-        extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(selectedDevice: _onSelectedDevice),
-      );
-    });
+          return Scaffold(
+            key: _key,
+            drawerEnableOpenDragGesture: false,
+            body: buildMap(),
+            extendBody: true,
+            bottomNavigationBar: MyBottomDrawer(
+                selectedDevice: _onSelectedDevice),
+          );
+        });
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
+    return Theme
+        .of(context)
+        .brightness == Brightness.dark
+        ? AppConstants.DARK_STYLE
+        : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap() {
@@ -148,17 +158,18 @@ class _HistoryDemoState extends State<HistoryDemo>
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) => new Container(
+        builder: (ctx) =>
+        new Container(
             child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: backgroundColor,
-          ),
-          child: Text(
-            'saam ezoji',
-            style: TextStyle(color: Colors.blue, fontSize: 27),
-          ),
-        )),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: backgroundColor,
+              ),
+              child: Text(
+                'saam ezoji',
+                style: TextStyle(color: Colors.blue, fontSize: 27),
+              ),
+            )),
       ),
     ];
 
@@ -196,19 +207,26 @@ class _HistoryDemoState extends State<HistoryDemo>
           interactiveFlags: interActiveFlags,
         ),
         layers: [
-          MarkerLayerOptions(markers: markers),
+          // MarkerLayerOptions(markers: markers),
+
           TileLayerOptions(
             urlTemplate:
-                "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+            "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked
+                ? AppConstants.SATELLITE_STYLE
+                : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
             additionalOptions: {
               'mapStyleId': AppConstants.mapBoxStyleId,
               'accessToken': AppConstants.mapBoxAccessToken,
             },
           ),
-          PolylineLayerOptions(
+          if(showPoint) CircleLayerOptions(circles: circleMarkers,),
+          if(!showPoint) PolylineLayerOptions(
             polylines: [
               Polyline(
-                  points: dirLatLons, strokeWidth: 4.0, color: Colors.purple),
+                  points: dirLatLons,
+                  strokeWidth: 4.0,
+                  color: Colors.purple,
+                  isDotted: showPoint),
             ],
           ),
           // new MarkerLayerOptions(markers: markers),
@@ -224,14 +242,23 @@ class _HistoryDemoState extends State<HistoryDemo>
     });
   }
 
+  void onChangedPointShow(bool? value) {
+    setState(() {
+      showPoint = value!;
+    });
+  }
+
   Column _floatingBottons() {
-    Color btnColor = Theme.of(context).brightness == Brightness.dark
+    Color btnColor = Theme
+        .of(context)
+        .brightness == Brightness.dark
         ? Colors.blue
         : lightIconColor;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        Checkbox(value: showPoint, onChanged: onChangedPointShow),
         FloatingActionButton(
           backgroundColor: btnColor,
           heroTag: "btn1",
@@ -300,7 +327,7 @@ class _HistoryDemoState extends State<HistoryDemo>
       // print('selectedDate $selectedDate');
 
       Timestamp myTimeStamp =
-          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+      Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
       currentTimeStamp = myTimeStamp;
       print(myTimeStamp.seconds.toString());
       fetch(myTimeStamp.seconds.toString());

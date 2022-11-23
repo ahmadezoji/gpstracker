@@ -15,7 +15,7 @@ class _StartPageState extends State<StartPage>
   late String _name = 'befor';
 
   // static const platform = const MethodChannel("myChannel");
-  static const platform = MethodChannel('com.next.cargpstracker/sendMsg');
+  static const platform = MethodChannel('com.nextLLC.cargpstracker/sendMsg');
 
   @override
   void initState() {

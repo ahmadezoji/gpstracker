@@ -4,6 +4,7 @@ import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'models/device.dart';
 
@@ -35,7 +36,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         simPhone: "simPhone",
         type: "car"),
     new Device(
-        serial: "027028362416",
+        serial: "123456789",
         title: "خاور",
         simPhone: "simPhone",
         type: "truck")
@@ -203,6 +204,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
               ],
             ),
             onTap: () {
+              Fluttertoast.showToast(msg: device.title);
               widget.selectedDevice(device);
             }));
   }

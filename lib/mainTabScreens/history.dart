@@ -50,11 +50,13 @@ class _HistoryState extends State<History>
   late double mile = 0;
   late String date = '';
 
-
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
+  List<CircleMarker> circleMarkers = [];
   late Jalali tempPickedDate;
   late double zoomLevel = 5.0;
+  late bool showPoint = false;
+
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
   late LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
@@ -97,10 +99,12 @@ class _HistoryState extends State<History>
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
         dirLatLons.clear();
+        circleMarkers.clear();
         dirArr.clear();
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
+          circleMarkers.add(CircleMarker(point: LatLng(p.lat, p.lon), radius: 2,color: Colors.blue));
           dirArr.add(p);
         }
         setState(() {
@@ -123,6 +127,12 @@ class _HistoryState extends State<History>
     currentDevice = device;
   }
 
+  void onChangedPointShow(bool? value) {
+    setState(() {
+      showPoint = value!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -139,7 +149,9 @@ class _HistoryState extends State<History>
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
+    return Theme.of(context).brightness == Brightness.dark
+        ? AppConstants.DARK_STYLE
+        : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap() {
@@ -197,7 +209,7 @@ class _HistoryState extends State<History>
           interactiveFlags: interActiveFlags,
         ),
         layers: [
-          MarkerLayerOptions(markers: markers),
+          // MarkerLayerOptions(markers: markers),
           TileLayerOptions(
             urlTemplate:
                 "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
@@ -206,10 +218,14 @@ class _HistoryState extends State<History>
               'accessToken': AppConstants.mapBoxAccessToken,
             },
           ),
-          PolylineLayerOptions(
+          if(showPoint) CircleLayerOptions(circles: circleMarkers,),
+          if(!showPoint) PolylineLayerOptions(
             polylines: [
               Polyline(
-                  points: dirLatLons, strokeWidth: 4.0, color: Colors.purple),
+                  points: dirLatLons,
+                  strokeWidth: 4.0,
+                  color: Colors.purple,
+                  isDotted: showPoint),
             ],
           ),
           // new MarkerLayerOptions(markers: markers),
@@ -233,6 +249,7 @@ class _HistoryState extends State<History>
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        Checkbox(value: showPoint, onChanged: onChangedPointShow),
         FloatingActionButton(
           backgroundColor: btnColor,
           heroTag: "btn1",

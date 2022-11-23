@@ -72,6 +72,6 @@ class DefaultFirebaseOptions {
     projectId: 'gpstracker-891e2',
     storageBucket: 'gpstracker-891e2.appspot.com',
     iosClientId: '578503926545-6rbjiqpd3ujsmg9lf12666cm8qvck6q8.apps.googleusercontent.com',
-    iosBundleId: 'com.next.cargpstracker',
+    iosBundleId: 'com.nextLLC.cargpstracker',
   );
 }

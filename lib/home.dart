@@ -67,7 +67,10 @@ class HomePageState extends State<HomePage>
                         MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     },
-                    child: Text("login".tr,style: TextStyle(color: fontColor,fontFamily: 'IranSans')),),
+                    child: Text("login".tr,
+                        style: TextStyle(
+                            color: fontColor, fontFamily: 'IranSans')),
+                  ),
             // status bar color
             actions: [
               IconButton(
@@ -89,7 +92,7 @@ class HomePageState extends State<HomePage>
                   showTimeZoneDlgBox(context);
                 },
                 child:
-                    SvgPicture.asset("assets/timezone.svg", color: fontColor),
+                SvgPicture.asset("assets/timezone.svg", color: fontColor),
               ),
               SizedBox(width: 10),
               GestureDetector(
@@ -107,6 +110,9 @@ class HomePageState extends State<HomePage>
       );
     });
   }
+
   @override
   bool get wantKeepAlive => true;
 }
+
+

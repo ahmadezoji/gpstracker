@@ -235,6 +235,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     Row(
                                       children: [
                                         Text(
+                                          "Serial".tr + ' : ',
+                                          style: textStyle,
+                                        ),
+                                        Text('${currentDevice!.serial}',
+                                            style: TextStyle(fontSize: 12))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
                                           "speed".tr + ' : ',
                                           style: textStyle,
                                         ),
