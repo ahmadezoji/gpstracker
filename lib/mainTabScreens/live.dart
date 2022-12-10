@@ -104,7 +104,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   Future<void> getCurrentLocation() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': currentDevice!.serial});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
@@ -375,7 +375,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
+    return Theme.of(context).brightness == Brightness.dark
+        ? AppConstants.DARK_STYLE
+        : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap(ThemeModel themeNotifier) {

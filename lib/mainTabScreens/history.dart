@@ -90,7 +90,7 @@ class _HistoryState extends State<History>
       dirArr.clear();
       print(currentDevice!.serial);
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/history/'));
       request.fields
           .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
@@ -104,7 +104,8 @@ class _HistoryState extends State<History>
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
-          circleMarkers.add(CircleMarker(point: LatLng(p.lat, p.lon), radius: 2,color: Colors.blue));
+          circleMarkers.add(CircleMarker(
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.blue));
           dirArr.add(p);
         }
         setState(() {
@@ -218,16 +219,20 @@ class _HistoryState extends State<History>
               'accessToken': AppConstants.mapBoxAccessToken,
             },
           ),
-          if(showPoint) CircleLayerOptions(circles: circleMarkers,),
-          if(!showPoint) PolylineLayerOptions(
-            polylines: [
-              Polyline(
-                  points: dirLatLons,
-                  strokeWidth: 4.0,
-                  color: Colors.purple,
-                  isDotted: showPoint),
-            ],
-          ),
+          if (showPoint)
+            CircleLayerOptions(
+              circles: circleMarkers,
+            ),
+          if (!showPoint)
+            PolylineLayerOptions(
+              polylines: [
+                Polyline(
+                    points: dirLatLons,
+                    strokeWidth: 4.0,
+                    color: Colors.purple,
+                    isDotted: showPoint),
+              ],
+            ),
           // new MarkerLayerOptions(markers: markers),
         ],
       ),

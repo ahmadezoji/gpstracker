@@ -43,7 +43,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
         _isLoading = true;
       });
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/loginByPass/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/loginByPass/'));
       request.fields.addAll({
         'phone': userPhone,
         'password': password,
@@ -64,7 +64,10 @@ class _LoginByPassPageState extends State<LoginByPassPage>
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => HomePage(userLogined: json["status"],), fullscreenDialog: false));
+                  builder: (_) => HomePage(
+                        userLogined: json["status"],
+                      ),
+                  fullscreenDialog: false));
         } else {
           Fluttertoast.showToast(msg: 'username or password not correct ');
         }

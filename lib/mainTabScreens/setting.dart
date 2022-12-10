@@ -122,7 +122,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
       if (phone == null) return;
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/getDeviceByUser/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/getDeviceByUser/'));
       request.fields.addAll({
         'phone': phone,
       });
@@ -159,7 +159,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   void fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/getConfig/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/getConfig/'));
       request.fields.addAll({'serial': serial});
 
       http.StreamedResponse response = await request.send();
@@ -208,7 +208,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     // sendSms();
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/setConfig/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
       request.fields.addAll({
         'serial': serial,
         'timezone': timezone,

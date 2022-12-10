@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":smart_auth:androidTest" external.linked.project.path="$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="4" platform="JVM 1.8" allPlatforms="JVM [1.8]" useProjectSettings="false">
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xallow-no-source-files" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/../../../../build/smart_auth/tmp/kotlin-classes/debugAndroidTest" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/08f93478622ccda5c211ee522d9482aa/jetified-flutter_embedding_debug-1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f.jar:/root/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-java8/2.2.0/cd3478503da69b1a7e0319bd2d1389943db9b364/lifecycle-common-java8-2.2.0.jar:/root/.gradle/caches/transforms-2/files-2.1/f015b196304027e9c7b879259d173c0b/jetified-play-services-auth-20.1.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/02c9236defe13aca5f05d77dd965c474/jetified-play-services-auth-api-phone-18.0.1-api.jar:/root/.gradle/caches/transforms-2/files-2.1/9486c8c7bb31f66d1dc415caacd326b1/jetified-play-services-auth-base-18.0.1-api.jar:/root/.gradle/caches/transforms-2/files-2.1/1c431c1bcb0e21ccce09973bdc306546/jetified-play-services-base-18.0.1-api.jar:/root/.gradle/caches/transforms-2/files-2.1/6cbfb4c8988f7368e0f0efb5c0d17494/jetified-play-services-tasks-18.0.1-api.jar:/root/.gradle/caches/transforms-2/files-2.1/141964f17942117a0d018911393961fc/jetified-play-services-basement-18.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/4504b2500680552932c08c7643fc0047/fragment-1.1.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/cce686d16354e808e477f0c011425596/loader-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/c9d3b60b220f3c42b018fa1bc29f1556/viewpager-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/67c04256474b8b198d01885007401bfe/jetified-activity-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/7a05905f0a45e5a037818e356b625548/customview-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/3b0107ce0ae76fd6f50a92af30cc26c7/core-1.6.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/f37a221ad635102d2da9bd1beb0d7563/lifecycle-runtime-2.2.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/6cc1faca26f75de5d1cf9372acad0266/jetified-savedstate-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/26035d8828269710c687aaeb68e9369f/lifecycle-livedata-2.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/9b7cd508eea3c303c34b944d3f498040/lifecycle-livedata-core-2.0.0-api.jar:/root/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.2.0/4ef09a745007778eef83b92f8f23987a8ea59496/lifecycle-common-2.2.0.jar:/root/.gradle/caches/transforms-2/files-2.1/68d342b7d1a05651da88602d2d328eac/core-runtime-2.0.0-api.jar:/root/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/b3152fc64428c9354344bd89848ecddc09b6f07e/core-common-2.1.0.jar:/root/.gradle/caches/transforms-2/files-2.1/23ca3a3bece236641f95a2a7047a4d46/versionedparcelable-1.1.1-api.jar:/root/.gradle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/1f27220b47669781457de0d600849a5de0e89909/collection-1.1.0.jar:/root/.gradle/caches/transforms-2/files-2.1/2c24d4a391eea8f4252602734198e09c/lifecycle-viewmodel-2.1.0-api.jar:/root/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.2.0/57136ff68ee784c6e19db34ed4a175338fadfde1/annotation-1.2.0.jar:/root/.gradle/caches/transforms-2/files-2.1/1f9450b2f6dc06dcb232309819450385/jetified-annotation-experimental-1.1.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/e474ebd3d638c280da821a7256403c1f/jetified-tracing-1.0.0-api.jar:/root/.gradle/caches/transforms-2/files-2.1/2a54bab251241d6ac0f7d2b2a8f2b48c/jetified-window-java-1.0.0-beta04-api.jar:/root/.gradle/caches/transforms-2/files-2.1/c9de64fd19d4f6af18906cb5f8e07b2c/jetified-window-1.0.0-beta04-api.jar:/root/.gradle/caches/transforms-2/files-2.1/13295ddcbfc4cf96bc3855aeff772350/jetified-kotlinx-coroutines-android-1.5.2.jar:/root/.gradle/caches/transforms-2/files-2.1/162f04062dac49aab88cd1106cc39949/jetified-kotlinx-coroutines-core-jvm-1.5.2.jar:/root/.gradle/caches/transforms-2/files-2.1/02a8e7d984f2ff46e8bbba14b1fafce5/jetified-kotlin-stdlib-jdk8-1.5.30.jar:/root/.gradle/caches/transforms-2/files-2.1/1c0087dbd8c70e50c8701bffc3f44dde/jetified-kotlin-stdlib-jdk7-1.6.10.jar:/root/.gradle/caches/transforms-2/files-2.1/2c793b13b4290d0582944b98e09a29a5/jetified-kotlin-stdlib-1.6.10.jar:/root/.gradle/caches/transforms-2/files-2.1/9a1743e9551af015e740b1a4f514e651/jetified-annotations-13.0.jar:/root/.gradle/caches/transforms-2/files-2.1/b12fb1b2beabcbebe54d83e1a5a5cbb4/jetified-kotlin-stdlib-common-1.6.10.jar:/usr/lib/android-sdk/platforms/android-31/android.jar:/usr/lib/android-sdk/build-tools/29.0.2/core-lambda-stubs.jar" />
+          <option name="noStdlib" value="true" />
+          <option name="moduleName" value="smart_auth_debug" />
+          <option name="jvmTarget" value="1.8" />
+          <option name="friendPaths">
+            <array>
+              <option value="$MODULE_DIR$/../../../../build/smart_auth/tmp/kotlin-classes/debug" />
+              <option value="$MODULE_DIR$/../../../../build/smart_auth/intermediates/javac/debug/classes" />
+              <option value="$MODULE_DIR$/../../../../build/smart_auth/intermediates/compile_library_classes_jar/debug/classes.jar" />
+            </array>
+          </option>
+          <option name="languageVersion" value="1.6" />
+          <option name="apiVersion" value="1.6" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+        </afterSyncTasks>
+        <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/main/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/debug/res;file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/androidTest/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/resValues/androidTest/debug" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="PROJECT_TYPE" value="1" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android/src/androidTestDebug" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/ap_generated_sources/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/resValues/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/smart_auth/generated/source/buildConfig/androidTest/debug" />
+    <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="android.smart_auth.main" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation:1.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth:20.1.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth-api-phone:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth-base:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-base:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-tasks:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-basement:18.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.activity:activity:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.core:core:1.6.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.2.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.savedstate:savedstate:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.tracing:tracing:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.window:window-java:1.0.0-beta04@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.window:window:1.0.0-beta04@aar" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="android.smart_auth.main" />
+</module>

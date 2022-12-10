@@ -36,7 +36,7 @@ class _OtpPageState extends State<OtpPage>
   void addUser() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/addUser/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/addUser/'));
       request.fields.addAll({'phone': widget.userPhone});
       http.StreamedResponse response = await request.send();
 
@@ -84,7 +84,7 @@ class _OtpPageState extends State<OtpPage>
   void resendCode() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
       request.fields.addAll({'phone': widget.userPhone});
       http.StreamedResponse response = await request.send();
 

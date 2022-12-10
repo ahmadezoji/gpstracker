@@ -39,7 +39,7 @@ class _AddVehicleState extends State<AddVehicle>
   void addDevice() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/addDevice/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/addDevice/'));
       request.fields.addAll({
         'serial': serial,
         'userNum': 'widget.userPhone',

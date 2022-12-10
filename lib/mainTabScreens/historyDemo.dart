@@ -91,7 +91,7 @@ class _HistoryDemoState extends State<HistoryDemo>
       // serial = prefs.getString('serial')!;
       dirArr.clear();
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+          'POST', Uri.parse('https://130.185.77.83:4680/history/'));
       request.fields.addAll({'serial': '027028362416', 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
@@ -104,7 +104,8 @@ class _HistoryDemoState extends State<HistoryDemo>
         for (var age in json["features"]) {
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
-          circleMarkers.add(CircleMarker(point: LatLng(p.lat, p.lon), radius: 2,color: Colors.blue));
+          circleMarkers.add(CircleMarker(
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.blue));
           dirArr.add(p);
         }
         setState(() {
@@ -132,21 +133,18 @@ class _HistoryDemoState extends State<HistoryDemo>
     super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          return Scaffold(
-            key: _key,
-            drawerEnableOpenDragGesture: false,
-            body: buildMap(),
-            extendBody: true,
-            bottomNavigationBar: MyBottomDrawer(
-                selectedDevice: _onSelectedDevice),
-          );
-        });
+      return Scaffold(
+        key: _key,
+        drawerEnableOpenDragGesture: false,
+        body: buildMap(),
+        extendBody: true,
+        bottomNavigationBar: MyBottomDrawer(selectedDevice: _onSelectedDevice),
+      );
+    });
   }
 
   String getMapThem() {
-    return Theme
-        .of(context)
-        .brightness == Brightness.dark
+    return Theme.of(context).brightness == Brightness.dark
         ? AppConstants.DARK_STYLE
         : AppConstants.LIGHT_STYLE;
   }
@@ -158,18 +156,17 @@ class _HistoryDemoState extends State<HistoryDemo>
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) =>
-        new Container(
+        builder: (ctx) => new Container(
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: backgroundColor,
-              ),
-              child: Text(
-                'saam ezoji',
-                style: TextStyle(color: Colors.blue, fontSize: 27),
-              ),
-            )),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: backgroundColor,
+          ),
+          child: Text(
+            'saam ezoji',
+            style: TextStyle(color: Colors.blue, fontSize: 27),
+          ),
+        )),
       ),
     ];
 
@@ -211,24 +208,26 @@ class _HistoryDemoState extends State<HistoryDemo>
 
           TileLayerOptions(
             urlTemplate:
-            "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked
-                ? AppConstants.SATELLITE_STYLE
-                : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+                "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
             additionalOptions: {
               'mapStyleId': AppConstants.mapBoxStyleId,
               'accessToken': AppConstants.mapBoxAccessToken,
             },
           ),
-          if(showPoint) CircleLayerOptions(circles: circleMarkers,),
-          if(!showPoint) PolylineLayerOptions(
-            polylines: [
-              Polyline(
-                  points: dirLatLons,
-                  strokeWidth: 4.0,
-                  color: Colors.purple,
-                  isDotted: showPoint),
-            ],
-          ),
+          if (showPoint)
+            CircleLayerOptions(
+              circles: circleMarkers,
+            ),
+          if (!showPoint)
+            PolylineLayerOptions(
+              polylines: [
+                Polyline(
+                    points: dirLatLons,
+                    strokeWidth: 4.0,
+                    color: Colors.purple,
+                    isDotted: showPoint),
+              ],
+            ),
           // new MarkerLayerOptions(markers: markers),
         ],
       ),
@@ -249,9 +248,7 @@ class _HistoryDemoState extends State<HistoryDemo>
   }
 
   Column _floatingBottons() {
-    Color btnColor = Theme
-        .of(context)
-        .brightness == Brightness.dark
+    Color btnColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.blue
         : lightIconColor;
 
@@ -327,7 +324,7 @@ class _HistoryDemoState extends State<HistoryDemo>
       // print('selectedDate $selectedDate');
 
       Timestamp myTimeStamp =
-      Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
       currentTimeStamp = myTimeStamp;
       print(myTimeStamp.seconds.toString());
       fetch(myTimeStamp.seconds.toString());
