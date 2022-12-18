@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cargpstracker/myRequests.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -96,8 +97,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // fetch();
-    getUserDevice();
+    getCurrentUserDevices();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -105,6 +105,23 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     controller.repeat(reverse: true);
 
     super.initState();
+  }
+
+  void getCurrentUserDevices() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String? phone = prefs.getString('phone');
+      // ignore: non_constant_identifier_names
+      getUserDevice(phone!).then((list) async {
+        for (var dev in list!) {
+          devicesListSerials.add(dev.getSerial());
+        }
+        serial = devicesListSerials[0];
+        setState(() {
+          loading = true;
+        });
+      });
+    } catch (e) {}
   }
 
   @override
@@ -115,51 +132,10 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void getUserDevice() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      String? phone = prefs.getString('phone');
-
-      if (phone == null) return;
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/getDeviceByUser/'));
-      request.fields.addAll({
-        'phone': phone,
-      });
-
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = convert.jsonDecode(responseString);
-
-        for (var dev in json) {
-          Device device = Device.fromJson(dev);
-          devicesList.add(device);
-          devicesListSerials.add(device.getSerial());
-        }
-        serial = devicesListSerials[0];
-        // currentDevice = devicesList[0];
-        setState(() {
-          loading = true;
-        });
-
-        // fetch();
-        // final prefs = await SharedPreferences.getInstance();
-        // prefs.setString('serial', devicesListSerials[0]).then((bool success) {
-        //   print(success);
-        // });
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {}
-  }
-
   void fetch() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/getConfig/'));
+          'POST', Uri.parse('http://127.0.0.1:4680/getConfig/'));
       request.fields.addAll({'serial': serial});
 
       http.StreamedResponse response = await request.send();
@@ -208,7 +184,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     // sendSms();
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/setConfig/'));
+          'POST', Uri.parse('http://127.0.0.1:4680/setConfig/'));
       request.fields.addAll({
         'serial': serial,
         'timezone': timezone,

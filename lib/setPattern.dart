@@ -17,9 +17,9 @@ class _SetPatternState extends State<SetPattern> {
   void saveShared(List<int> input) async {
     List<String> strList = input.map((i) => i.toString()).toList();
     final prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('pattern', strList).then((bool success) async {
+   prefs.setStringList('pattern', strList).then((bool success) async {
       print('save pattern');
-    });
+    }); 
   }
 
   @override

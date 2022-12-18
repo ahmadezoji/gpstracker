@@ -21,6 +21,8 @@ const textFeildColor = Color.fromRGBO(244, 244, 244, 1.0);
 const BorderSpacerColor = Color.fromRGBO(174, 174, 174, 1.0);
 const ProfileheaderColor = Color.fromRGBO(44, 179, 255, 1.0);
 const mapStatusColor = Color.fromRGBO(140, 140, 140, 1.0);
+const vehicleCardColor = Color.fromRGBO(236, 236, 236, 1.0);
+const selectedVehicleCardColor = Color.fromRGBO(70, 175, 208, 1.0);
 
 class AppConstants {
   static const String LIGHT_STYLE = 'ckzcmemek003x14rwpyjekvla';

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,11 +19,13 @@ class _SpalshScreenState extends State<SpalshScreen>
   late AnimationController controller;
   List<int>? pattern;
   late bool userLogined = false;
+  List<Device> devicesList = [];
 
   @override
   void initState() {
     super.initState();
     // SystemChrome.setEnabledSystemUIOverlays ([]);
+    getShared();
     HttpOverrides.global = MyHttpOverrides();
     controller = AnimationController(
       vsync: this,
@@ -29,23 +33,34 @@ class _SpalshScreenState extends State<SpalshScreen>
     )..addListener(() {});
     controller.repeat(reverse: false);
 
-    Timer(Duration(seconds: 3), () => pushPage());
+    // Timer(Duration(seconds: 3), () => pushPage());
   }
 
-  void init() async {
+  void getShared() async {
     final prefs = await SharedPreferences.getInstance();
     String? phone = prefs.getString('phone');
-    if (phone == null || phone == '')
+    if (phone == null || phone == '') {
       userLogined = false;
-    else
+      getUserDevice("09192592697").then((list) async {
+        devicesList = list!;
+        pushPage();
+      });
+    } else {
       userLogined = true;
+      getUserDevice(phone).then((list) async {
+        devicesList = list!;
+        pushPage();
+      });
+    }
   }
 
   void pushPage() async {
     try {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>new  HomePage(userLogined: userLogined,)),
+        MaterialPageRoute(
+            builder: (context) => new HomePage(
+                userLogined: userLogined, userDevices: devicesList)),
       );
       // final prefs = await SharedPreferences.getInstance();
       // String? phone = prefs.getString('phone');

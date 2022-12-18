@@ -2,6 +2,7 @@ import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,11 @@ import 'package:get/get.dart';
 enum languages { english, farsi }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.userLogined}) : super(key: key);
+  const HomePage(
+      {Key? key, required this.userLogined, required this.userDevices})
+      : super(key: key);
   final bool userLogined;
+  final List<Device> userDevices;
 
   @override
   HomePageState createState() => HomePageState();
@@ -92,7 +96,7 @@ class HomePageState extends State<HomePage>
                   showTimeZoneDlgBox(context);
                 },
                 child:
-                SvgPicture.asset("assets/timezone.svg", color: fontColor),
+                    SvgPicture.asset("assets/timezone.svg", color: fontColor),
               ),
               SizedBox(width: 10),
               GestureDetector(
@@ -103,8 +107,8 @@ class HomePageState extends State<HomePage>
               ),
               SizedBox(width: 30),
             ]),
-        body: const Center(
-          child: MyStatefulWidget(),
+        body: Center(
+          child: new MyStatefulWidget(userLogined: widget.userLogined, userDevices:widget.userDevices)
         ),
         drawer: LeftDrawer(),
       );
@@ -114,5 +118,3 @@ class HomePageState extends State<HomePage>
   @override
   bool get wantKeepAlive => true;
 }
-
-

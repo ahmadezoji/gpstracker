@@ -2,6 +2,7 @@ import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,17 +20,21 @@ class LeftDrawerState extends State<LeftDrawer>
   void initState() {
     super.initState();
   }
-  void logout()async{
+
+  void logout() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('phone', '').then((bool success) {
       print(success);
     });
-
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => HomePage(userLogined: false,), fullscreenDialog: false));
+    getUserDevice("09192592697").then((list) async {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(userLogined: false, userDevices: list!),
+              fullscreenDialog: false));
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -54,13 +59,13 @@ class LeftDrawerState extends State<LeftDrawer>
                 Image(image: AssetImage("assets/user_outline.png")),
                 Text("saam ezoji",
                     style:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text("+905346403281",
                     style:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
                 Text("saam.ezoji@gmailcm",
                     style:
-                    TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
               ],
             ),
           ),
@@ -72,10 +77,13 @@ class LeftDrawerState extends State<LeftDrawer>
                 Text("profile".tr),
               ],
             ),
-            onTap: () {Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => ProfilePage(userPhone: "09195835135"), fullscreenDialog: false));},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => ProfilePage(userPhone: "09195835135"),
+                      fullscreenDialog: false));
+            },
           ),
           ListTile(
             title: Row(
@@ -107,13 +115,10 @@ class LeftDrawerState extends State<LeftDrawer>
           ListTile(
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.logout, size: 32),
-                Text("Logout".tr)
-              ],
+              children: [Icon(Icons.logout, size: 32), Text("Logout".tr)],
             ),
             onTap: () {
-             logout();
+              logout();
             },
           ),
         ],

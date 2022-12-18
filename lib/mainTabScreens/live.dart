@@ -5,7 +5,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:cargpstracker/bottomDrawer.dart';
+import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -24,6 +24,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class Live extends StatefulWidget {
+  const Live({Key? key, required this.userLogined, required this.userDevices})
+      : super(key: key);
+  final List<Device> userDevices;
+  final bool userLogined;
   @override
   _LiveState createState() => _LiveState();
 }
@@ -58,7 +62,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       speed: 0.0,
       mileage: 0,
       heading: 0.0);
-  late LatLng currentLatLng = new LatLng(41.025819, 29.230415);
+  late LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
   static const double CHANGE_ZOOM = 12;
@@ -96,15 +100,16 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Future<void> getCurrentDevice() async {
-    Map<String, dynamic> map = await loadJson('device');
-    print('map $map');
-    currentDevice = Device.fromJson(map);
+    // Map<String, dynamic> map = await loadJson('device');
+    // print('map $map');
+    // currentDevice = Device.fromJson(map);
+    currentDevice = widget.userDevices[0];
   }
 
   Future<void> getCurrentLocation() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/live/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
       request.fields.addAll({'serial': currentDevice!.serial});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();
@@ -142,9 +147,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     _mapController.move(currentLatLng, CHANGE_ZOOM);
   }
 
-  Future<void> _onSelectedDevice(Device device) async {
+  Future<void> _onSelectedDevice(int deviceIndex) async {
     setState(() {
-      currentDevice = device;
+      currentDevice = widget.userDevices[deviceIndex];
     });
     updatePoint();
   }
@@ -159,8 +164,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         drawerEnableOpenDragGesture: true,
         body: buildMap(themeNotifier),
         extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(
+        bottomNavigationBar: myAllVehicle(
           selectedDevice: _onSelectedDevice,
+          userLogined: widget.userLogined,
+          userDevices: widget.userDevices,
         ),
       ));
     });
@@ -394,51 +401,49 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       ),
     ];
 
-    if (currentDevice != null) {
-      return Scaffold(
-        drawerEnableOpenDragGesture: true,
-        body: FlutterMap(
-          children: [
-            Center(
-                child: Container(
-              width: 150,
-              height: 150,
-              color: Colors.yellow,
-            ))
-          ],
-          mapController: _mapController,
-          options: MapOptions(
-              center: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              interactiveFlags: interActiveFlags,
-              enableMultiFingerGestureRace: true),
-          layers: [
-            // TileLayerOptions(
-            //   reset: resetController.stream,
-            //   urlTemplate: sattliteChecked ? sattlite : getMapThem(),
-            //   subdomains: ['a', 'b', 'c'],
-            // ),
-            TileLayerOptions(
-              urlTemplate:
-                  "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
-              additionalOptions: {
-                'mapStyleId': AppConstants.mapBoxStyleId,
-                'accessToken': AppConstants.mapBoxAccessToken,
-              },
-            ),
-            MarkerLayerOptions(markers: markers)
-          ],
-        ),
-        floatingActionButton: _floatingBottons(),
-      );
-    } else {
-      return Scaffold(
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [Center(child: Text('Please wait its loading...'))],
-        )),
-      );
-    }
+    // if (currentDevice) {
+    return Scaffold(
+      drawerEnableOpenDragGesture: true,
+      body: FlutterMap(
+        children: [
+          Center(
+              child: Container(
+            width: 150,
+            height: 150,
+            color: Colors.yellow,
+          ))
+        ],
+        mapController: _mapController,
+        options: MapOptions(
+            center: currentDevice == null
+                ? LatLng(35.7159678, 51.2870684)
+                : LatLng(currentLatLng.latitude, currentLatLng.longitude),
+            interactiveFlags: interActiveFlags,
+            enableMultiFingerGestureRace: true),
+        layers: [
+          TileLayerOptions(
+            urlTemplate:
+                "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+            additionalOptions: {
+              'mapStyleId': AppConstants.mapBoxStyleId,
+              'accessToken': AppConstants.mapBoxAccessToken,
+            },
+          ),
+          if (currentDevice != null) MarkerLayerOptions(markers: markers)
+        ],
+      ),
+      floatingActionButton: _floatingBottons(),
+    );
+    // }
+    // else {
+    //   return Scaffold(
+    //     body: Center(
+    //         child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: [Center(child: Text('Please wait its loading...'))],
+    //     )),
+    //   );
+    // }
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {

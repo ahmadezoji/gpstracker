@@ -24,6 +24,11 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
+  const History(
+      {Key? key, required this.userLogined, required this.userDevices})
+      : super(key: key);
+  final List<Device> userDevices;
+  final bool userLogined;
   @override
   _HistoryState createState() => _HistoryState();
 }
@@ -79,8 +84,9 @@ class _HistoryState extends State<History>
   }
 
   void getCurrentDevice() async {
-    Map<String, dynamic> map = await loadJson('device');
-    currentDevice = Device.fromJson(map);
+    // Map<String, dynamic> map = await loadJson('device');
+    // currentDevice = Device.fromJson(map);
+    currentDevice = widget.userDevices[0];
   }
 
   void fetch(String stamp) async {
@@ -90,7 +96,7 @@ class _HistoryState extends State<History>
       dirArr.clear();
       print(currentDevice!.serial);
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/history/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
       request.fields
           .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
@@ -105,7 +111,7 @@ class _HistoryState extends State<History>
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
           circleMarkers.add(CircleMarker(
-              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.blue));
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.yellow));
           dirArr.add(p);
         }
         setState(() {
@@ -144,7 +150,10 @@ class _HistoryState extends State<History>
         drawerEnableOpenDragGesture: false,
         body: buildMap(),
         extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(selectedDevice: _onSelectedDevice),
+        bottomNavigationBar: MyBottomDrawer(
+            selectedDevice: _onSelectedDevice,
+            userLogined: widget.userLogined,
+            userDevices: widget.userDevices),
       );
     });
   }

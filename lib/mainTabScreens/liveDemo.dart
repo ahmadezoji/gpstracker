@@ -143,6 +143,8 @@ class _LiveDemoState extends State<LiveDemo>
         extendBody: true,
         bottomNavigationBar: MyBottomDrawer(
           selectedDevice: _onSelectedDevice,
+          userLogined: false,
+          userDevices: [],
         ),
       ));
     });

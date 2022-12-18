@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage>
         _isLoading = true;
       });
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/phoneVerify/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
       request.fields.addAll({'phone': userPhone});
       http.StreamedResponse response = await request.send();
 
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage>
                       /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                      child: Image.asset('assets/flutter-logo.png')),
+                      child: Image.asset('assets/GPS+icon.png')),
                 ),
               ),
               Padding(
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage>
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (_) => LoginByPassPage(userPhone: userPhone),

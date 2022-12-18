@@ -9,8 +9,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'models/device.dart';
 
 class MyBottomDrawer extends StatefulWidget {
-  const MyBottomDrawer({Key? key, required this.selectedDevice})
+  const MyBottomDrawer(
+      {Key? key,
+      required this.selectedDevice,
+      required this.userLogined,
+      required this.userDevices})
       : super(key: key);
+  final List<Device> userDevices;
+  final bool userLogined;
   final Function selectedDevice;
   @override
   _MyBottomDrawerState createState() => _MyBottomDrawerState();
@@ -24,29 +30,25 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
 
-  List<Device> devices = [
-    new Device(
-        serial: "027028360584",
-        title: "موتور",
-        simPhone: "simPhone",
-        type: "motor"),
-    new Device(
-        serial: "027028362416",
-        title: "ماشین",
-        simPhone: "simPhone",
-        type: "car"),
-    new Device(
-        serial: "123456789",
-        title: "خاور",
-        simPhone: "simPhone",
-        type: "truck")
-  ];
+  // List<Device> devices = [
+  //   new Device(
+  //       serial: "027028360584",
+  //       title: "موتور",
+  //       simPhone: "simPhone",
+  //       type: "motor"),
+  //   new Device(
+  //       serial: "027028362416",
+  //       title: "ماشین",
+  //       simPhone: "simPhone",
+  //       type: "car"),
+  //   new Device(
+  //       serial: "123456789", title: "خاور", simPhone: "simPhone", type: "truck")
+  // ];
 
   @override
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +149,8 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
         crossAxisCount: (_screenSize / 80).round(),
         crossAxisSpacing: 10,
         // Generate 100 widgets that display their index in the List.
-        children: List.generate(3, (index) {
-          return _vehicleIcon(context, devices[index]);
+        children: List.generate(widget.userDevices.length, (index) {
+          return _vehicleIcon(context, widget.userDevices[index]);
         }),
       ),
     );
@@ -156,7 +158,7 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
 
   Widget _vehicleIcon(BuildContext context, Device device) {
     String getTypeAsset(String type) {
-      switch (type) {
+      switch (type.toLowerCase()) {
         case "car":
           {
             return "assets/minicar.svg";

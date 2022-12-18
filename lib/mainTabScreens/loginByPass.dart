@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -43,7 +45,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
         _isLoading = true;
       });
       var request = http.MultipartRequest(
-          'POST', Uri.parse('https://130.185.77.83:4680/loginByPass/'));
+          'POST', Uri.parse('http://130.185.77.83:4680/loginByPass/'));
       request.fields.addAll({
         'phone': userPhone,
         'password': password,
@@ -60,14 +62,16 @@ class _LoginByPassPageState extends State<LoginByPassPage>
           prefs.setString('phone', userPhone).then((bool success) {
             print(success);
           });
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => HomePage(
-                        userLogined: json["status"],
-                      ),
-                  fullscreenDialog: false));
+          getUserDevice(userPhone).then((list) async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => HomePage(
+                          userLogined: json["status"],
+                          userDevices: list!,
+                        ),
+                    fullscreenDialog: false));
+          });
         } else {
           Fluttertoast.showToast(msg: 'username or password not correct ');
         }
@@ -106,7 +110,7 @@ class _LoginByPassPageState extends State<LoginByPassPage>
                   child: Container(
                       width: 200,
                       height: 150,
-                      child: Image.asset('assets/flutter-logo.png')),
+                      child: Image.asset('assets/GPS+icon.png')),
                 ),
               ),
               Padding(

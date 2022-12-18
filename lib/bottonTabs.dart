@@ -4,6 +4,7 @@ import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/historyDemo.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,15 +17,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
-
+  const MyStatefulWidget(
+      {Key? key, required this.userLogined, required this.userDevices})
+      : super(key: key);
+  final List<Device> userDevices;
+  final bool userLogined;
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-
+  int _selectedIndex = 1;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -45,8 +48,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     String? phone = prefs.getString('phone');
     if (phone == null)
       userLogined = false;
-    else
+    else {
       userLogined = true;
+    }
   }
 
   // void initFirebase() async {
@@ -108,9 +112,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // ),
         body: IndexedStack(
           children: <Widget>[
-            !userLogined ? GpsPlusDemo() : GpsPlus(),
-            !userLogined ? LiveDemo() : Live(),
-            !userLogined ? HistoryDemo() : History(),
+            GpsPlus(),
+            Live(
+                userLogined: widget.userLogined,
+                userDevices: widget.userDevices),
+            History(
+                userLogined: widget.userLogined,
+                userDevices: widget.userDevices),
+            // !userLogined ? GpsPlusDemo() : GpsPlus(),
+            // !userLogined ? LiveDemo() : Live(),
+            // !userLogined ? HistoryDemo() : History(),
           ],
           index: _selectedIndex,
         ),
