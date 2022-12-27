@@ -27,7 +27,7 @@ class LocaleString extends Translations {
           "motor": "Motor",
           "truck": "Truck",
           "username": "User Name",
-          "phone": "Phone Number",
+          "phone_entry": "Enter your phone number",
           "email": "Email Address",
           "country": "Country Name",
           "city": "City Name",
@@ -45,7 +45,12 @@ class LocaleString extends Translations {
           "draw-your-pattern": "Draw Your pattern",
           "Check Pattern": "Check Pattern",
           "timezone": "Time Zone",
-          "login":"Login"
+          "login": "Login",
+          "profileContent-fullname": "Your Name",
+          "profileContent-email": "Your Email",
+          "profileContent-phone": "Your Phone ",
+          "verification": "Verification",
+          "loginWithPssTick": "I’d like to always login with a password."
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -70,7 +75,7 @@ class LocaleString extends Translations {
           "motor": "موتور سیکلت",
           "truck": "خودروی سنگین",
           "username": "نام کاربری",
-          "phone": "شماره تماس",
+          "phone_entry": "  شماره تماس را وارد کنید",
           "email": "آدرس ایمیل",
           "country": "نام کشور",
           "city": "نام شهر",
@@ -88,7 +93,12 @@ class LocaleString extends Translations {
           "draw-your-pattern": "الگوی خود را بکشید",
           "check-pattern": "اعتبار سنجی",
           "timezone": "منطقه زمانی",
-          "login":"ورود"
+          "login": "ورود",
+          "profileContent-fullname": "نام و نام خانوادگی",
+          "profileContent-email": "ایمیل ",
+          "profileContent-phone": "شماره همراه ",
+          "verification": "اعتبارستجی",
+          "loginWithPssTick": "یخواهم با رمز عبور وارد شوم"
         },
       };
 }

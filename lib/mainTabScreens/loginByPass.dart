@@ -5,6 +5,7 @@ import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -44,8 +45,8 @@ class _LoginByPassPageState extends State<LoginByPassPage>
       setState(() {
         _isLoading = true;
       });
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/loginByPass/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/loginByPass/'));
       request.fields.addAll({
         'phone': userPhone,
         'password': password,
@@ -63,14 +64,14 @@ class _LoginByPassPageState extends State<LoginByPassPage>
             print(success);
           });
           getUserDevice(userPhone).then((list) async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => HomePage(
-                          userLogined: json["status"],
-                          userDevices: list!,
-                        ),
-                    fullscreenDialog: false));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (_) => HomePage(
+            //               userLogined: json["status"],
+            //               userDevices: list!,
+            //             ),
+            //         fullscreenDialog: false));
           });
         } else {
           Fluttertoast.showToast(msg: 'username or password not correct ');

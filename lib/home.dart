@@ -3,6 +3,7 @@ import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,14 @@ enum languages { english, farsi }
 
 class HomePage extends StatefulWidget {
   const HomePage(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final bool userLogined;
   final List<Device> userDevices;
+  final User currentUser;
 
   @override
   HomePageState createState() => HomePageState();
@@ -59,22 +64,10 @@ class HomePageState extends State<HomePage>
                 style: TextStyle(color: fontColor, fontFamily: 'IranSans')),
             // iconTheme: IconThemeData(color: fontColor),
             backgroundColor: NabColor,
-            leading: widget.userLogined
-                ? IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () => scaffoldKey.currentState!.openDrawer(),
-                  )
-                : TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                    child: Text("login".tr,
-                        style: TextStyle(
-                            color: fontColor, fontFamily: 'IranSans')),
-                  ),
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => scaffoldKey.currentState!.openDrawer(),
+            ),
             // status bar color
             actions: [
               IconButton(
@@ -108,9 +101,13 @@ class HomePageState extends State<HomePage>
               SizedBox(width: 30),
             ]),
         body: Center(
-          child: new MyStatefulWidget(userLogined: widget.userLogined, userDevices:widget.userDevices)
-        ),
-        drawer: LeftDrawer(),
+            child: new MyStatefulWidget(
+                userLogined: widget.userLogined,
+                userDevices: widget.userDevices)),
+        drawer: LeftDrawer(
+            user: widget.currentUser,
+            userLogined: widget.userLogined,
+            userDevices: widget.userDevices),
       );
     });
   }

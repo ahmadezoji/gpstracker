@@ -134,8 +134,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   void fetch() async {
     try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://127.0.0.1:4680/getConfig/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/getConfig/'));
       request.fields.addAll({'serial': serial});
 
       http.StreamedResponse response = await request.send();
@@ -183,8 +183,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   Future<void> applyChanges() async {
     // sendSms();
     try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://127.0.0.1:4680/setConfig/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/setConfig/'));
       request.fields.addAll({
         'serial': serial,
         'timezone': timezone,

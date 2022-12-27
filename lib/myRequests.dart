@@ -1,16 +1,18 @@
 import 'dart:convert' as convert;
 
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Device>?> getUserDevice(String phone) async {
   try {
     List<Device> devicesList = [];
+    if (phone.isEmpty) return null;
 
     // ignore: unnecessary_null_comparison
     if (phone == null) return null;
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://130.185.77.83:4680/getDeviceByUser/'));
+        'POST', Uri.parse(HTTP_URL + '/getDeviceByUser/'));
     request.fields.addAll({
       'phone': phone,
     });

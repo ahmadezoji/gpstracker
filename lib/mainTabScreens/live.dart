@@ -108,8 +108,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   Future<void> getCurrentLocation() async {
     try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/live/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/live/'));
       request.fields.addAll({'serial': currentDevice!.serial});
       // request.headers.addAll({'Access-Control-Allow-Origin': '*'});
       http.StreamedResponse response = await request.send();

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/bottomDrawer.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
@@ -95,8 +96,8 @@ class _HistoryState extends State<History>
       // serial = prefs.getString('serial')!;
       dirArr.clear();
       print(currentDevice!.serial);
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/history/'));
       request.fields
           .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
@@ -150,7 +151,7 @@ class _HistoryState extends State<History>
         drawerEnableOpenDragGesture: false,
         body: buildMap(),
         extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(
+        bottomNavigationBar: myAllVehicle(
             selectedDevice: _onSelectedDevice,
             userLogined: widget.userLogined,
             userDevices: widget.userDevices),

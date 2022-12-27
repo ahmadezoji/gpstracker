@@ -40,11 +40,13 @@ class _SpalshScreenState extends State<SpalshScreen>
     final prefs = await SharedPreferences.getInstance();
     String? phone = prefs.getString('phone');
     if (phone == null || phone == '') {
-      userLogined = false;
-      getUserDevice("09192592697").then((list) async {
-        devicesList = list!;
-        pushPage();
-      });
+      // userLogined = false;
+      // getUserDevice("09127060772").then((list) async {
+      //   devicesList = list!;
+      //   pushPage();
+      // });
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => new LoginPage()));
     } else {
       userLogined = true;
       getUserDevice(phone).then((list) async {
@@ -56,12 +58,13 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   void pushPage() async {
     try {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new HomePage(
-                userLogined: userLogined, userDevices: devicesList)),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => new HomePage(
+      //           userLogined: userLogined, userDevices: devicesList)),
+      // );
+
       // final prefs = await SharedPreferences.getInstance();
       // String? phone = prefs.getString('phone');
       // print(phone);

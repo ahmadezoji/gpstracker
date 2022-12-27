@@ -90,8 +90,8 @@ class _HistoryDemoState extends State<HistoryDemo>
       // final prefs = await SharedPreferences.getInstance();
       // serial = prefs.getString('serial')!;
       dirArr.clear();
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/history/'));
       request.fields.addAll({'serial': '027028362416', 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
@@ -138,7 +138,10 @@ class _HistoryDemoState extends State<HistoryDemo>
         drawerEnableOpenDragGesture: false,
         body: buildMap(),
         extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(selectedDevice: _onSelectedDevice,userLogined: false,userDevices: []),
+        bottomNavigationBar: MyBottomDrawer(
+            selectedDevice: _onSelectedDevice,
+            userLogined: false,
+            userDevices: []),
       );
     });
   }

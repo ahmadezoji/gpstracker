@@ -31,6 +31,28 @@ class _myAllVehicleState extends State<myAllVehicle>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
   int selectedDeviceIndex = 0;
+  // List<Device> devices = [
+  //   new Device(
+  //       serial: "027028360584",
+  //       title: "موتور",
+  //       simPhone: "simPhone",
+  //       type: "motor"),
+  //   new Device(
+  //       serial: "027028362416",
+  //       title: "ماشین",
+  //       simPhone: "simPhone",
+  //       type: "car"),
+  //   new Device(
+  //       serial: "123456789",
+  //       title: "خاور",
+  //       simPhone: "simPhone",
+  //       type: "truck"),
+  //   new Device(
+  //       serial: "027028362416",
+  //       title: "ماشین",
+  //       simPhone: "simPhone",
+  //       type: "car"),
+  // ];
   @override
   void initState() {
     super.initState();

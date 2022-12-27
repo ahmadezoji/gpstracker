@@ -1,14 +1,18 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -34,8 +38,8 @@ class _LoginPageState extends State<LoginPage>
       setState(() {
         _isLoading = true;
       });
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/phoneVerify/'));
       request.fields.addAll({'phone': userPhone});
       http.StreamedResponse response = await request.send();
 
@@ -43,16 +47,15 @@ class _LoginPageState extends State<LoginPage>
         final responseData = await response.stream.toBytes();
         final responseString = String.fromCharCodes(responseData);
         final json = jsonDecode(responseString);
-        // print(json);
+        print(json);
         if (json["status"] == true) {
           Fluttertoast.showToast(msg: "sending-varify-code".tr);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (_) =>
-                      OtpPage(code: json["code"], userPhone: userPhone),
+                      Login2Page(userPhone: userPhone, validCode: json["code"]),
                   fullscreenDialog: false));
-
           setState(() {
             _isLoading = false;
           });
@@ -65,23 +68,34 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    late Color fontColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.white
-        : Colors.blue;
-    late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
+    super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
+        backgroundColor: loginBackgroundColor,
         appBar: AppBar(
-          title: Text("Login Page"),
+          title: Text("login".tr,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'IranSans')),
+          backgroundColor: Colors.white, // status bar color
+          // leading: Image.asset("assets/speed-alarm.png"),
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            // Status bar color
+            statusBarColor: statusColor,
+
+            // Status bar brightness (optional)
+            statusBarIconBrightness:
+                Brightness.dark, // For Android (dark icons)
+            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 60.0),
+                padding: const EdgeInsets.only(top: 160.0),
                 child: Center(
                   child: Container(
                       width: 200,
@@ -95,32 +109,54 @@ class _LoginPageState extends State<LoginPage>
               Padding(
                 //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      userPhone = value;
-                    });
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'موبایل',
-                      hintText: 'شماره تماس'),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: backPhoneNumberColor,
+                        blurRadius: 1,
+                        spreadRadius: 1,
+                        offset:
+                            const Offset(2, -6), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: IntlPhoneField(
+                    decoration: InputDecoration(
+                      // labelText: "phone_entry".tr,
+                      fillColor: backPhoneNumberColor,
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        userPhone = value.countryCode + value.number;
+                      });
+                    },
+                    onCountryChanged: (country) {
+                      // print('Country changed to: ' + country.code);
+                    },
+                    initialCountryCode: "IR",
+                  ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => LoginByPassPage(userPhone: userPhone),
-                          fullscreenDialog: false));
-                },
-                child: Text(
-                  'Login With Password',
-                  style: TextStyle(color: Colors.blue, fontSize: 15),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.pushReplacement(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (_) => LoginByPassPage(userPhone: userPhone),
+              //             fullscreenDialog: false));
+              //   },
+              //   child: Text(
+              //     'Login With Password',
+              //     style: TextStyle(color: Colors.blue, fontSize: 15),
+              //   ),
+              // ),
+              SizedBox(height: 50),
               ElevatedButton.icon(
                 icon: _isLoading
                     ? const CircularProgressIndicator()
@@ -132,25 +168,9 @@ class _LoginPageState extends State<LoginPage>
                 onPressed: _isLoading ? null : sendCode,
                 style: ElevatedButton.styleFrom(fixedSize: const Size(250, 50)),
               ),
-              // Container(
-              //   height: 50,
-              //   width: 250,
-              //   decoration: BoxDecoration(
-              //       color: Colors.blue, borderRadius: BorderRadius.circular(5)),
-              //   child: TextButton(
-              //     onPressed: () {
-              //       sendCode();
-              //     },
-              //     child: Text(
-              //       "Login".tr,
-              //       style: TextStyle(color: Colors.white, fontSize: 20),
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: 130,
               ),
-              Text('New User? Create Account')
             ],
           ),
         ),
