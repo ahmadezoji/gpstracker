@@ -9,6 +9,7 @@ import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,10 +27,14 @@ import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
   const History(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   @override
   _HistoryState createState() => _HistoryState();
 }
@@ -154,7 +159,8 @@ class _HistoryState extends State<History>
         bottomNavigationBar: myAllVehicle(
             selectedDevice: _onSelectedDevice,
             userLogined: widget.userLogined,
-            userDevices: widget.userDevices),
+            userDevices: widget.userDevices,
+            currentUser: widget.currentUser),
       );
     });
   }

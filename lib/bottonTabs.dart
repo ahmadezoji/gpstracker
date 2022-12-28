@@ -5,6 +5,7 @@ import 'package:cargpstracker/mainTabScreens/historyDemo.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,10 +19,14 @@ import 'firebase_options.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
@@ -115,10 +120,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             GpsPlus(),
             Live(
                 userLogined: widget.userLogined,
-                userDevices: widget.userDevices),
+                userDevices: widget.userDevices,
+                currentUser: widget.currentUser),
             History(
                 userLogined: widget.userLogined,
-                userDevices: widget.userDevices),
+                userDevices: widget.userDevices,
+                currentUser: widget.currentUser),
             // !userLogined ? GpsPlusDemo() : GpsPlus(),
             // !userLogined ? LiveDemo() : Live(),
             // !userLogined ? HistoryDemo() : History(),

@@ -1,5 +1,7 @@
 import 'dart:core';
 
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.userPhone}) : super(key: key);
-  final String userPhone;
+  const ProfilePage({Key? key, required this.currentUser}) : super(key: key);
+  final User currentUser;
 
   @override
   @override
@@ -19,15 +21,28 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage>
     with AutomaticKeepAliveClientMixin<ProfilePage> {
-  late String userName;
-  late String phone;
+  late String fullname;
   late String email;
-  late String country;
-  late String city;
+  late String birthday;
 
   @override
   void initState() {
     super.initState();
+    print(widget.currentUser.email);
+    fullname =
+        widget.currentUser.fullname.isEmpty ? "" : widget.currentUser.fullname;
+    email = widget.currentUser.email.isEmpty ? "" : widget.currentUser.email;
+    birthday =
+        widget.currentUser.birthday.isEmail ? "" : widget.currentUser.birthday;
+  }
+
+  void _updatUser() {
+    User newUser = User(
+        fullname: fullname,
+        email: email,
+        phone: widget.currentUser.phone,
+        birthday: birthday);
+    updateUser(newUser);
   }
 
   @override
@@ -73,87 +88,47 @@ class _ProfilePageState extends State<ProfilePage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  userName = value;
-                                }),
+                              child: TextFormField(
+                                initialValue: fullname,
+                                onChanged: (value) {
+                                  setState(() {
+                                    fullname = value;
+                                  });
+                                },
                                 decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "username".tr,
+                                  border: OutlineInputBorder(),
+                                  labelText: "fullname".tr,
                                 ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  phone = value;
-                                }),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    email = value;
+                                  });
+                                },
+                                initialValue: email,
                                 decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "phone".tr,
-                                ),
+                                    border: OutlineInputBorder(),
+                                    labelText: "email".tr,
+                                    hintText: email),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  email = value;
-                                }),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    birthday = value;
+                                  });
+                                },
+                                initialValue: birthday,
                                 decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "email".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  country = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "country".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  city = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "city".tr,
-                                ),
+                                    border: OutlineInputBorder(),
+                                    labelText: "birthday".tr,
+                                    hintText: birthday),
                               ),
                             ),
                             Container(
@@ -167,7 +142,9 @@ class _ProfilePageState extends State<ProfilePage>
                                   style: TextStyle(
                                       fontSize: 20.0, color: Colors.white),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _updatUser();
+                                },
                               ),
                             ),
                           ],

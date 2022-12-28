@@ -1,8 +1,33 @@
 import 'dart:convert' as convert;
 
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:http/http.dart' as http;
+
+Future<User?> getUser(String phone) async {
+  try {
+    if (phone.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/getUser/'));
+    request.fields.addAll({
+      'phone': phone,
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return User.fromJson(json);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+}
 
 Future<List<Device>?> getUserDevice(String phone) async {
   try {
@@ -29,6 +54,63 @@ Future<List<Device>?> getUserDevice(String phone) async {
         devicesList.add(device);
       }
       return devicesList;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
+Future<bool?> addDevice(Device device, User user) async {
+  try {
+    List<Device> devicesList = [];
+    if (user.phone.isEmpty || device.serial.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addDevice/'));
+    request.fields.addAll({
+      'serial': device.serial,
+      'userNum': user.phone,
+      'deviceSimNum': device.simPhone,
+      'type': device.type,
+      'title': device.title
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return json["status"] as bool;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
+Future<User?> updateUser(User user) async {
+  try {
+    if (user.phone.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updateUser/'));
+    request.fields.addAll({
+      'phone': user.phone,
+      'email': user.email,
+      'birthday': user.birthday,
+      'fullname': user.fullname,
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      print(json);
+      return User.fromJson(json);
     } else {
       return null;
     }

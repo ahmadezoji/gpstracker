@@ -36,7 +36,6 @@ class AppConstants {
   static const String mapBoxStyleId = LIGHT_STYLE;
 }
 
-const SHARED_USER_KEY = "current-user-key";
 const SHARED_PHONE_KEY = "current-user-phone-key";
 const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";
 

@@ -2,18 +2,22 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class AddVehicle extends StatefulWidget {
-  const AddVehicle({Key? key}) : super(key: key);
-
+  const AddVehicle({Key? key, required this.currentUser}) : super(key: key);
+  final User currentUser;
   @override
   _AddVehicleState createState() => _AddVehicleState();
 }
@@ -22,6 +26,7 @@ class _AddVehicleState extends State<AddVehicle>
     with AutomaticKeepAliveClientMixin<AddVehicle> {
   late String serial;
   late String deviceSimNum;
+  late String title = "my vehicle";
   late String type = "minicar";
   static Map<String, String> devices = {
     "car".tr: 'minicar',
@@ -36,37 +41,11 @@ class _AddVehicleState extends State<AddVehicle>
     // devices.add(Text('asdsd'));
   }
 
-  void addDevice() async {
-    try {
-      var request =
-          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addDevice/'));
-      request.fields.addAll({
-        'serial': serial,
-        'userNum': 'widget.userPhone',
-        'deviceSimNum': deviceSimNum
-      });
-
-      http.StreamedResponse response = await request.send();
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        print(responseString);
-        final json = jsonDecode(responseString);
-        // if (json != null) {
-        //   Fluttertoast.showToast(msg: "add-user-msg".tr);
-        //   Navigator.pushReplacement(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (_) => HomePage(), fullscreenDialog: false));
-        // }
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {}
-
-    //  Navigator.push(
-    // context, MaterialPageRoute(builder: (_) => HomePage()));
+  void _addVehicle() {
+    Device dev = Device(
+        serial: serial, title: title, simPhone: deviceSimNum, type: type);
+    bool result = addDevice(dev, widget.currentUser) as bool;
+    Fluttertoast.showToast(msg: 'add device is $result');
   }
 
   @override
@@ -120,7 +99,7 @@ class _AddVehicleState extends State<AddVehicle>
                         child: TextField(
                           keyboardType: TextInputType.number,
                           onChanged: (value) => setState(() {
-                            serial = value;
+                            deviceSimNum = value;
                           }),
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -138,7 +117,7 @@ class _AddVehicleState extends State<AddVehicle>
                         padding: const EdgeInsets.all(5.0),
                         child: TextField(
                           onChanged: (value) => setState(() {
-                            serial = value;
+                            title = value;
                           }),
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -222,7 +201,9 @@ class _AddVehicleState extends State<AddVehicle>
                             ),
                             // color: Colors.blueAccent,
                             // textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              _addVehicle();
+                            },
                           ),
                         ),
                       )

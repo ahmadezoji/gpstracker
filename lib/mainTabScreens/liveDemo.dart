@@ -67,7 +67,6 @@ class _LiveDemoState extends State<LiveDemo>
   bool theme = false;
   late ThemePreferences _preferences;
 
-
   Device? currentDevice = null;
   late int liveDemoIndex = 0;
 
@@ -100,9 +99,9 @@ class _LiveDemoState extends State<LiveDemo>
   }
 
   Future<void> getCurrentDevice() async {
-    Map<String, dynamic> map = await loadJson('device');
-    print('map $map');
-    currentDevice = Device.fromJson(map);
+    // Map<String, dynamic> map =  loadJson('device') as Map<String, dynamic>;
+    // print('map $map');
+    // currentDevice = Device.fromJson(map);
   }
 
   Future<String> getJson() {
@@ -341,7 +340,9 @@ class _LiveDemoState extends State<LiveDemo>
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark ? AppConstants.DARK_STYLE : AppConstants.LIGHT_STYLE;
+    return Theme.of(context).brightness == Brightness.dark
+        ? AppConstants.DARK_STYLE
+        : AppConstants.LIGHT_STYLE;
   }
 
   Scaffold buildMap(ThemeModel themeNotifier) {

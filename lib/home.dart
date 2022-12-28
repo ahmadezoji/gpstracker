@@ -102,10 +102,12 @@ class HomePageState extends State<HomePage>
             ]),
         body: Center(
             child: new MyStatefulWidget(
-                userLogined: widget.userLogined,
-                userDevices: widget.userDevices)),
+          userLogined: widget.userLogined,
+          userDevices: widget.userDevices,
+          currentUser: widget.currentUser,
+        )),
         drawer: LeftDrawer(
-            user: widget.currentUser,
+            currentUser: widget.currentUser,
             userLogined: widget.userLogined,
             userDevices: widget.userDevices),
       );

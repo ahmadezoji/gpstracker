@@ -4,8 +4,10 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,11 +18,11 @@ class LeftDrawer extends StatefulWidget {
       {Key? key,
       required this.userLogined,
       required this.userDevices,
-      required this.user})
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User user;
+  final User currentUser;
   @override
   LeftDrawerState createState() => LeftDrawerState();
 }
@@ -33,22 +35,27 @@ class LeftDrawerState extends State<LeftDrawer>
   }
 
   void logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('phone', '').then((bool success) {
-      print(success);
-    });
-    // getUserDevice("09192592697").then((list) async {
-    //   Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(
-    //           builder: (_) => HomePage(userLogined: false, userDevices: list!),
-    //           fullscreenDialog: false));
-    // });
+    delete(SHARED_PHONE_KEY);
+    try {
+      List<Device> devicesList = (await getUserDevice("09192592697"))!;
+      User currentUser = await getUser("09192592697") as User;
+      if (devicesList != null && currentUser != null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (_) => HomePage(
+                    currentUser: currentUser,
+                    userLogined: false,
+                    userDevices: devicesList),
+                fullscreenDialog: false));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void goToLoginPage() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? allwaysLoginByPass = prefs.getString('allways-login-with-pass');
+    String? allwaysLoginByPass = load(SHARED_ALLWAYS_PASS_KEY) as String?;
     if (allwaysLoginByPass == "true") {
       Navigator.push(
         context,
@@ -68,12 +75,12 @@ class LeftDrawerState extends State<LeftDrawer>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image(image: AssetImage("assets/user_outline.png")),
-              Text(widget.user.fullname,
+              Text(widget.currentUser.fullname,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(widget.user.phone,
+              Text(widget.currentUser.phone,
                   style:
                       TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              Text(widget.user.email,
+              Text(widget.currentUser.email,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
             ],
           )
@@ -125,7 +132,9 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => ProfilePage(userPhone: "09195835135"),
+                          builder: (_) => ProfilePage(
+                                currentUser: widget.currentUser,
+                              ),
                           fullscreenDialog: false))
                   : goToLoginPage();
             },
@@ -157,7 +166,8 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => AddVehicle(),
+                          builder: (_) =>
+                              AddVehicle(currentUser: widget.currentUser),
                           fullscreenDialog: false))
                   : goToLoginPage();
             },

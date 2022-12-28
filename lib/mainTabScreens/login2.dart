@@ -99,14 +99,14 @@ class _Login2PageState extends State<Login2Page>
         final json = jsonDecode(responseString);
         if (json != null) {
           currentUser = User.fromJson(json);
-
           if (json["createdUser"] == true)
             Fluttertoast.showToast(msg: "add-user-msg".tr);
           else
             Fluttertoast.showToast(msg: "usr Exist");
-          saveJson(SHARED_USER_KEY, json).then((value) => print(value));
+          // saveJson(SHARED_USER_KEY, json)
+          // .then((value) => print('shared json = $value'));
           save(SHARED_PHONE_KEY, widget.userPhone)
-              .then((value) => print(value));
+              .then((value) => print('shared uphone is = $value'));
         }
       } else {
         print(response.reasonPhrase);
@@ -122,12 +122,12 @@ class _Login2PageState extends State<Login2Page>
       updateShared();
     }
 
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => HomePage(
-                userLogined: true, userDevices: [], currentUser: currentUser),
-            fullscreenDialog: false));
+    // Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (_) => HomePage(
+    //             userLogined: true, userDevices: [], currentUser: currentUser),
+    //         fullscreenDialog: false));
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(

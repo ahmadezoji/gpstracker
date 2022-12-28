@@ -10,6 +10,7 @@ import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:cargpstracker/util.dart';
@@ -24,10 +25,15 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class Live extends StatefulWidget {
-  const Live({Key? key, required this.userLogined, required this.userDevices})
+  const Live(
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   @override
   _LiveState createState() => _LiveState();
 }
@@ -168,6 +174,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           selectedDevice: _onSelectedDevice,
           userLogined: widget.userLogined,
           userDevices: widget.userDevices,
+          currentUser: widget.currentUser,
         ),
       ));
     });

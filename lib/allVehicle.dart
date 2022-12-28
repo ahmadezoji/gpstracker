@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,10 +15,12 @@ class myAllVehicle extends StatefulWidget {
       {Key? key,
       required this.selectedDevice,
       required this.userLogined,
+      required this.currentUser,
       required this.userDevices})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   final Function selectedDevice;
   @override
   _myAllVehicleState createState() => _myAllVehicleState();
@@ -31,31 +34,10 @@ class _myAllVehicleState extends State<myAllVehicle>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
   int selectedDeviceIndex = 0;
-  // List<Device> devices = [
-  //   new Device(
-  //       serial: "027028360584",
-  //       title: "موتور",
-  //       simPhone: "simPhone",
-  //       type: "motor"),
-  //   new Device(
-  //       serial: "027028362416",
-  //       title: "ماشین",
-  //       simPhone: "simPhone",
-  //       type: "car"),
-  //   new Device(
-  //       serial: "123456789",
-  //       title: "خاور",
-  //       simPhone: "simPhone",
-  //       type: "truck"),
-  //   new Device(
-  //       serial: "027028362416",
-  //       title: "ماشین",
-  //       simPhone: "simPhone",
-  //       type: "car"),
-  // ];
   @override
   void initState() {
     super.initState();
+    print(widget.userDevices);
   }
 
   @override
@@ -128,7 +110,8 @@ class _myAllVehicleState extends State<myAllVehicle>
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => AddVehicle(),
+                          builder: (_) =>
+                              AddVehicle(currentUser: widget.currentUser),
                           fullscreenDialog: false));
                 })
             : GestureDetector(

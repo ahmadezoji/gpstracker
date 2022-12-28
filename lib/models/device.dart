@@ -39,7 +39,7 @@ class Device {
   }
   @override
   String toString() {
-    return 'device = $title , $serial';
+    return '$title';
   }
 
   static Map<String, dynamic> toMap(Device device) => {
