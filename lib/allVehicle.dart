@@ -37,7 +37,6 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   void initState() {
     super.initState();
-    print(widget.userDevices);
   }
 
   @override
@@ -61,32 +60,33 @@ class _myAllVehicleState extends State<myAllVehicle>
 
   Widget _vehicleIcon(BuildContext context, int deviceIndex) {
     String getTypeAsset(String type) {
-      switch (type.toLowerCase()) {
-        case "car":
-          {
-            return "assets/minicar.svg";
-          }
-          break;
-
-        case "motor":
-          {
-            return "assets/minimotor.svg";
-          }
-          break;
-        case "truck":
-          {
-            return "assets/minitruck.svg";
-          }
-          break;
-        default:
-          {
-            return "assets/minicar.svg";
-          }
-          break;
-      }
+      if (type.toLowerCase().contains("car"))
+        return "assets/minicar.svg";
+      else if (type.toLowerCase().contains("motor"))
+        return "assets/minimotor.svg";
+      else if (type.toLowerCase().contains("truck"))
+        return "assets/minitruck.svg";
+      else
+        return "assets/minicar.svg";
     }
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        if (deviceIndex == -1) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => AddVehicle(currentUser: widget.currentUser),
+                  fullscreenDialog: false));
+        } else {
+          setState(() {
+            selectedDeviceIndex = deviceIndex;
+          });
+          Fluttertoast.showToast(msg: widget.userDevices[deviceIndex].title);
+          widget.selectedDevice(selectedDeviceIndex);
+        }
+      },
+      child: Container(
         width: 80,
         height: 80,
         alignment: Alignment.center,
@@ -98,48 +98,32 @@ class _myAllVehicleState extends State<myAllVehicle>
               : vehicleCardColor,
         ),
         child: deviceIndex == -1
-            ? GestureDetector(
-                child: Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 35,
-                  ),
+            ? Center(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                  size: 35,
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              AddVehicle(currentUser: widget.currentUser),
-                          fullscreenDialog: false));
-                })
-            : GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      getTypeAsset(widget.userDevices[deviceIndex].type),
-                      height: 21,
-                      width: 31,
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    getTypeAsset(widget.userDevices[deviceIndex].type),
+                    height: 21,
+                    width: 31,
+                    color: Colors.black,
+                  ),
+                  Text(
+                    widget.userDevices[deviceIndex].title,
+                    style: TextStyle(
                       color: Colors.black,
                     ),
-                    Text(
-                      widget.userDevices[deviceIndex].title,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    )
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedDeviceIndex = deviceIndex;
-                  });
-                  Fluttertoast.showToast(
-                      msg: widget.userDevices[deviceIndex].title);
-                  widget.selectedDevice(selectedDeviceIndex);
-                }));
+                  )
+                ],
+              ),
+      ),
+    );
   }
 
   @override

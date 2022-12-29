@@ -33,7 +33,12 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 1;
+  bool activeLive = true;
   void _onItemTapped(int index) {
+    if (index == 1)
+      activeLive = true;
+    else
+      activeLive = false;
     setState(() {
       _selectedIndex = index;
     });
@@ -119,6 +124,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           children: <Widget>[
             GpsPlus(),
             Live(
+                active: activeLive,
                 userLogined: widget.userLogined,
                 userDevices: widget.userDevices,
                 currentUser: widget.currentUser),
@@ -166,7 +172,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           currentIndex: _selectedIndex,
           selectedItemColor: selectedFontColor,
           onTap: _onItemTapped,
-          // fixedColor: Colors.red,
           selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 16),
           unselectedFontSize: 16,
           selectedIconTheme:

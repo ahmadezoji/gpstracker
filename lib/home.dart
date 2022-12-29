@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
       : super(key: key);
   final bool userLogined;
   final List<Device> userDevices;
-  final User currentUser;
+  final User? currentUser;
 
   @override
   HomePageState createState() => HomePageState();
@@ -104,10 +104,10 @@ class HomePageState extends State<HomePage>
             child: new MyStatefulWidget(
           userLogined: widget.userLogined,
           userDevices: widget.userDevices,
-          currentUser: widget.currentUser,
+          currentUser: widget.currentUser!,
         )),
         drawer: LeftDrawer(
-            currentUser: widget.currentUser,
+            currentUser: widget.currentUser!,
             userLogined: widget.userLogined,
             userDevices: widget.userDevices),
       );

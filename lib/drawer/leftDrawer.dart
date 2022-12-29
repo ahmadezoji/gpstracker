@@ -59,7 +59,7 @@ class LeftDrawerState extends State<LeftDrawer>
     if (allwaysLoginByPass == "true") {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Login4Page()),
+        MaterialPageRoute(builder: (context) => Login4Page(phone: widget.currentUser.phone)),
       );
     } else {
       Navigator.push(

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
@@ -42,36 +43,49 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   void getShared() async {
     try {
-      // Future<String?> phone = load(SHARED_PHONE_KEY);
+      // String phone = load(SHARED_PHONE_KEY) as String;
+      // String withPass = load(SHARED_ALLWAYS_PASS_KEY) as String;
+
       String phone = "09127060772";
+      String withPass = "true";
       // ignore: unnecessary_null_comparison
       if (phone != null) {
-        currentUser = await getUser(phone) as User;
-        devicesList = (await getUserDevice(phone))!;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => new HomePage(
-                  currentUser: currentUser,
-                  userLogined: true,
-                  userDevices: devicesList)),
-        );
+        if (withPass == "true") {
+          // currentUser = await getUser(phone) as User;
+          // devicesList = (await getUserDevice(phone))!;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new Login4Page(phone: phone)),
+          );
+        }
+        // currentUser = await getUser(phone) as User;
+        // devicesList = (await getUserDevice(phone))!;
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => new HomePage(
+        //           currentUser: currentUser,
+        //           userLogined: true,
+        //           userDevices: devicesList)),
+        // );
       } else {
+        //clear data
+        //Sign in mode
         //Demo mode
         phone = "09127060772";
-        currentUser = await getUser(phone) as User;
         devicesList = (await getUserDevice(phone))!;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => new HomePage(
-                  currentUser: currentUser,
-                  userLogined: true,
+                  currentUser: null,
+                  userLogined: false,
                   userDevices: devicesList)),
         );
       }
     } catch (e) {
-      // print(e);
+      print(e);
     }
 
     // phone = "09127060772";

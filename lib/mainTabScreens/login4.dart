@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class Login4Page extends StatefulWidget {
+  const Login4Page({Key? key, required this.phone}) : super(key: key);
+  final String phone;
   @override
   _Login4PageState createState() => _Login4PageState();
 }
@@ -32,11 +37,17 @@ class _Login4PageState extends State<Login4Page>
     // print('initState Live');
   }
 
-  void goToNextStep() {
+  void goToNextStep() async {
+    User? currentUser = await loginWithPass(widget.phone, password);
+    List<Device>? devicesList = (await getUserDevice(widget.phone))!;
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => LoginPage(), fullscreenDialog: false));
+      context,
+      MaterialPageRoute(
+          builder: (context) => new HomePage(
+              currentUser: currentUser,
+              userLogined: true,
+              userDevices: devicesList)),
+    );
   }
 
   void onRememberMyPass(bool? status) {}
@@ -84,7 +95,10 @@ class _Login4PageState extends State<Login4Page>
                     ],
                   ),
                   SizedBox(height: 20),
-                  TextField(
+                  TextFormField(
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter your password',
@@ -109,7 +123,13 @@ class _Login4PageState extends State<Login4Page>
                         ],
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new LoginPage()),
+                          );
+                        },
                         child: Text(
                           'Forget password?',
                           style: TextStyle(color: Colors.blue, fontSize: 15),

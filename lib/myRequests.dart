@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/util.dart';
+import 'package:cargpstracker/models/point.dart';
 import 'package:http/http.dart' as http;
 
 Future<User?> getUser(String phone) async {
@@ -91,6 +92,33 @@ Future<bool?> addDevice(Device device, User user) async {
   }
 }
 
+Future<bool?> updateDevice(Device device) async {
+  try {
+    if (device.serial.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updateDevice/'));
+    request.fields.addAll({
+      'serial': device.serial,
+      'deviceSimNum': device.simPhone,
+      'type': device.type,
+      'title': device.title
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return json["status"] as bool;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 Future<User?> updateUser(User user) async {
   try {
     if (user.phone.isEmpty) return null;
@@ -117,4 +145,50 @@ Future<User?> updateUser(User user) async {
   } catch (error) {
     return null;
   }
+}
+
+Future<User?> loginWithPass(String phone, String password) async {
+  try {
+    if (phone.isEmpty) return null;
+    if (password.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/loginByPass/'));
+    request.fields.addAll({
+      'phone': phone,
+      'password': password,
+    });
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      if (json["status"]) return User.fromJson(json);
+      return null;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
+Future<Point?> getCurrentLocation(Device currentDevice) async {
+  try {
+    var request = http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/live/'));
+    request.fields.addAll({'serial': currentDevice.serial});
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return Point.fromJson(json["features"][0]);
+    } else {
+      print(response.reasonPhrase);
+    }
+  } catch (error) {
+    return null;
+  }
+  return null;
 }

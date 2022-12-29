@@ -3,7 +3,6 @@ import 'dart:core';
 
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/login4.dart';
-import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -30,12 +29,7 @@ class _Login3PageState extends State<Login3Page>
     // print('initState Live');
   }
 
-  void goToNextStep() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => Login4Page(), fullscreenDialog: false));
-  }
+  void goToNextStep() {}
 
   @override
   Widget build(BuildContext context) {

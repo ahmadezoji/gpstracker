@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           locale: Locale('en', 'US'),
           title: 'App_Name'.tr,
           theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-          home: SpalshScreen(),
+          home: Login4Page(phone: "09127060772"),
         );
       }),
     );

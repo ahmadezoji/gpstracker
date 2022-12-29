@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -95,7 +94,7 @@ class _LoginPageState extends State<LoginPage>
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 160.0),
+                padding: const EdgeInsets.only(top: 100.0),
                 child: Center(
                   child: Container(
                       width: 200,
@@ -143,20 +142,42 @@ class _LoginPageState extends State<LoginPage>
                   ),
                 ),
               ),
-              // TextButton(
-              //   onPressed: () {
-              //     Navigator.pushReplacement(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (_) => LoginByPassPage(userPhone: userPhone),
-              //             fullscreenDialog: false));
-              //   },
-              //   child: Text(
-              //     'Login With Password',
-              //     style: TextStyle(color: Colors.blue, fontSize: 15),
-              //   ),
-              // ),
               SizedBox(height: 50),
+              Container(
+                alignment: Alignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Divider(color: Colors.black),
+                    Container(
+                      width: 250,
+                      color: secondBackgroundPage,
+                      alignment: Alignment.center,
+                      child: Text("Sign in with Google or Facebook?"),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: 170,
+                child: Row(
+                  children: [
+                    FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      onPressed: () => print('on facebook clicked'),
+                      child: Image.asset('assets/facebook.png'),
+                    ),
+                    SizedBox(width: 40),
+                    FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      onPressed: () => print('on google clicked'),
+                      child: Image.asset('assets/google.png'),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               ElevatedButton.icon(
                 icon: _isLoading
                     ? const CircularProgressIndicator()

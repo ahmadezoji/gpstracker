@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login3.dart';
-import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/user.dart';
@@ -122,12 +121,12 @@ class _Login2PageState extends State<Login2Page>
       updateShared();
     }
 
-    // Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (_) => HomePage(
-    //             userLogined: true, userDevices: [], currentUser: currentUser),
-    //         fullscreenDialog: false));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => HomePage(
+                userLogined: true, userDevices: [], currentUser: currentUser),
+            fullscreenDialog: false));
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
