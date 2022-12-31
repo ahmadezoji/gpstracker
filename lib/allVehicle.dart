@@ -45,14 +45,16 @@ class _myAllVehicleState extends State<myAllVehicle>
         height: 100.0,
         child: Row(
           children: [
-            ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.all(8),
-                itemCount: widget.userDevices.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _vehicleIcon(context, index);
-                }),
+            Expanded(
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.all(8),
+                    itemCount: widget.userDevices.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _vehicleIcon(context, index);
+                    })),
             _vehicleIcon(context, -1)
           ],
         ));
@@ -87,7 +89,7 @@ class _myAllVehicleState extends State<myAllVehicle>
         }
       },
       child: Container(
-        width: 80,
+        width: 100,
         height: 80,
         alignment: Alignment.center,
         margin: EdgeInsets.only(left: 5, right: 5),
@@ -115,7 +117,11 @@ class _myAllVehicleState extends State<myAllVehicle>
                     color: Colors.black,
                   ),
                   Text(
-                    widget.userDevices[deviceIndex].title,
+                    widget.userDevices[deviceIndex].title.length > 6
+                        ? widget.userDevices[deviceIndex].title
+                                .substring(0, 6) +
+                            "..."
+                        : widget.userDevices[deviceIndex].title,
                     style: TextStyle(
                       color: Colors.black,
                     ),
