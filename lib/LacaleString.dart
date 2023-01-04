@@ -50,7 +50,7 @@ class LocaleString extends Translations {
           "profileContent-email": "Your Email",
           "profileContent-phone": "Your Phone ",
           "verification": "Verification",
-          "loginWithPssTick": "I’d like to always login with a password."
+          "loginWithPassTick": "I’d like to always login with a password."
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -98,7 +98,7 @@ class LocaleString extends Translations {
           "profileContent-email": "ایمیل ",
           "profileContent-phone": "شماره همراه ",
           "verification": "اعتبارستجی",
-          "loginWithPssTick": "یخواهم با رمز عبور وارد شوم"
+          "loginWithPassTick": "یخواهم با رمز عبور وارد شوم"
         },
       };
 }

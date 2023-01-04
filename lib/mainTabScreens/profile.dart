@@ -68,105 +68,107 @@ class _ProfilePageState extends State<ProfilePage>
             backgroundColor: NabColor, // status bar color
           ),
           backgroundColor: Colors.white,
-          body: Stack(
-            children: <Widget>[
-              // The containers in the background
-              Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    height: _headerHeight,
-                    color: ProfileheaderColor,
-                  ),
-                  Container(
+          body: SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                // The containers in the background
+                Column(
+                  children: <Widget>[
+                    Container(
                       alignment: Alignment.center,
-                      height: _bodyHeight,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 70),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                initialValue: fullname,
-                                onChanged: (value) {
-                                  setState(() {
-                                    fullname = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "fullname".tr,
+                      height: _headerHeight,
+                      color: ProfileheaderColor,
+                    ),
+                    Container(
+                        alignment: Alignment.center,
+                        height: _bodyHeight,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 70),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextFormField(
+                                  initialValue: fullname,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      fullname = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: "fullname".tr,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    email = value;
-                                  });
-                                },
-                                initialValue: email,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: "email".tr,
-                                    hintText: email),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    birthday = value;
-                                  });
-                                },
-                                initialValue: birthday,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: "birthday".tr,
-                                    hintText: birthday),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.blue,
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  'Apply'.tr,
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      email = value;
+                                    });
+                                  },
+                                  initialValue: email,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: "email".tr,
+                                      hintText: email),
                                 ),
-                                onPressed: () {
-                                  _updatUser();
-                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    top: _headerHeight - (_profileSpace / 2),
-                    left: _headerWidth * 0.5 - (_profileSpace / 2)),
-                alignment: Alignment.center,
-                width: _profileSpace,
-                height: _profileSpace,
-                decoration: BoxDecoration(
-                    color: ProfileheaderColor,
-                    borderRadius: BorderRadius.circular(_profileSpace / 2)),
-                child: SvgPicture.asset(
-                  'assets/profileimg.svg',
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      birthday = value;
+                                    });
+                                  },
+                                  initialValue: birthday,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: "birthday".tr,
+                                      hintText: birthday),
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.blue,
+                                ),
+                                child: TextButton(
+                                  child: Text(
+                                    'Apply'.tr,
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    _updatUser();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                  ],
                 ),
-              )
-            ],
+                Container(
+                  margin: EdgeInsets.only(
+                      top: _headerHeight - (_profileSpace / 2),
+                      left: _headerWidth * 0.5 - (_profileSpace / 2)),
+                  alignment: Alignment.center,
+                  width: _profileSpace,
+                  height: _profileSpace,
+                  decoration: BoxDecoration(
+                      color: ProfileheaderColor,
+                      borderRadius: BorderRadius.circular(_profileSpace / 2)),
+                  child: SvgPicture.asset(
+                    'assets/profileimg.svg',
+                  ),
+                )
+              ],
+            ),
           ));
     });
   }

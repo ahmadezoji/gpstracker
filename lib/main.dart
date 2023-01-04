@@ -6,7 +6,9 @@ import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/login3.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,8 +42,31 @@ class MyApp extends StatelessWidget {
           translations: LocaleString(),
           locale: Locale('en', 'US'),
           title: 'App_Name'.tr,
-          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-          home: Login4Page(phone: "09127060772"),
+          // theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+          theme: themeNotifier.isDark
+              ? ThemeData(
+                  brightness: Brightness.dark,
+                  // primarySwatch: Colors.blue,
+                  // textTheme: TextTheme(
+                  //   headline1: TextStyle(color: Colors.white),
+                  //   headline2: TextStyle(color: Colors.white),
+                  //   bodyText2: TextStyle(color: Colors.white),
+                  //   subtitle1: TextStyle(color: Colors.white),
+                  //   subtitle2: TextStyle(color: Colors.white),
+                  // ),
+                )
+              : ThemeData(
+                  brightness: Brightness.light,
+                  appBarTheme: AppBarTheme(backgroundColor: NabColor)
+                  // textTheme: TextTheme(
+                  //   headline1: TextStyle(color: Colors.black),
+                  //   headline2: TextStyle(color: Colors.black),
+                  //   bodyText2: TextStyle(color: Colors.black),
+                  //   subtitle1: TextStyle(color: Colors.black),
+                  //   subtitle2: TextStyle(color: Colors.black),
+                  // ),
+                ),
+          home: SpalshScreen(),
         );
       }),
     );

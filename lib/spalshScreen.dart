@@ -30,62 +30,53 @@ class _SpalshScreenState extends State<SpalshScreen>
   void initState() {
     super.initState();
     // SystemChrome.setEnabledSystemUIOverlays ([]);
-    getShared();
-    HttpOverrides.global = MyHttpOverrides();
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    )..addListener(() {});
-    controller.repeat(reverse: false);
 
-    // Timer(Duration(seconds: 3), () => pushPage());
+    HttpOverrides.global = MyHttpOverrides();
+    // controller = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 3),
+    // )..addListener(() {
+    //     getShared();
+    //   });
+    // controller.repeat(reverse: false);
+
+    Timer(Duration(seconds: 3), () => getShared());
   }
 
   void getShared() async {
     try {
-      // String phone = load(SHARED_PHONE_KEY) as String;
-      // String withPass = load(SHARED_ALLWAYS_PASS_KEY) as String;
+      String? phone = await load(SHARED_PHONE_KEY);
+      String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
 
-      String phone = "09127060772";
-      String withPass = "true";
-      // ignore: unnecessary_null_comparison
+      // String phone = "09192592697";
+      // String withPass = "true";
       if (phone != null) {
+        currentUser = await getUser(phone) as User;
+        devicesList = (await getUserDevice(phone))!;
         if (withPass == "true") {
-          // currentUser = await getUser(phone) as User;
-          // devicesList = (await getUserDevice(phone))!;
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => new Login4Page(phone: phone)),
+                builder: (context) => new Login4Page(currentUser: currentUser,userDevices: devicesList)),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new HomePage(
+                    currentUser: currentUser,
+                    userLogined: true,
+                    userDevices: devicesList)),
           );
         }
-        // currentUser = await getUser(phone) as User;
-        // devicesList = (await getUserDevice(phone))!;
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => new HomePage(
-        //           currentUser: currentUser,
-        //           userLogined: true,
-        //           userDevices: devicesList)),
-        // );
       } else {
-        //clear data
-        //Sign in mode
-        //Demo mode
-        phone = "09127060772";
-        devicesList = (await getUserDevice(phone))!;
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => new HomePage(
-                  currentUser: null,
-                  userLogined: false,
-                  userDevices: devicesList)),
+          MaterialPageRoute(builder: (context) => new LoginPage()),
         );
       }
     } catch (e) {
-      print(e);
+      print('exception : $e');
     }
 
     // phone = "09127060772";
@@ -150,10 +141,10 @@ class _SpalshScreenState extends State<SpalshScreen>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Lottie.asset('assets/splash-screen.json'),
-              CircularProgressIndicator(
-                value: controller.value,
-                semanticsLabel: 'Linear progress indicator',
-              ),
+              // CircularProgressIndicator(
+              //   value: controller.value,
+              //   semanticsLabel: 'Linear progress indicator',
+              // ),
             ],
           ),
         ),

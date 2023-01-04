@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -29,40 +30,21 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void sendCode() async {
-    try {
-      if (userPhone.isEmpty) {
-        Fluttertoast.showToast(msg: 'please fill phone number');
-        return;
-      }
-      setState(() {
-        _isLoading = true;
-      });
-      var request =
-          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/phoneVerify/'));
-      request.fields.addAll({'phone': userPhone});
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = jsonDecode(responseString);
-        print(json);
-        if (json["status"] == true) {
-          Fluttertoast.showToast(msg: "sending-varify-code".tr);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      Login2Page(userPhone: userPhone, validCode: json["code"]),
-                  fullscreenDialog: false));
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {}
+    setState(() {
+      _isLoading = true;
+    });
+    String sentCode = (await OTPverify(userPhone))!;
+    print('code : $sentCode');
+    Fluttertoast.showToast(msg: "sending-varify-code".tr);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                Login2Page(userPhone: userPhone, validCode: sentCode),
+            fullscreenDialog: false));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

@@ -6,6 +6,58 @@ import 'package:cargpstracker/util.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:http/http.dart' as http;
 
+Future<String?> OTPverify(String userPhone) async {
+  try {
+    if (userPhone.isEmpty) {
+      return null;
+    }
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/phoneVerify/'));
+    request.fields.addAll({'phone': userPhone});
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      print(json);
+      if (json["status"] == true) {
+        return json["code"];
+      }
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
+Future<User?> addUser(String userPhone) async {
+  try {
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addUser/'));
+    request.fields.addAll({'phone': userPhone});
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      if (json != null) {
+        return User.fromJson(json);
+      } else {
+        return null;
+      }
+    } else {
+      print(response.reasonPhrase);
+      return null;
+    }
+  } catch (error) {
+    print(error.toString());
+    return null;
+  }
+}
+
 Future<User?> getUser(String phone) async {
   try {
     if (phone.isEmpty) return null;
@@ -110,6 +162,7 @@ Future<bool?> updateDevice(Device device) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
+      print(json);
       return json["status"] as bool;
     } else {
       return false;
@@ -147,7 +200,7 @@ Future<User?> updateUser(User user) async {
   }
 }
 
-Future<User?> loginWithPass(String phone, String password) async {
+Future<bool?> loginWithPass(String phone, String password) async {
   try {
     if (phone.isEmpty) return null;
     if (password.isEmpty) return null;
@@ -163,13 +216,12 @@ Future<User?> loginWithPass(String phone, String password) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      if (json["status"]) return User.fromJson(json);
-      return null;
+      return json["status"];
     } else {
-      return null;
+      return false;
     }
   } catch (error) {
-    return null;
+    return false;
   }
 }
 

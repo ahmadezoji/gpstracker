@@ -44,24 +44,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
-  late bool userLogined = false;
+  // late bool userLogined = false;
 
   @override
   void initState() {
     // initFirebase();
-    init();
+    // init();
     super.initState();
   }
-
-  void init() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('phone');
-    if (phone == null)
-      userLogined = false;
-    else {
-      userLogined = true;
-    }
-  }
+  //
+  // void init() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? phone = prefs.getString('phone');
+  //   if (phone == null)
+  //     userLogined = false;
+  //   else {
+  //     userLogined = true;
+  //   }
+  // }
 
   // void initFirebase() async {
   //   // final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -99,14 +99,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   //   }
   // }
 
-  Future<bool> getLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('phone');
-    if (phone == null)
-      return false;
-    else
-      return true;
-  }
+  // Future<bool> getLoginStatus() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? phone = prefs.getString('phone');
+  //   if (phone == null)
+  //     return false;
+  //   else
+  //     return true;
+  // }
 
   @override
   Widget build(BuildContext context) {

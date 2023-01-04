@@ -22,6 +22,7 @@ class myAllVehicle extends StatefulWidget {
   final bool userLogined;
   final User currentUser;
   final Function selectedDevice;
+
   @override
   _myAllVehicleState createState() => _myAllVehicleState();
 }
@@ -34,6 +35,7 @@ class _myAllVehicleState extends State<myAllVehicle>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
   int selectedDeviceIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -42,19 +44,20 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 100.0,
+        height: 80.0,
         child: Row(
           children: [
-            Expanded(
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.all(8),
-                    itemCount: widget.userDevices.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _vehicleIcon(context, index);
-                    })),
+            if (widget.userDevices.length > 0)
+              Expanded(
+                  child: ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.all(8),
+                      itemCount: widget.userDevices.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _vehicleIcon(context, index);
+                      })),
             _vehicleIcon(context, -1)
           ],
         ));
@@ -89,10 +92,10 @@ class _myAllVehicleState extends State<myAllVehicle>
         }
       },
       child: Container(
-        width: 100,
-        height: 80,
+        width: 75,
+        height: 75,
         alignment: Alignment.center,
-        margin: EdgeInsets.only(left: 5, right: 5),
+        margin: EdgeInsets.only(left: 2, right: 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: selectedDeviceIndex == deviceIndex
@@ -113,7 +116,7 @@ class _myAllVehicleState extends State<myAllVehicle>
                   SvgPicture.asset(
                     getTypeAsset(widget.userDevices[deviceIndex].type),
                     height: 21,
-                    width: 31,
+                    width: 21,
                     color: Colors.black,
                   ),
                   Text(
@@ -123,7 +126,9 @@ class _myAllVehicleState extends State<myAllVehicle>
                             "..."
                         : widget.userDevices[deviceIndex].title,
                     style: TextStyle(
+                      fontSize: 12,
                       color: Colors.black,
+                      fontWeight: FontWeight.bold
                     ),
                   )
                 ],

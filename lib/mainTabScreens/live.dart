@@ -99,7 +99,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   void startTimer() async {
     await getCurrentDevice();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
-      _getCurrentLocation();
+      // _getCurrentLocation();
     });
   }
 
@@ -107,7 +107,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     // Map<String, dynamic> map = await loadJson('device');
     // print('map $map');
     // currentDevice = Device.fromJson(map);
-    currentDevice = widget.userDevices[0];
+    if(widget.userDevices.length > 0)
+      currentDevice = widget.userDevices[0];
+    // print('currentDevice = $currentDevice');
   }
 
   void _getCurrentLocation() async {
@@ -139,7 +141,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           child: Scaffold(
         key: _key,
         drawerEnableOpenDragGesture: true,
-        body: buildMap(themeNotifier),
+        body: currentDevice==null ? Center(child: Text("there is no device to show")):buildMap(themeNotifier),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
           selectedDevice: _onSelectedDevice,
@@ -270,7 +272,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     MaterialPageRoute(
                                         builder: (context) => new UpdateVehicle(
                                             currentDeveice: currentDevice)),
-                                  );
+                                  ).then((value) => print('back = $value'));
                                 },
                                 icon: Icon(Icons.info, size: 15))
                           ],

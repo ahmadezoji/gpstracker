@@ -4,7 +4,9 @@ import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login3.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class Login2Page extends StatefulWidget {
       : super(key: key);
   final String userPhone;
   final String validCode;
+
   @override
   _Login2PageState createState() => _Login2PageState();
 }
@@ -31,10 +34,10 @@ class _Login2PageState extends State<Login2Page>
     with AutomaticKeepAliveClientMixin<Login2Page> {
   String signature = "{{ app signature }}";
   String? appSignature;
-  late String userPhone = '';
   late bool isTrueOTP = false;
   late bool withPass = false;
   bool _isLoading = false;
+  late String currentCode = widget.validCode;
 
   late String password = "";
   late String repassword = "";
@@ -46,7 +49,6 @@ class _Login2PageState extends State<Login2Page>
   @override
   void initState() {
     super.initState();
-
     // SmsAutoFill().listenForCode();
 
     // SmsAutoFill().getAppSignature.then((signature) {
@@ -63,11 +65,10 @@ class _Login2PageState extends State<Login2Page>
   }
 
   void init() async {
-    print(SmsAutoFill().listenForCode);
+    // print(SmsAutoFill().listenForCode);
   }
 
   void updatePass(String password) async {
-    print(widget.userPhone);
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updatePass/'));
     request.fields.addAll({'phone': widget.userPhone, 'password': password});
@@ -85,47 +86,33 @@ class _Login2PageState extends State<Login2Page>
     save(SHARED_ALLWAYS_PASS_KEY, 'true');
   }
 
-  void addUser() async {
+  void _addUser() async {
     try {
-      var request =
-          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addUser/'));
-      request.fields.addAll({'phone': widget.userPhone});
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = jsonDecode(responseString);
-        if (json != null) {
-          currentUser = User.fromJson(json);
-          if (json["createdUser"] == true)
-            Fluttertoast.showToast(msg: "add-user-msg".tr);
-          else
-            Fluttertoast.showToast(msg: "usr Exist");
-          // saveJson(SHARED_USER_KEY, json)
-          // .then((value) => print('shared json = $value'));
-          save(SHARED_PHONE_KEY, widget.userPhone)
-              .then((value) => print('shared uphone is = $value'));
-        }
-      } else {
-        print(response.reasonPhrase);
+      currentUser = (await addUser(widget.userPhone))!;
+      if (currentUser != null) {
+        // if (json["createdUser"] == true)
+        //   Fluttertoast.showToast(msg: "add-user-msg".tr);
+        // else
+        //   Fluttertoast.showToast(msg: "usr Exist");
+        save(SHARED_PHONE_KEY, widget.userPhone)
+            .then((value) => print('shared uphone is = $value'));
       }
     } catch (error) {
-      print(error.toString());
+      print('_addUser Exception= $error');
     }
   }
 
-  void goToNextStep() {
+  void goToNextStep() async {
     if (withPass) {
       updatePass(password);
       updateShared();
     }
-
+    List<Device> devicesList = (await getUserDevice(currentUser.phone))!;
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (_) => HomePage(
-                userLogined: true, userDevices: [], currentUser: currentUser),
+                userLogined: true, userDevices: devicesList, currentUser: currentUser),
             fullscreenDialog: false));
   }
 
@@ -138,13 +125,22 @@ class _Login2PageState extends State<Login2Page>
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
   );
+
   void onOTPChanged(bool otpStatuse) {
     setState(() {
       isTrueOTP = otpStatuse;
     });
     if (isTrueOTP) {
-      addUser();
+      _addUser();
     }
+  }
+
+  _sendAgain() async {
+    String? sentCode = await OTPverify(widget.userPhone);
+    print('code : $sentCode');
+    setState(() {
+      currentCode = sentCode!;
+    });
   }
 
   @override
@@ -195,13 +191,16 @@ class _Login2PageState extends State<Login2Page>
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                       color: Colors.blue)),
+              SizedBox(height: 20),
               if (isTrueOTP == false)
-                validPlaceHolder(context, widget.validCode, onOTPChanged),
-              SizedBox(height: 5),
+                validPlaceHolder(context, currentCode, onOTPChanged),
+              SizedBox(height: 10),
               if (isTrueOTP == false)
                 ElevatedButton(
                   style: raisedButtonStyle,
-                  onPressed: () {},
+                  onPressed: () {
+                    _sendAgain();
+                  },
                   child: Text(
                     isTrueOTP ? 'Ok' : 'Send again',
                     style: TextStyle(color: Colors.blue, fontSize: 14),
@@ -214,7 +213,7 @@ class _Login2PageState extends State<Login2Page>
                     onChanged: (value) => setState(() {
                           withPass = value!;
                         })),
-                Text("loginWithPssTick".tr)
+                Text("loginWithPassTick".tr)
               ]),
               SizedBox(height: 20),
               if (withPass)
@@ -274,11 +273,7 @@ class _Login2PageState extends State<Login2Page>
 }
 
 Widget validPlaceHolder(BuildContext context, String validCode, onOTPChanged) {
-  String _validCode = "";
-  bool enablity = true;
-
-  // if (validCode.isNotEmpty) validCodeList = validCode.split("");
-
+  final List<String> validCodeArray = ["", "", "", "", ""];
   late BoxDecoration boxdec = BoxDecoration(
     borderRadius: BorderRadius.circular(3),
     boxShadow: [
@@ -291,104 +286,53 @@ Widget validPlaceHolder(BuildContext context, String validCode, onOTPChanged) {
   );
   late TextStyle txtStyle =
       TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.blue);
-
-  void onchanged(int index, String value) async {
-    // SmsAutoFill().listenForCode();
-    // print(await SmsAutoFill().getAppSignature);
-    _validCode = _validCode + value;
-    if (value.isNotEmpty) FocusScope.of(context).nextFocus();
-    print(validCode);
-    if (_validCode == validCode) {
-      Fluttertoast.showToast(msg: "its ok");
-      onOTPChanged(true);
-    } else {
-      enablity = true;
+  void onchanged(BuildContext context, int index, String value) async {
+    if (value.isEmpty) {
+      validCodeArray[index] = '';
+      return;
     }
+    validCodeArray[index] = value;
+    String _validCode = "";
+    validCodeArray.forEach((element) {
+      if (element.isNotEmpty) _validCode = _validCode + element;
+    });
+    print('_validCode : $_validCode');
+    if (_validCode == validCode) {
+      Fluttertoast.showToast(msg: "validation complete");
+      onOTPChanged(true);
+    }
+    FocusScope.of(context).nextFocus();
   }
 
   return Container(
-      // decoration: BoxDecoration(color: Colors.green),
-      height: 100,
-      width: 450,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-              alignment: Alignment.center,
-              decoration: boxdec,
-              width: 50,
+    alignment: Alignment.center,
+    height: 50,
+    child: Center(
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: validCodeArray.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
               height: 50,
-              child: TextField(
-                  enabled: enablity,
+              width: 50,
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 10, right: 10),
+              decoration: boxdec,
+              child: TextFormField(
+                  enabled: true,
+                  decoration: InputDecoration(border: InputBorder.none),
+                  inputFormatters: [
+                    new LengthLimitingTextInputFormatter(1),
+                  ],
                   autofocus: true,
                   textInputAction: TextInputAction.next,
-                  onChanged: ((value) => {onchanged(0, value)}),
+                  onChanged: ((value) => onchanged(context, index, value)),
                   textAlign: TextAlign.center,
-                  style: txtStyle)),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
-              alignment: Alignment.center,
-              decoration: boxdec,
-              width: 50,
-              height: 50,
-              child: TextField(
-                  enabled: enablity,
-                  autofocus: true,
-                  textInputAction: TextInputAction.next,
-                  onChanged: ((value) => {onchanged(1, value)}),
-                  textAlign: TextAlign.center,
-                  style: txtStyle)),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
-              alignment: Alignment.center,
-              decoration: boxdec,
-              width: 50,
-              height: 50,
-              child: TextField(
-                  enabled: enablity,
-                  autofocus: true,
-                  textInputAction: TextInputAction.next,
-                  onChanged: ((value) => {onchanged(2, value)}),
-                  textAlign: TextAlign.center,
-                  style: txtStyle)),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
-              alignment: Alignment.center,
-              decoration: boxdec,
-              width: 50,
-              height: 50,
-              child: TextField(
-                  enabled: enablity,
-                  autofocus: true,
-                  textInputAction: TextInputAction.next,
-                  onChanged: ((value) => {onchanged(3, value)}),
-                  textAlign: TextAlign.center,
-                  style: txtStyle)),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
-              alignment: Alignment.center,
-              decoration: boxdec,
-              width: 50,
-              height: 50,
-              child: TextField(
-                  enabled: enablity,
-                  autofocus: true,
-                  textInputAction: TextInputAction.next,
-                  onChanged: ((value) => {onchanged(4, value)}),
-                  textAlign: TextAlign.center,
-                  style: txtStyle)),
-          SizedBox(
-            width: 20,
-          )
-        ],
-      ));
+                  keyboardType: TextInputType.number,
+                  style: txtStyle),
+            );
+          }),
+    ),
+  );
 }
