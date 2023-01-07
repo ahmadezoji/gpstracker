@@ -1,5 +1,4 @@
 import 'dart:convert' as convert;
-import 'dart:js';
 
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -292,5 +291,40 @@ Future<Config?> getConfig(Device device) async {
   } catch (error) {
     print('error = $error');
     return null;
+  }
+}
+
+Future<bool?> setConfig(Device device, Config config) async {
+  try {
+    if (device.serial.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/setConfig/'));
+    request.fields.addAll({
+      'serial': device.serial,
+      'language': config.language,
+      'timezone': config.timezone,
+      'interval': config.intervalTime.toString(),
+      'static': config.staticTime.toString(),
+      'speed_alarm': config.speed_alarm.toString(),
+      'fence': config.fence,
+      'userPhoneNum': config.userPhoneNum,
+      'apn_name': config.apn_name,
+      'apn_user': config.apn_user,
+      'apn_pass': config.apn_pass,
+      'alarming_method': config.alarming_method.toString(),
+    });
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return json["status"];
+    } else {
+      return false;
+    }
+  } catch (error) {
+    print('error = $error');
+    return false;
   }
 }

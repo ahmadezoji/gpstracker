@@ -50,7 +50,6 @@ class _ProfilePage2State extends State<ProfilePage>
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        backgroundColor: Colors.white,
         body: new Stack(
           children: <Widget>[
             // The containers in the background

@@ -104,6 +104,7 @@ class _AddVehicleState extends State<AddVehicle>
                   height: 10,
                 ),
                 TextFormField(
+                  initialValue: "+98",
                   keyboardType: TextInputType.number,
                   onChanged: (value) => setState(() {
                     deviceSimNum = value;
@@ -114,7 +115,7 @@ class _AddVehicleState extends State<AddVehicle>
                       borderRadius: BorderRadius.circular(6),
                     ),
                     filled: true,
-                    hintText: "+98",
+                    hintText: "+98919 xxx xxxx",
                     labelText: "device-sim-num".tr,
                   ),
                 ),

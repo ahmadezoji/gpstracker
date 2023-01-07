@@ -30,6 +30,7 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
   late String valueChoose;
   List listItem = ["option1", 'option2'];
   late Device currentDevice;
+  // late Config currentDeviceConfig ;
   late Config currentDeviceConfig = Config(
       device_id: "",
       language: "",
@@ -89,6 +90,13 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
     return currentDevice;
   }
 
+  onChangedDropDown(Device device) {
+    setState(() {
+      currentDevice = device;
+    });
+    getCurrentDeviceConfig(device);
+  }
+
   updateLanguage(Locale locale) {
     Get.back();
     Get.updateLocale(locale);
@@ -100,21 +108,31 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
   }
 
   void applyChanges() async {
-    Config newconfig = Config(
-        device_id: currentDeviceConfig.device_id,
-        language: language,
-        timezone: timezone,
-        intervalTime: int.parse(intervalTime),
-        staticTime: int.parse(staticTime),
-        speed_alarm: int.parse(speedAlarm),
-        fence: fence,
-        userPhoneNum: currentDeviceConfig.userPhoneNum,
-        apn_name: apn_name,
-        apn_user: apn_user,
-        apn_pass: apn_pass,
-        alarming_method: int.parse(alarming_method));
+    try {
+      Config newconfig = Config(
+          device_id: currentDeviceConfig.device_id,
+          language: language,
+          timezone: timezone,
+          intervalTime: int.parse(intervalTime),
+          staticTime: int.parse(staticTime),
+          speed_alarm: int.parse(speedAlarm),
+          fence: fence,
+          userPhoneNum: currentDeviceConfig.userPhoneNum,
+          apn_name: apn_name,
+          apn_user: apn_user,
+          apn_pass: apn_pass,
+          alarming_method: int.parse(alarming_method));
 
-    print(newconfig);
+      print(newconfig);
+
+      bool status = (await setConfig(currentDevice, currentDeviceConfig))!;
+      if (status)
+        Fluttertoast.showToast(msg: 'Config success and start config thread');
+      else
+        Fluttertoast.showToast(msg: 'Set config failed !!');
+    } catch (e) {
+      print('errpor = $e');
+    }
   }
 
   Widget buildRecord(
@@ -194,10 +212,9 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
-        builder: (context, ThemeModel themeNotifier, child) {
-      return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
+      builder: (context, ThemeModel themeNotifier, child) {
+        return Scaffold(
+            body: Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -231,116 +248,130 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
                   height: 30,
                 ),
                 Container(
-                    padding: EdgeInsets.all(30),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        DropdownButton<Device>(
-                          value: currentDevice,
-                          icon: const Icon(Icons.arrow_downward),
-                          elevation: 16,
-                          underline: Container(
-                            height: 2,
-                          ),
-                          onChanged: (Device? device) {
-                            getCurrentDeviceConfig(device!);
-                          },
-                          items: widget.userDevices
-                              .map<DropdownMenuItem<Device>>((Device value) {
-                            return DropdownMenuItem<Device>(
-                              value: value,
-                              child: Text(value.serial),
-                            );
-                          }).toList(),
+                  padding: EdgeInsets.all(30),
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      DropdownButton<Device>(
+                        value: currentDevice,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "language",
-                          "en/fa",
-                          currentDeviceConfig.language,
-                          _onSelectedLanguage,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "Time zone",
-                          "tehran",
-                          currentDeviceConfig.timezone,
-                          _onSelectedTimeZone,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                            "Interval time",
-                            "1-59 seconds",
-                            currentDeviceConfig.intervalTime.toString(),
-                            _onSelectedIntervalTime),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                            "Static time",
-                            "1-59 minutes",
-                            currentDeviceConfig.staticTime.toString(),
-                            _onSelectedStaticTime),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                            "Speed alarm",
-                            "60-220 km/h",
-                            currentDeviceConfig.speed_alarm.toString(),
-                            _onSelectedSpeedAlarm),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "Fence",
-                          "Null",
-                          currentDeviceConfig.fence,
-                          _onSelectedFence,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "Apn name",
-                          "Null",
-                          currentDeviceConfig.apn_name,
-                          _onSelectedApnName,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "Apn user",
-                          "Null",
-                          currentDeviceConfig.apn_user,
-                          _onSelectedApnUser,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                          "Apn pass",
-                          "Null",
-                          currentDeviceConfig.apn_pass,
-                          _onSelectedApnPass,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        buildRecord(
-                            "Alarming method",
-                            "Null",
-                            currentDeviceConfig.alarming_method.toString(),
-                            _onSelectedAlarmMethod),
-                      ],
-                    ))
+                        onChanged: (Device? device) {
+                          onChangedDropDown(device!);
+                        },
+                        items: widget.userDevices
+                            .map<DropdownMenuItem<Device>>((Device value) {
+                          return DropdownMenuItem<Device>(
+                            value: value,
+                            child: Text(value.serial),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      currentDeviceConfig != null
+                          ? SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  buildRecord(
+                                    "language",
+                                    "en/fa",
+                                    currentDeviceConfig.language,
+                                    _onSelectedLanguage,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                    "Time zone",
+                                    "tehran",
+                                    currentDeviceConfig.timezone,
+                                    _onSelectedTimeZone,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                      "Interval time",
+                                      "1-59 seconds",
+                                      currentDeviceConfig.intervalTime
+                                          .toString(),
+                                      _onSelectedIntervalTime),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                      "Static time",
+                                      "1-59 minutes",
+                                      currentDeviceConfig.staticTime.toString(),
+                                      _onSelectedStaticTime),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                      "Speed alarm",
+                                      "60-220 km/h",
+                                      currentDeviceConfig.speed_alarm
+                                          .toString(),
+                                      _onSelectedSpeedAlarm),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                    "Fence",
+                                    "Null",
+                                    currentDeviceConfig.fence,
+                                    _onSelectedFence,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                    "Apn name",
+                                    "Null",
+                                    currentDeviceConfig.apn_name,
+                                    _onSelectedApnName,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                    "Apn user",
+                                    "Null",
+                                    currentDeviceConfig.apn_user,
+                                    _onSelectedApnUser,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                    "Apn pass",
+                                    "Null",
+                                    currentDeviceConfig.apn_pass,
+                                    _onSelectedApnPass,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  buildRecord(
+                                      "Alarming method",
+                                      "Null",
+                                      currentDeviceConfig.alarming_method
+                                          .toString(),
+                                      _onSelectedAlarmMethod),
+                                ],
+                              ),
+                            )
+                          : Center(
+                              child: Text("There is no config to show "),
+                            )
+                    ],
+                  ),
+                )
               ]),
               ElevatedButton(
                 child: Text(
@@ -352,8 +383,8 @@ class _Setting2State extends State<Setting2> with TickerProviderStateMixin {
               )
             ],
           ),
-        )),
-      );
-    });
+        ));
+      },
+    );
   }
 }
