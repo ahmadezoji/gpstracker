@@ -1,13 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 import 'dart:ui';
-
-import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
-import 'package:cargpstracker/main.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
@@ -20,11 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class Live extends StatefulWidget {
   const Live(
@@ -51,10 +42,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   late bool isSwitched = false;
   late Timer _timer;
-  double _headerHeight = 60.0;
-  double _bodyHeight = 180.0;
-  BottomDrawerController _controller = BottomDrawerController();
-
   bool drawerOpen = true;
   late double zoom = 11.0;
 
@@ -77,6 +64,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
   Device? currentDevice;
+  late List<Device> _listDevice = widget.userDevices;
+
   @override
   void dispose() {
     // mapController.dispose();
@@ -88,7 +77,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     return await _preferences.getTheme();
   }
 
-  late double _screenWidth = MediaQuery.of(context).size.width;
   @override
   void initState() {
     super.initState();
@@ -103,13 +91,25 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     });
   }
 
+  void onRefresh() async {
+    try {
+      List<Device> tempArray = (await getUserDevice(widget.currentUser.phone))!;
+      setState(() {
+        _listDevice = tempArray;
+      });
+      getCurrentDevice();
+    } catch (error) {
+      print('refresh = $error');
+    }
+  }
+
   Future<void> getCurrentDevice() async {
-    // Map<String, dynamic> map = await loadJson('device');
-    // print('map $map');
-    // currentDevice = Device.fromJson(map);
-    if(widget.userDevices.length > 0)
-      currentDevice = widget.userDevices[0];
-    // print('currentDevice = $currentDevice');
+    if (_listDevice.length > 0) {
+      setState(() {
+        currentDevice = _listDevice[0];
+      });
+    }
+    print('currentDevice = $currentDevice');
   }
 
   void _getCurrentLocation() async {
@@ -127,7 +127,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   Future<void> _onSelectedDevice(int deviceIndex) async {
     setState(() {
-      currentDevice = widget.userDevices[deviceIndex];
+      currentDevice = _listDevice[deviceIndex];
     });
     updatePoint();
   }
@@ -141,12 +141,14 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           child: Scaffold(
         key: _key,
         drawerEnableOpenDragGesture: true,
-        body: currentDevice==null ? Center(child: Text("there is no device to show")):buildMap(themeNotifier),
+        body: currentDevice == null
+            ? Center(child: Text("there is no device to show"))
+            : buildMap(themeNotifier),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
           selectedDevice: _onSelectedDevice,
           userLogined: widget.userLogined,
-          userDevices: widget.userDevices,
+          userDevices: _listDevice,
           currentUser: widget.currentUser,
         ),
       ));
@@ -272,7 +274,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                     MaterialPageRoute(
                                         builder: (context) => new UpdateVehicle(
                                             currentDeveice: currentDevice)),
-                                  ).then((value) => print('back = $value'));
+                                  ).then((value) => onRefresh());
                                 },
                                 icon: Icon(Icons.info, size: 15))
                           ],
@@ -439,17 +441,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {
-    String getTypeAsset(String type) {
-      if (type.toLowerCase().contains("car"))
-        return "assets/minicar.svg";
-      else if (type.toLowerCase().contains("motor"))
-        return "assets/minimotor.svg";
-      else if (type.toLowerCase().contains("truck"))
-        return "assets/minitruck.svg";
-      else
-        return "assets/minicar.svg";
-    }
-
     return Container(
       width: 50,
       height: 50,

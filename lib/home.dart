@@ -33,7 +33,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin<HomePage>, RouteAware {
+    with AutomaticKeepAliveClientMixin<HomePage> {
   final String title = 'App_Name'.tr;
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
@@ -44,29 +44,7 @@ class HomePageState extends State<HomePage>
     _listDevice = widget.userDevices;
   }
 
-  @override
-  void didPushNext() {
-    print('push next shodam');
-    super.didPushNext();
-  }
-
-  @override
-  void didPopNext() {
-    print('pop next shodam');
-    super.didPopNext();
-  }
-
-  @override
-  void didPop() {
-    print('pop shodam');
-    super.didPop();
-  }
-
-  @override
-  void didPush() {
-    print('push shodam');
-    super.didPush();
-  }
+ 
 
   void onRefresh() async {
     try {

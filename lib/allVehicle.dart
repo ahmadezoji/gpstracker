@@ -39,6 +39,7 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   void initState() {
     super.initState();
+    selectedDeviceIndex = 0;
   }
 
   @override
@@ -64,17 +65,6 @@ class _myAllVehicleState extends State<myAllVehicle>
   }
 
   Widget _vehicleIcon(BuildContext context, int deviceIndex) {
-    String getTypeAsset(String type) {
-      if (type.toLowerCase().contains("car"))
-        return "assets/minicar.svg";
-      else if (type.toLowerCase().contains("motor"))
-        return "assets/minimotor.svg";
-      else if (type.toLowerCase().contains("truck"))
-        return "assets/minitruck.svg";
-      else
-        return "assets/minicar.svg";
-    }
-
     return GestureDetector(
       onTap: () {
         if (deviceIndex == -1) {
@@ -126,10 +116,9 @@ class _myAllVehicleState extends State<myAllVehicle>
                             "..."
                         : widget.userDevices[deviceIndex].title,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold
-                    ),
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
                   )
                 ],
               ),

@@ -37,7 +37,7 @@ class _AddVehicleState extends State<AddVehicle>
     "vanet".tr: "minivanet",
   };
   late List<bool> radioValues = [true, false, false, false, false];
-
+  late int selectedValue = 0;
   @override
   void initState() {
     super.initState();
@@ -46,6 +46,7 @@ class _AddVehicleState extends State<AddVehicle>
   }
 
   void _addVehicle() async {
+    type = devices.values.elementAt(selectedValue).toString();
     Device dev = Device(
         serial: serial, title: title, simPhone: deviceSimNum, type: type);
     bool? result = await addDevice(dev, widget.currentUser);
@@ -96,7 +97,7 @@ class _AddVehicleState extends State<AddVehicle>
                       borderRadius: BorderRadius.circular(6),
                     ),
                     filled: true,
-                    labelText: "Serial".tr,
+                    labelText: "device-serial".tr,
                   ),
                 ),
                 SizedBox(
@@ -114,7 +115,7 @@ class _AddVehicleState extends State<AddVehicle>
                     ),
                     filled: true,
                     hintText: "+98",
-                    labelText: "SimCard Number".tr,
+                    labelText: "device-sim-num".tr,
                   ),
                 ),
                 SizedBox(
@@ -130,7 +131,7 @@ class _AddVehicleState extends State<AddVehicle>
                       borderRadius: BorderRadius.circular(6),
                     ),
                     filled: true,
-                    labelText: "Car Name".tr,
+                    labelText: "device-title".tr,
                   ),
                 ),
                 SizedBox(
@@ -148,39 +149,43 @@ class _AddVehicleState extends State<AddVehicle>
                       shrinkWrap: true,
                       itemCount: devices.entries.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1.0,
-                                  color: Colors.black,
-                                  strokeAlign: StrokeAlign.inside),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Radio(
-                                        value: false,
-                                        onChanged: (value) => setState(() {
-                                              radioValues[index] = !value!;
-                                            }),
-                                        groupValue: true),
-                                    SvgPicture.asset(
-                                      'assets/${devices.values.elementAt(index)}.svg',
-                                    ),
-                                  ],
-                                ),
-                                flex: 1,
+                        return GestureDetector(
+                          onTap: () => setState(() {
+                            selectedValue = index;
+                          }),
+                          child: Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.black,
+                                    strokeAlign: StrokeAlign.inside),
                               ),
-                              Flexible(
-                                child: Text(devices.keys.elementAt(index)),
-                                flex: 2,
-                              )
-                            ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Row(
+                                    children: [
+                                      index == selectedValue
+                                          ? Icon(Icons.check)
+                                          : Icon(Icons.circle_outlined),
+                                      SvgPicture.asset(
+                                        'assets/${devices.values.elementAt(index)}.svg',
+                                      )
+                                    ],
+                                  ),
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                      '${devices.keys.elementAt(index)}'.tr),
+                                  flex: 2,
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }),
@@ -190,12 +195,12 @@ class _AddVehicleState extends State<AddVehicle>
                 ),
                 ElevatedButton(
                   child: Text(
-                    'Sumbmit',
+                    "apply".tr,
                     style: const TextStyle(fontSize: 20),
                   ),
                   onPressed: _addVehicle,
                   style:
-                      ElevatedButton.styleFrom(fixedSize: const Size(250, 50)),
+                      ElevatedButton.styleFrom(fixedSize: const Size(300, 50)),
                 )
               ],
             ),

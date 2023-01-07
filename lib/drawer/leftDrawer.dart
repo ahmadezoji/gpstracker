@@ -4,6 +4,7 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
+import 'package:cargpstracker/mainTabScreens/setting2.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -23,12 +24,14 @@ class LeftDrawer extends StatefulWidget {
   final List<Device> userDevices;
   final bool userLogined;
   final User currentUser;
+
   @override
   LeftDrawerState createState() => LeftDrawerState();
 }
 
 class LeftDrawerState extends State<LeftDrawer>
     with AutomaticKeepAliveClientMixin<LeftDrawer> {
+  late User _currentUser = widget.currentUser;
   @override
   void initState() {
     super.initState();
@@ -59,7 +62,9 @@ class LeftDrawerState extends State<LeftDrawer>
     if (allwaysLoginByPass == "true") {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Login4Page(phone: widget.currentUser.phone)),
+        MaterialPageRoute(
+            builder: (context) => Login4Page(
+                currentUser: _currentUser, userDevices: widget.userDevices)),
       );
     } else {
       Navigator.push(
@@ -75,12 +80,12 @@ class LeftDrawerState extends State<LeftDrawer>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image(image: AssetImage("assets/user_outline.png")),
-              Text(widget.currentUser.fullname,
+              Text(_currentUser.fullname,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(widget.currentUser.phone,
+              Text(_currentUser.phone,
                   style:
                       TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              Text(widget.currentUser.email,
+              Text(_currentUser.email,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
             ],
           )
@@ -97,6 +102,13 @@ class LeftDrawerState extends State<LeftDrawer>
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
             ],
           ));
+  }
+
+  void onRefresh(User user) async {
+    print(user);
+    setState(() {
+      _currentUser = user;
+    });
   }
 
   @override
@@ -130,12 +142,13 @@ class LeftDrawerState extends State<LeftDrawer>
             onTap: () {
               widget.userLogined
                   ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => ProfilePage(
-                                currentUser: widget.currentUser,
-                              ),
-                          fullscreenDialog: false))
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ProfilePage(
+                                    currentUser: _currentUser,
+                                  ),
+                              fullscreenDialog: false))
+                      .then((value) => onRefresh(value.user))
                   : goToLoginPage();
             },
           ),
@@ -149,7 +162,9 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => Setting(), fullscreenDialog: false))
+                        builder: (_) => Setting2(currentUser: _currentUser,userDevices: widget.userDevices),
+                        fullscreenDialog: false,
+                      ))
                   : goToLoginPage();
             },
           ),
@@ -166,8 +181,7 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              AddVehicle(currentUser: widget.currentUser),
+                          builder: (_) => AddVehicle(currentUser: _currentUser),
                           fullscreenDialog: false))
                   : goToLoginPage();
             },

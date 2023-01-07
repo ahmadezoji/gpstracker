@@ -391,32 +391,6 @@ class _LiveDemoState extends State<LiveDemo>
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {
-    String getTypeAsset(String type) {
-      switch (type) {
-        case "car":
-          {
-            return "assets/minicar.svg";
-          }
-          break;
-
-        case "motor":
-          {
-            return "assets/minimotor.svg";
-          }
-          break;
-        case "truck":
-          {
-            return "assets/minitruck.svg";
-          }
-          break;
-        default:
-          {
-            return "assets/minicar.svg";
-          }
-          break;
-      }
-    }
-
     return Container(
       width: 50,
       height: 50,

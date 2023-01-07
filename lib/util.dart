@@ -39,4 +39,19 @@ class AppConstants {
 const SHARED_PHONE_KEY = "current-user-phone-key";
 const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";
 
-const HTTP_URL ='http://130.185.77.83:4681';// 'http://0.0.0.0:4680';
+const HTTP_URL = 'http://130.185.77.83:4681'; //'http://0.0.0.0:4680'
+
+String getTypeAsset(String type) {
+  if (type.toLowerCase().contains("car"))
+    return "assets/minicar.svg";
+  else if (type.toLowerCase().contains("motor"))
+    return "assets/minimotor.svg";
+  else if (type.toLowerCase().contains("truck"))
+    return "assets/minitruck.svg";
+  else if (type.toLowerCase().contains("bicycle"))
+    return "assets/minibicycle.svg";
+  else if (type.toLowerCase().contains("vanet"))
+    return "assets/minivanet.svg";
+  else
+    return "assets/minicar.svg";
+}

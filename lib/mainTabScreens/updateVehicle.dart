@@ -27,18 +27,24 @@ class UpdateVehicle extends StatefulWidget {
 class _UpdateVehicleState extends State<UpdateVehicle>
     with AutomaticKeepAliveClientMixin<UpdateVehicle> {
   late String serial;
-  late String deviceSimNum = "";
-  late String title = "my vehicle";
-  late String type = "minicar";
+  late String deviceSimNum = widget.currentDeveice.simPhone;
+  late String title = widget.currentDeveice.title;
   static Map<String, String> devices = {
     "car".tr: 'minicar',
     "motor".tr: "minimotor",
-    "truck".tr: "minitruck"
+    "truck".tr: "minitruck",
+    "bicycle".tr: 'minibicycle',
+    "vanet".tr: "minivanet",
   };
+  late List<bool> radioValues = [true, false, false, false, false];
+  late String selectedValue;
 
   @override
   void initState() {
     super.initState();
+    selectedValue = devices.keys.firstWhere(
+        (k) => devices[k] == widget.currentDeveice.type,
+        orElse: () => "null");
   }
 
   void _updateVehicle() async {
@@ -47,186 +53,213 @@ class _UpdateVehicleState extends State<UpdateVehicle>
           serial: widget.currentDeveice.serial,
           title: title,
           simPhone: deviceSimNum,
-          type: type);
-      print(dev);
+          type: devices[selectedValue]!);
+      print(dev.type);
       bool? result = await updateDevice(dev);
       Fluttertoast.showToast(msg: 'update device is $result');
-      if (result!)
-        Navigator.pop(context);
+      if (result!) Navigator.pop(context, {"call": true});
     } catch (error) {
       print(error);
     }
+  }
 
-}
+  void _deleteVehicle() async {
+    try {
+      bool? result = await deleteDevice(widget.currentDeveice);
+      Fluttertoast.showToast(msg: 'delete device is $result');
+      if (result!) Navigator.pop(context);
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'unsuccessful process');
+    }
+  }
 
-@override
-Widget build(BuildContext context) {
-  return Consumer<ThemeModel>(
-      builder: (context, ThemeModel themeNotifier, child) {
-        return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
+  @override
+  Widget build(BuildContext context) {
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+    return Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
               // Status bar color
-              statusBarColor: statusColor,
+              // statusBarColor: statusColor,
 
               // Status bar brightness (optional)
-              statusBarIconBrightness:
-              Brightness.dark, // For Android (dark icons)
-              statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
-            title:
-            Text("UpdateVehicle".tr, style: TextStyle(color: Colors.black)),
-            actions: [
-              IconButton(
-                  padding: EdgeInsets.all(5),
-                  onPressed: () {
-                    Fluttertoast.showToast(msg: widget.currentDeveice.title);
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                    size: 22,
-                  ))
-            ],
-            backgroundColor: NabColor, // status bar color
-          ),
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
+              // statusBarIconBrightness:
+              //     Brightness.dark, // For Android (dark icons)
+              // statusBarBrightness: Brightness.light, // For iOS (dark icons)
+              ),
+          title: Text("UpdateVehicle".tr),
+          actions: [
+            Container(
+              padding: EdgeInsets.only(right: 10, left: 10),
+              child: GestureDetector(
+                onTap: () => showAlertDialog(context, _deleteVehicle),
+                child: Icon(
+                  Icons.delete,
+                  size: 25,
+                ),
+              ),
+            )
+          ],
+          // backgroundColor: NabColor, // status bar color
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(top: 50),
+            margin: EdgeInsets.all(20),
             child: Column(
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 50.0, bottom: 10),
-                    // padding: EdgeInsets.symmetric(horizontal: 60),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: TextFormField(
-                            initialValue: widget.currentDeveice.simPhone,
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) =>
-                                setState(() {
-                                  deviceSimNum = value;
-                                }),
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              filled: true,
-                              fillColor: textFeildColor,
-                              hintText: "+98",
-                              labelText: "SimCard Number".tr,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: TextFormField(
-                            initialValue: widget.currentDeveice.title,
-                            onChanged: (value) =>
-                                setState(() {
-                                  title = value;
-                                }),
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              filled: true,
-                              fillColor: textFeildColor,
-                              labelText: "Car Name".tr,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: DropdownButton<String>(
-                            items: devices
-                                .map((description, value) {
-                              return MapEntry(
-                                  description,
-                                  DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Container(
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            //                    <--- top side
-                                            color: BorderSpacerColor,
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                      ),
-                                      width: 250,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/ellipse.svg',
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              SvgPicture.asset(
-                                                'assets/$value.svg',
-                                              ),
-                                            ],
-                                          ),
-                                          Text(description)
-                                        ],
-                                      ),
-                                    ),
-                                  ));
-                            })
-                                .values
-                                .toList(),
-                            value: widget.currentDeveice.type,
-                            onChanged: (String? newValue) {
-                              if (newValue != null) {
-                                setState(() {
-                                  type = newValue;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextFormField(
+                  initialValue: deviceSimNum,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => setState(() {
+                    deviceSimNum = value;
+                  }),
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    filled: true,
+                    hintText: "+98",
+                    labelText: "device-sim-num".tr,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  initialValue: widget.currentDeveice.title,
+                  onChanged: (value) => setState(() {
+                    title = value;
+                  }),
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    filled: true,
+                    labelText: "device-title".tr,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: statusColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: devices.entries.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () => setState(() {
+                            selectedValue = devices.keys.elementAt(index);
+                          }),
                           child: Container(
+                            height: 30,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.blue,
-                            ),
-                            child: TextButton(
-                              child: Text(
-                                'Apply'.tr,
-                                style: TextStyle(
-                                    fontSize: 20.0, color: Colors.white),
+                              border: Border(
+                                bottom: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.black,
+                                    strokeAlign: StrokeAlign.inside),
                               ),
-                              // color: Colors.blueAccent,
-                              // textColor: Colors.white,
-                              onPressed: () {
-                                _updateVehicle();
-                              },
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Row(
+                                    children: [
+                                      devices.keys.elementAt(index) ==
+                                              selectedValue
+                                          ? Icon(Icons.check)
+                                          : Icon(Icons.circle_outlined),
+                                      SvgPicture.asset(
+                                        'assets/${devices.values.elementAt(index)}.svg',
+                                      )
+                                    ],
+                                  ),
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                      '${devices.keys.elementAt(index)}'.tr),
+                                  flex: 2,
+                                )
+                              ],
                             ),
                           ),
-                        )
-                      ],
-                    )),
+                        );
+                      }),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    "apply".tr,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: _updateVehicle,
+                  style:
+                      ElevatedButton.styleFrom(fixedSize: const Size(300, 50)),
+                )
               ],
             ),
           ),
-        );
-      });
-}
+        ),
+      );
+    });
+  }
 
-@override
-bool
-get
-wantKeepAlive =>
-    true;}
+  showAlertDialog(BuildContext context, Function onDeleteDevice) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("cancel".tr),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: Text("apply".tr),
+      onPressed: () {
+        Navigator.pop(context);
+        onDeleteDevice();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("delete_title".tr),
+      content: Text("delete_message".tr),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

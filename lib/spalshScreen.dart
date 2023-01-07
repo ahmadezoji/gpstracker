@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/login4.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
-import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SpalshScreen extends StatefulWidget {
   @override
@@ -45,19 +40,29 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   void getShared() async {
     try {
-      String? phone = await load(SHARED_PHONE_KEY);
-      String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
+      // String? phone = await load(SHARED_PHONE_KEY);
+      // String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
 
-      // String phone = "09192592697";
-      // String withPass = "true";
+      String phone = "09127060772";
+      String withPass = "true";
       if (phone != null) {
-        currentUser = await getUser(phone) as User;
+        currentUser = (await getUser(phone))!;
         devicesList = (await getUserDevice(phone))!;
         if (withPass == "true") {
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => new Login4Page(
+          //           currentUser: currentUser, userDevices: devicesList)),
+          // );
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => new Login4Page(currentUser: currentUser,userDevices: devicesList)),
+                builder: (context) => new HomePage(
+                    currentUser: currentUser,
+                    userLogined: true,
+                    userDevices: devicesList)),
           );
         } else {
           Navigator.pushReplacement(

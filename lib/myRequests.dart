@@ -1,5 +1,7 @@
 import 'dart:convert' as convert;
+import 'dart:js';
 
+import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/util.dart';
@@ -66,7 +68,6 @@ Future<User?> getUser(String phone) async {
     request.fields.addAll({
       'phone': phone,
     });
-
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -78,6 +79,7 @@ Future<User?> getUser(String phone) async {
       return null;
     }
   } catch (error) {
+    print(error);
     return null;
   }
 }
@@ -172,6 +174,30 @@ Future<bool?> updateDevice(Device device) async {
   }
 }
 
+Future<bool?> deleteDevice(Device device) async {
+  try {
+    if (device.serial.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/deleteDevice/'));
+    request.fields.addAll({
+      'serial': device.serial,
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return json["status"] as bool;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 Future<User?> updateUser(User user) async {
   try {
     if (user.phone.isEmpty) return null;
@@ -243,4 +269,28 @@ Future<Point?> getCurrentLocation(Device currentDevice) async {
     return null;
   }
   return null;
+}
+
+Future<Config?> getConfig(Device device) async {
+  try {
+    if (device.serial.isEmpty) return null;
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/getConfig/'));
+    request.fields.addAll({
+      'serial': device.serial,
+    });
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      return Config.fromJson(json[0]);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    print('error = $error');
+    return null;
+  }
 }

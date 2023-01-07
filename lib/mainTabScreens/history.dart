@@ -81,7 +81,6 @@ class _HistoryState extends State<History>
     _mapController = MapController();
     getCurrentDevice();
     super.initState();
-    print('init history');
   }
 
   Future<Uint8List> loadMarkerImage() async {
@@ -90,9 +89,7 @@ class _HistoryState extends State<History>
   }
 
   void getCurrentDevice() async {
-    // Map<String, dynamic> map = await loadJson('device');
-    // currentDevice = Device.fromJson(map);
-    currentDevice = widget.userDevices[0];
+    if (widget.userDevices.length > 0) currentDevice = widget.userDevices[0];
   }
 
   void fetch(String stamp) async {
