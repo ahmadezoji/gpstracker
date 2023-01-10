@@ -1,14 +1,6 @@
 import 'package:cargpstracker/LacaleString.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
-import 'package:cargpstracker/mainTabScreens/live.dart';
-import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/login4.dart';
-import 'package:cargpstracker/mainTabScreens/login3.dart';
-import 'package:cargpstracker/mainTabScreens/profile.dart';
-import 'package:cargpstracker/mainTabScreens/profile.dart';
-import 'package:cargpstracker/mainTabScreens/setting2.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';

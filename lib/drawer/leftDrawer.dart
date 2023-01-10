@@ -4,7 +4,6 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
-import 'package:cargpstracker/mainTabScreens/setting2.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -162,7 +161,7 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => Setting2(currentUser: _currentUser,userDevices: widget.userDevices),
+                        builder: (_) => Setting(currentUser: widget.currentUser,userDevices: widget.userDevices),
                         fullscreenDialog: false,
                       ))
                   : goToLoginPage();

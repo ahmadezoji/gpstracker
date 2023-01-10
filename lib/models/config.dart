@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 class Config {
-  final String device_id;
-  final String language;
-  final String timezone;
-  final int intervalTime;
-  final int staticTime;
-  final int speed_alarm;
-  final String fence;
-  final String userPhoneNum;
-  final String apn_name;
-  final String apn_user;
-  final String apn_pass;
-  final int alarming_method;
+  late String device_id;
+  late String language;
+  late String timezone;
+  late int intervalTime;
+  late int staticTime;
+  late int speed_alarm;
+  late String fence;
+  late String userPhoneNum;
+  late String apn_name;
+  late String apn_user;
+  late String apn_pass;
+  late int alarming_method;
 
-  const Config({
+  Config({
     required this.device_id,
     required this.language,
     required this.timezone,
@@ -28,10 +28,9 @@ class Config {
     required this.apn_pass,
     required this.alarming_method,
   });
-
   factory Config.fromJson(Map<String, dynamic> jsonData) {
     return Config(
-      device_id: jsonData['device_id_id'],
+      device_id: jsonData['serial'],
       language: jsonData['language'],
       timezone: jsonData['timezone'],
       intervalTime: jsonData['interval'],

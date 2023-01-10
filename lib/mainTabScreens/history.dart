@@ -4,9 +4,6 @@ import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
-import 'package:cargpstracker/bottomDrawer.dart';
-import 'package:cargpstracker/main.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/models/user.dart';
@@ -269,8 +266,8 @@ class _HistoryState extends State<History>
       children: [
         Checkbox(value: showPoint, onChanged: onChangedPointShow),
         FloatingActionButton(
+          heroTag: null,
           backgroundColor: btnColor,
-          heroTag: "btn1",
           child: const Icon(Icons.date_range, color: Colors.black),
           onPressed: () {
             _selectDate(context);
@@ -278,8 +275,8 @@ class _HistoryState extends State<History>
         ),
         const SizedBox(height: 50),
         FloatingActionButton(
+          heroTag: null,
           backgroundColor: btnColor,
-          heroTag: "btn1",
           child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
@@ -291,8 +288,8 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Zoom Out
         FloatingActionButton(
+          heroTag: null,
           backgroundColor: btnColor,
-          heroTag: "btn2",
           child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
             zoomout();
@@ -305,8 +302,8 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Change Style
         FloatingActionButton(
+          heroTag: null,
           backgroundColor: btnColor,
-          heroTag: "btn3",
           child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {
             // selectedStyle = selectedStyle == light ? sattlite : light;

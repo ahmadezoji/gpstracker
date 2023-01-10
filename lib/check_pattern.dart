@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 
 class CheckPattern extends StatefulWidget {
-  const CheckPattern({Key? key, required this.pattern, required this.bswitch})
+  const CheckPattern({Key? key, required this.pattern})
       : super(key: key);
   final List<int>? pattern;
-  final bool bswitch;
 
   @override
   _CheckPatternState createState() => _CheckPatternState();
@@ -20,7 +19,9 @@ class _CheckPatternState extends State<CheckPattern>
   void initState() {
     super.initState();
   }
-
+  void pop(bool status){
+    Navigator.pop(context, {"status": status});
+  }
   void switchChange() async {}
 
   @override
@@ -50,7 +51,7 @@ class _CheckPatternState extends State<CheckPattern>
               onInputComplete: (List<int> input) {
                 if (listEquals<int>(input, widget.pattern)) {
                   switchChange();
-                  Navigator.of(context).pop(true);
+                  pop(true);
                 } else {
                   Fluttertoast.showToast(msg: 'الگو مظابقت ندارد');
                 }

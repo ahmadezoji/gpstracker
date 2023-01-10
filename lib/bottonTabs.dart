@@ -1,9 +1,6 @@
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
-import 'package:cargpstracker/mainTabScreens/GpsPlusDemo.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
-import 'package:cargpstracker/mainTabScreens/historyDemo.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
-import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
@@ -32,7 +29,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   bool activeLive = true;
   void _onItemTapped(int index) {
     if (index == 1)

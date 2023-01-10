@@ -284,7 +284,8 @@ Future<Config?> getConfig(Device device) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      return Config.fromJson(json[0]);
+      print(json);
+      return Config.fromJson(json);
     } else {
       return null;
     }

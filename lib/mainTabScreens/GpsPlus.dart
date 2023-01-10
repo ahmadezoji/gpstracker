@@ -7,10 +7,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GpsPlus extends StatelessWidget {
-  const GpsPlus({Key? key}) : super(key: key);
+class GpsPlus extends StatefulWidget {
+  const GpsPlus({
+    Key? key,
+  }) : super(key: key);
 
-  void switchChange(BuildContext context, bool value) async {
+  @override
+  State<GpsPlus> createState() => GpsPlusState();
+}
+
+class GpsPlusState extends State<GpsPlus> {
+  late bool switchLockState = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void switchChange(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? savedStrList = prefs.getStringList('pattern');
     List<int>? intProductList = savedStrList?.map((i) => int.parse(i)).toList();
@@ -20,13 +35,35 @@ class GpsPlus extends StatelessWidget {
           MaterialPageRoute(
               builder: (_) => SetPattern(), fullscreenDialog: false));
     } else {
+      // Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //             builder: (_) =>
+      //                 CheckPattern(pattern: intProductList),
+      //             fullscreenDialog: false))
+      //     .then((value) => print(value));
+
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  CheckPattern(pattern: intProductList, bswitch: value),
-              fullscreenDialog: false));
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckPattern(pattern: intProductList),
+        ),
+      ).then((value) => print(value));
     }
+  }
+
+  void changeSwitch(bool statue) {
+    setState(() {
+      switchLockState = statue;
+    });
+  }
+
+  Widget unlock() {
+    return Image.asset("assets/switch-unlock-banner.png");
+  }
+
+  Widget lock() {
+    return Image.asset("assets/switch-lock-banner.jpg");
   }
 
   @override
@@ -40,6 +77,7 @@ class GpsPlus extends StatelessWidget {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Container(
+        padding: EdgeInsets.only(top: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,30 +85,28 @@ class GpsPlus extends StatelessWidget {
             SizedBox(height: 40),
             new GestureDetector(
               onTap: () {
-                switchChange(context, true);
+                switchChange(!switchLockState);
               },
-              child: SvgPicture.asset(
-                "assets/switch-lock-banner.svg",
-              ),
+              child: switchLockState ? lock() : unlock(),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  color: backColor,
-                  child: Image(image: AssetImage("assets/speed-alarm.png")),
-                ),
-                Container(
-                  color: backColor,
-                  child: Image(image: AssetImage("assets/fence-control.png")),
-                )
+                Image(image: AssetImage("assets/speed-alarm.png")),
+                Image(image: AssetImage("assets/fence-control.png"))
               ],
             )
           ],
         ),
       );
     });
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
   }
 }

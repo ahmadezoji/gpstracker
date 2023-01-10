@@ -89,7 +89,6 @@ class _ProfilePage2State extends State<ProfilePage>
                   padding:
                       EdgeInsets.only(top: 70, left: 10, right: 10, bottom: 20),
                   height: MediaQuery.of(context).size.height * .80,
-                  color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

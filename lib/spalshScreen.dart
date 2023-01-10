@@ -43,7 +43,7 @@ class _SpalshScreenState extends State<SpalshScreen>
       // String? phone = await load(SHARED_PHONE_KEY);
       // String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
 
-      String phone = "09127060772";
+      String phone = "+989195835135";
       String withPass = "true";
       if (phone != null) {
         currentUser = (await getUser(phone))!;
@@ -132,7 +132,7 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   @override
   void dispose() {
-    controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 

@@ -37,20 +37,21 @@ class HomePageState extends State<HomePage>
   final String title = 'App_Name'.tr;
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
-
+  late User _user = widget.currentUser;
   @override
   void initState() {
     super.initState();
     _listDevice = widget.userDevices;
+    _user = widget.currentUser;
   }
-
- 
 
   void onRefresh() async {
     try {
+      User tmpUser = (await getUser(widget.currentUser.phone))!;
       List<Device> tempArray = (await getUserDevice(widget.currentUser.phone))!;
-      setState((){
+      setState(() {
         _listDevice = tempArray;
+        _user = tmpUser;
       });
       print(_listDevice);
     } catch (error) {
@@ -128,10 +129,10 @@ class HomePageState extends State<HomePage>
             child: new MyStatefulWidget(
           userLogined: widget.userLogined,
           userDevices: _listDevice,
-          currentUser: widget.currentUser,
+          currentUser: _user,
         )),
         drawer: LeftDrawer(
-            currentUser: widget.currentUser,
+            currentUser: _user,
             userLogined: widget.userLogined,
             userDevices: _listDevice),
       );

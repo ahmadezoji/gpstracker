@@ -1,7 +1,12 @@
 import 'dart:convert' as convert;
+import 'dart:core';
 
+import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,31 +16,36 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cargpstracker/myRequests.dart';
 
 class Setting extends StatefulWidget {
+  const Setting(
+      {Key? key, required this.userDevices, required this.currentUser})
+      : super(key: key);
+
+  final List<Device> userDevices;
+  final User currentUser;
+
   @override
   _SettingState createState() => _SettingState();
 }
 
 class _SettingState extends State<Setting> with TickerProviderStateMixin {
   late AnimationController controller;
-  late String valueChoose;
-  List listItem = ["option1", 'option2'];
-  List<Device> devicesList = [];
-  List<String> devicesListSerials = [];
+  late Device currentDevice;
+  late Config currentDeviceConfig = Config(
+      device_id: "",
+      language: "farsi",
+      timezone: "istanbul",
+      intervalTime: 10,
+      staticTime: 50,
+      speed_alarm: 120,
+      fence: "",
+      userPhoneNum: "",
+      apn_name: "default",
+      apn_user: "default",
+      apn_pass: "default",
+      alarming_method: 1);
   static const platform = const MethodChannel("platfrom.channel.message/info");
-  int languageIndex = 0;
-  bool valNotify = false;
-  String serial = 'None';
-  String interval = '1-60s';
-  String static = '1-60m';
-  String adminNum = '09127060772';
-  String timezone = 'tehran';
-  String language = 'english';
-  String speedAlarm = '60-220 km/h';
-  String notifyType = '2';
 
   bool loading = false;
 
@@ -43,15 +53,120 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
     {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
   ];
+  List<String> deviceLanges = ["english", "farsi"];
+  List<String> deviceTimeZones = ["tehran", "istanbul"];
+  List<String> deviceIntervals = ["1", "5", "10", "30", "50"];
+  List<String> deviceStatics = ["1", "5", "10", "30", "50"];
+  List<String> deviceSpeedAlarms = [
+    "0",
+    "60",
+    "70",
+    "80",
+    "90",
+    "100",
+    "120",
+    "140",
+    "160",
+    "180",
+    "200",
+    "220"
+  ];
+  List<String> deviceFences = ["default", "A"];
+  List<String> deviceAPNs = ["default", "A"];
+  List<String> deviceAlarmMethods = ["default", "1", "2"];
 
-  Device? getCurrentDevice(String serial) {
-    try {
-      if (devicesList.length == 0) return null;
-      for (Device dev in devicesList) {
-        if (dev.serial == serial) return dev;
-      }
-    } catch (e) {}
-    return null;
+  String serial = '';
+  String intervalTime = "10";
+  String staticTime = "50";
+  String adminNum = '';
+  String timezone = "tehran";
+  String language = "english";
+  String speedAlarm = "220";
+  String fence = 'default';
+  String apn_name = 'default';
+  String apn_user = 'default';
+  String apn_pass = 'default';
+  String alarming_method = "1";
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentDevice().then((value) => getCurrentDeviceConfig(value));
+  }
+
+  Future<Config> getCurrentDeviceConfig(Device device) async {
+    Config conff = (await getConfig(device))!;
+    setState(() {
+      currentDeviceConfig = conff;
+    });
+    print(currentDeviceConfig);
+    return currentDeviceConfig;
+  }
+
+  Future<Device> getCurrentDevice() async {
+    if (widget.userDevices.length > 0) {
+      setState(() {
+        currentDevice = widget.userDevices[0];
+      });
+    }
+
+    print('currentDevice = ${currentDevice.serial}');
+    return currentDevice;
+  }
+
+  onChangedDropDown(Device device) {
+    setState(() {
+      currentDevice = device;
+    });
+    getCurrentDeviceConfig(device);
+  }
+
+  void _onchangedLanguage(String value) {
+    setState(() {
+      currentDeviceConfig.language = value;
+    });
+  }
+
+  void _onchangedTimezone(String value) {
+    setState(() {
+      currentDeviceConfig.timezone = value;
+    });
+  }
+
+  void _onchangedIntervalTime(String value) {
+    setState(() {
+      currentDeviceConfig.intervalTime = int.parse(value);
+    });
+  }
+
+  void _onchangedStaticTime(String value) {
+    setState(() {
+      currentDeviceConfig.staticTime = int.parse(value);
+    });
+  }
+
+  void _onchangedSpeedAlarm(String value) {
+    setState(() {
+      currentDeviceConfig.speed_alarm = int.parse(value);
+    });
+  }
+
+  void _onchangedFence(String value) {
+    setState(() {
+      fence = value;
+    });
+  }
+
+  void _onchangedApn(String value) {
+    setState(() {
+      apn_name = value;
+    });
+  }
+
+  void _onchangedAlarmMethod(String value) {
+    setState(() {
+      alarming_method = value;
+    });
   }
 
   updateLanguage(Locale locale) {
@@ -59,426 +174,242 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     Get.updateLocale(locale);
   }
 
-  onChangeFunction(bool newValue) {
-    setState(() {
-      valNotify = newValue;
-    });
-  }
-
-  onChangeTextSerial(String newValue) {
-    setState(() {
-      serial = newValue;
-    });
-  }
-
-  onChangeTextInterval(String newValue) {
-    setState(() {
-      interval = newValue;
-    });
-  }
-
-  onChangeTextStatic(String newValue) {
-    setState(() {
-      static = newValue;
-    });
-  }
-
-  onChangeTextAdminNum(String newValue) {
-    setState(() {
-      adminNum = newValue;
-    });
-  }
-
-  onChangeTextSpeedAlarm(String newValue) {
-    setState(() {
-      speedAlarm = newValue;
-    });
-  }
-
-  @override
-  void initState() {
-    getCurrentUserDevices();
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addListener(() {});
-    controller.repeat(reverse: true);
-
-    super.initState();
-  }
-
-  void getCurrentUserDevices() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      String? phone = prefs.getString('phone');
-      // ignore: non_constant_identifier_names
-      getUserDevice(phone!).then((list) async {
-        for (var dev in list!) {
-          devicesListSerials.add(dev.getSerial());
-        }
-        serial = devicesListSerials[0];
-        setState(() {
-          loading = true;
-        });
-      });
-    } catch (e) {}
-  }
-
   @override
   void dispose() {
-    // ignore: invalid_use_of_protected_member
-    // controller.clearListeners();
-    // controller.stop(canceled: true);
     super.dispose();
   }
 
-  void fetch() async {
+  void applyChanges() async {
     try {
-      var request =
-          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/getConfig/'));
-      request.fields.addAll({'serial': serial});
-
-      http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = convert.jsonDecode(responseString);
-
-        setState(() {
-          serial = json[0]["device_id_id"].toString();
-          interval = json[0]["interval"].toString();
-          static = json[0]["static"].toString();
-          timezone = json[0]["timezone"].toString();
-          language = json[0]["language"].toString();
-          speedAlarm = json[0]["speed_alarm"].toString();
-          adminNum = json[0]["admin_num"].toString();
-        });
-
-        // final prefs = await SharedPreferences.getInstance();
-        // prefs.setString('serial', serial).then((bool success) {
-        // print(success);
-        // });
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {
-      print('Error add project $error');
+      bool status = (await setConfig(currentDevice, currentDeviceConfig))!;
+      if (status)
+        Fluttertoast.showToast(msg: 'Config success and start config thread');
+      else
+        Fluttertoast.showToast(msg: 'Set config failed !!');
+    } catch (e) {
+      print('errpor = $e');
     }
   }
 
-  Future<Null> sendSms() async {
-    print("SendSMS");
-    try {
-      final String result = await platform.invokeMethod(
-          'send', <String, dynamic>{
-        "phone": "05346403281",
-        "msg": "Hello! I'm sent programatically."
-      }); //Replace a 'X' with 10 digit phone number
-      print(result);
-    } on PlatformException catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> applyChanges() async {
-    // sendSms();
-    try {
-      var request =
-          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/setConfig/'));
-      request.fields.addAll({
-        'serial': serial,
-        'timezone': timezone,
-        'language': language,
-        'speed': speedAlarm,
-        'notification': notifyType,
-        'apnName': 'test',
-        'apnUser': 'user',
-        'apnPass': '123',
-        'number': adminNum,
-        'fence': '',
-        'interval': interval,
-        'static': static
-      });
-
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final rec =
-            await saveJson('device', Device.toMap(getCurrentDevice(serial)!));
-        print('write shared $rec');
-
-        // Device device = (await loadJson('device')) as Device;
-        //
-        // print('read shared ${device.toString()}');
-        Fluttertoast.showToast(msg: "save-change-success".tr);
-      } else {
-        print(response.reasonPhrase);
-      }
-    } on Exception {
-      print('مشکل');
-    }
-  }
-
-// buildDeviceOptions(context, 'Device serial', serial),
   @override
   Widget build(BuildContext context) {
+    print(currentDeviceConfig.intervalTime.toString());
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      late Color fontColor = Theme.of(context).brightness == Brightness.dark
-          ? Colors.white
-          : Colors.black;
       return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              statusBarColor: statusColor,
-
-              // Status bar brightness (optional)
-              statusBarIconBrightness:
-                  Brightness.dark, // For Android (dark icons)
-              statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
-            title: Text("settings".tr, style: TextStyle(color: fontColor)),
-            backgroundColor: NabColor, // status bar color
-          ),
-          body: loading == true
-              ? Container(
-                  color: Colors.grey[200],
-                  padding: const EdgeInsets.all(10),
-                  child: ListView(
-                    children: [
-                      Column(
-                        children: [
-                          dropdown(),
-                          buildDeviceOptions(context, 'Interval', interval,
-                              onChangeTextInterval),
-                          buildDeviceOptions(
-                              context, 'Statics', static, onChangeTextStatic),
-                          buildDeviceOptions(context, 'Alarm number', adminNum,
-                              onChangeTextAdminNum),
-                          buildTableOptions(
-                              context, 'Time Zone', 'istanbul', 'tehran'),
-                          buildTableOptions(
-                              context, 'Language', 'english', 'persian'),
-                          buildSwitchOptions(
-                              'Fence Config', valNotify, onChangeFunction),
-                          buildDeviceOptions(context, 'Alarm Speed', speedAlarm,
-                              onChangeTextSpeedAlarm),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "change_lang".tr,
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black),
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      var locale = Locale('en', 'US');
-                                      Get.updateLocale(locale);
-                                    },
-                                    child: Text('English')),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      var locale = Locale('fa', 'IR');
-                                      Get.updateLocale(locale);
-                                    },
-                                    child: Text('فارسی')),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue,
-                        ),
-                        child: TextButton(
-                          child: Text(
-                            'Apply'.tr,
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            applyChanges();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+        appBar: AppBar(
+          title: Text("setting".tr),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) => currentDevice == null
+              ? Center(
+                  child: Text('There is no device to show !!'),
                 )
-              : Center(
-                  child: Center(child: Text('Please wait its loading...'))));
-      // }
+              : Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: DropdownButton<Device>(
+                                  value: currentDevice,
+                                  icon: const Icon(Icons.arrow_downward),
+                                  elevation: 16,
+                                  underline: Container(
+                                    height: 2,
+                                  ),
+                                  onChanged: (Device? device) {
+                                    onChangedDropDown(device!);
+                                  },
+                                  items: widget.userDevices
+                                      .map<DropdownMenuItem<Device>>(
+                                          (Device value) {
+                                    return DropdownMenuItem<Device>(
+                                      value: value,
+                                      child: Text(value.serial),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildDropDown(
+                                "device-lang".tr,
+                                deviceLanges,
+                                currentDeviceConfig.language.toLowerCase(),
+                                _onchangedLanguage,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildDropDown(
+                                "device-timezone".tr,
+                                deviceTimeZones,
+                                currentDeviceConfig.timezone.toLowerCase(),
+                                _onchangedTimezone,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildDropDown(
+                                "device-interval".tr,
+                                deviceIntervals,
+                                currentDeviceConfig.intervalTime.toString(),
+                                _onchangedIntervalTime,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildDropDown(
+                                "device-static".tr,
+                                deviceStatics,
+                                currentDeviceConfig.staticTime.toString(),
+                                _onchangedStaticTime,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildDropDown(
+                                "device-speedAlarm".tr,
+                                deviceSpeedAlarms,
+                                currentDeviceConfig.speed_alarm.toString(),
+                                _onchangedSpeedAlarm,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildToggle("Offline Mode","",_onchangedApn),
+                              // buildDropDown(
+                              //   "device-fence".tr,
+                              //   deviceFences,
+                              //   fence,
+                              //   _onchangedFence,
+                              // ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // buildDropDown(
+                              //   "device-apnName".tr,
+                              //   deviceAPNs,
+                              //   apn_name,
+                              //   _onchangedApn,
+                              // ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // buildDropDown(
+                              //   "device-apnUser".tr,
+                              //   deviceAPNs,
+                              //   apn_user,
+                              //   _onchangedApn,
+                              // ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // buildDropDown(
+                              //   "device-apnPass".tr,
+                              //   deviceAPNs,
+                              //   apn_pass,
+                              //   _onchangedApn,
+                              // ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
+                              // buildDropDown(
+                              //   "device-speedAlarmMethod".tr,
+                              //   deviceAlarmMethods,
+                              //   currentDeviceConfig.alarming_method.toString(),
+                              //   _onchangedAlarmMethod,
+                              // ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: constraints.maxWidth,
+                      child: ElevatedButton(
+                        child: Text(
+                          "apply".tr,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () => applyChanges(),
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(300, 50)),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      );
     });
   }
 
-  Padding buildSwitchOptions(
-      String title, bool value, Function onChangedMethod) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+  Row buildToggle(
+      String lable, String selectValue, Function onChangedDropDown) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          lable,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        ToggleButtons(
+          isSelected: [true, false],
+          onPressed: (int index) {},
+          children: const <Widget>[
+            Icon(Icons.cloud),
+            Icon(Icons.cloud_off),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Row buildDropDown(String lable, List<String> values, String selectValue,
+      Function onChangedDropDown) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          lable,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1)),
+          // dropdown below..
+          child: DropdownButton<String>(
+            value: selectValue,
+            onChanged: (value) {
+              onChangedDropDown(value);
+            },
+            items: values
+                .map<DropdownMenuItem<String>>(
+                    (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ))
+                .toList(),
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 32,
+            underline: SizedBox(),
           ),
-          Transform.scale(
-            scale: 0.7,
-            child: CupertinoSwitch(
-                activeColor: Colors.blue,
-                trackColor: Colors.grey,
-                value: value,
-                onChanged: (bool newValue) {
-                  onChangedMethod(newValue);
-                }),
-          )
-        ],
-      ),
+        )
+      ],
     );
-  }
-
-  Padding dropdown() {
-    return (Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'serial',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-            DropdownButton<String>(
-              value: serial,
-              icon: const Icon(Icons.arrow_downward),
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String? newValue) {
-                setState(() {
-                  serial = newValue!;
-                  fetch();
-                });
-              },
-              items: devicesListSerials
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            )
-          ],
-        )));
-  }
-
-  GestureDetector buildDeviceOptions(
-      BuildContext context, String title, String hint, Function onChagne) {
-    return GestureDetector(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-            IntrinsicWidth(
-              child: TextField(
-                onChanged: (value) {
-                  onChagne(value);
-                },
-                decoration: InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                  hintText: hint,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  GestureDetector buildTableOptions(
-      BuildContext context, String title, String option1, String option2) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext cotext) {
-              return AlertDialog(
-                title: Text(title),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [Text(option1), Text(option2)],
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                      child: Text('Apply'))
-                ],
-              );
-            });
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget trailingWidget(int index) {
-    return (languageIndex == index)
-        ? Icon(
-            Icons.check,
-            color: Colors.blue,
-          )
-        : Icon(null);
-  }
-
-  void changeLanguage(int index) {
-    setState(() {
-      languageIndex = index;
-    });
   }
 }
