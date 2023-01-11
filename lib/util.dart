@@ -38,6 +38,7 @@ class AppConstants {
 
 const SHARED_PHONE_KEY = "current-user-phone-key";
 const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";
+const SHARED_REMEMBERED_PASS_KEY = "remembered-pass";
 
 const HTTP_URL = 'http://130.185.77.83:4681'; //'http://0.0.0.0:4680'
 

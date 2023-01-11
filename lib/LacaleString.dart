@@ -53,6 +53,7 @@ class LocaleString extends Translations {
           "profileContent-fullname": "Your Name",
           "profileContent-email": "Your Email",
           "profileContent-phone": "Your Phone ",
+          "profileContent-birthday": "Your Birthday",
           "verification": "Verification",
           "loginWithPassTick": "I’d like to always login with a password.",
           "apply": "Apply",
@@ -69,6 +70,7 @@ class LocaleString extends Translations {
           "device-apnUser": "APN User",
           "device-apnPass": "APN Password",
           "device-alarmingMethod": "Alarming Method",
+          "offlineMode": "Offline Mode"
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -118,6 +120,7 @@ class LocaleString extends Translations {
           "profileContent-fullname": "نام و نام خانوادگی",
           "profileContent-email": "ایمیل ",
           "profileContent-phone": "شماره همراه ",
+          "profileContent-birthday": "تاریخ تولد ",
           "verification": "اعتبارستجی",
           "loginWithPassTick": "یخواهم با رمز عبور وارد شوم",
           "apply": "قبول",
@@ -134,6 +137,7 @@ class LocaleString extends Translations {
           "device-apnUser": "نام کاربری APN",
           "device-apnPass": "رمز عبور APN",
           "device-alarmingMethod": "متد هشداردهی",
+          "offlineMode": "آفلاین"
         },
       };
 }

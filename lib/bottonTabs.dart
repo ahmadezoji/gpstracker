@@ -29,7 +29,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   bool activeLive = true;
   void _onItemTapped(int index) {
     if (index == 1)

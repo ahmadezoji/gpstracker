@@ -235,6 +235,7 @@ Future<bool?> loginWithPass(String phone, String password) async {
       'phone': phone,
       'password': password,
     });
+    print(request);
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {

@@ -3,8 +3,7 @@ import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -14,9 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class Login4Page extends StatefulWidget {
   const Login4Page(
@@ -35,14 +32,31 @@ class _Login4PageState extends State<Login4Page>
   late String password = "";
   late bool rememberPass = false;
   bool _isLoading = false;
+  bool _obscureText = true;
+  TextEditingController passController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // print('initState Live');
+    loadSHared();
+    // _controller.text = 'Complete the story from here...';
+  }
+
+  void updateShared() {
+    save(SHARED_REMEMBERED_PASS_KEY, password);
+  }
+
+  void loadSHared() async {
+    String _password = (await load(SHARED_REMEMBERED_PASS_KEY))!;
+    passController..text = _password;
+    setState(() {
+      password = _password;
+    });
   }
 
   void goToNextStep() async {
+    updateShared();
+    print(widget.currentUser.phone + password);
     bool status = (await loginWithPass(widget.currentUser.phone, password))!;
     if (status)
       Navigator.pushReplacement(
@@ -68,18 +82,8 @@ class _Login4PageState extends State<Login4Page>
           appBar: AppBar(
             title: Text("login".tr,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'IranSans')),
-            // leading: Image.asset("assets/speed-alarm.png"),
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              // statusBarColor: statusColor,
-
-              // Status bar brightness (optional)
-              // statusBarIconBrightness:
-              //     Brightness.dark, // For Android (dark icons)
-              // statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
+                    fontWeight: FontWeight.bold, fontFamily: 'IranSans')),
+            systemOverlayStyle: const SystemUiOverlayStyle(),
           ),
           body: SingleChildScrollView(
             child: Container(
@@ -101,17 +105,51 @@ class _Login4PageState extends State<Login4Page>
                       ],
                     ),
                     SizedBox(height: 20),
-                    TextFormField(
-                        obscureText: true,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter your password',
-                        ),
-                        onChanged: (value) => setState(() {
-                              password = value;
-                            })),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          // color: NabColor,
+                          border: Border.all(width: 2),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: passController,
+                              autofocus: true,
+                              autocorrect: false,
+                              style: TextStyle(fontSize: 18),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Enter your password',
+                                // filled: true,
+                                // icon: IconButton(
+                                //   icon: Icon(Icons.remove_red_eye,
+                                //       color: _obscureText ? Colors.red : Colors.blue),
+                                //   onPressed: () => setState(() {
+                                //     _obscureText = !_obscureText;
+                                //   }),
+                                // ),
+                              ),
+                              onChanged: (value) => setState(
+                                () {
+                                  password = value;
+                                },
+                              ),
+                              obscureText: _obscureText,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.remove_red_eye,
+                                color: _obscureText ? Colors.red : Colors.blue),
+                            onPressed: () => setState(() {
+                              _obscureText = !_obscureText;
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: 5,
                     ),
@@ -121,7 +159,7 @@ class _Login4PageState extends State<Login4Page>
                         Row(
                           children: [
                             Checkbox(
-                                value: false,
+                                value: rememberPass,
                                 onChanged: (value) => setState(() {
                                       rememberPass = value!;
                                     })),

@@ -39,34 +39,35 @@ class LeftDrawerState extends State<LeftDrawer>
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {
-      List<Device> devicesList = (await getUserDevice("09192592697"))!;
-      User currentUser = await getUser("09192592697") as User;
-      if (devicesList != null && currentUser != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (_) => HomePage(
-                    currentUser: currentUser,
-                    userLogined: false,
-                    userDevices: devicesList),
-                fullscreenDialog: false));
-      }
+      // List<Device> devicesList = (await getUserDevice("09192592697"))!;
+      // User currentUser = await getUser("09192592697") as User;
+      // if (devicesList != null && currentUser != null) {
+      //   Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (_) => HomePage(
+      //               currentUser: currentUser,
+      //               userLogined: false,
+      //               userDevices: devicesList),
+      //           fullscreenDialog: false));
+      // }
+      goToLoginPage();
     } catch (e) {
       print(e);
     }
   }
 
   void goToLoginPage() async {
-    String? allwaysLoginByPass = load(SHARED_ALLWAYS_PASS_KEY) as String?;
-    if (allwaysLoginByPass == "true") {
-      Navigator.push(
+    String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
+    if (withPass == "true") {
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => Login4Page(
                 currentUser: _currentUser, userDevices: widget.userDevices)),
       );
     } else {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
@@ -139,6 +140,7 @@ class LeftDrawerState extends State<LeftDrawer>
               ],
             ),
             onTap: () {
+              print('widget.userLogined = ${widget.userLogined}');
               widget.userLogined
                   ? Navigator.push(
                           context,
@@ -161,7 +163,9 @@ class LeftDrawerState extends State<LeftDrawer>
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => Setting(currentUser: widget.currentUser,userDevices: widget.userDevices),
+                        builder: (_) => Setting(
+                            currentUser: widget.currentUser,
+                            userDevices: widget.userDevices),
                         fullscreenDialog: false,
                       ))
                   : goToLoginPage();

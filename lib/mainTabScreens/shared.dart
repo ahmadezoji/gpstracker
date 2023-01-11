@@ -6,7 +6,6 @@ Future<bool> save(String key, String val) async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.setString(key, val);
 }
-
 Future<bool> delete(String key) async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.remove(key);

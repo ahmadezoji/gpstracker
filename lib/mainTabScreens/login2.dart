@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/login3.dart';
-import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
@@ -15,10 +13,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 class Login2Page extends StatefulWidget {
   const Login2Page({Key? key, required this.userPhone, required this.validCode})
@@ -83,17 +77,13 @@ class _Login2PageState extends State<Login2Page>
   }
 
   void updateShared() async {
-    save(SHARED_ALLWAYS_PASS_KEY, 'true');
+    save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
   }
 
   void _addUser() async {
     try {
       currentUser = (await addUser(widget.userPhone))!;
       if (currentUser != null) {
-        // if (json["createdUser"] == true)
-        //   Fluttertoast.showToast(msg: "add-user-msg".tr);
-        // else
-        //   Fluttertoast.showToast(msg: "usr Exist");
         save(SHARED_PHONE_KEY, widget.userPhone)
             .then((value) => print('shared uphone is = $value'));
       }
@@ -112,7 +102,9 @@ class _Login2PageState extends State<Login2Page>
         context,
         MaterialPageRoute(
             builder: (_) => HomePage(
-                userLogined: true, userDevices: devicesList, currentUser: currentUser),
+                userLogined: true,
+                userDevices: devicesList,
+                currentUser: currentUser),
             fullscreenDialog: false));
   }
 
@@ -149,30 +141,29 @@ class _Login2PageState extends State<Login2Page>
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        backgroundColor: secondBackgroundPage,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text("verification".tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'IranSans')),
-          backgroundColor: Colors.white, // status bar color
-          // leading: Container(
-          //     alignment: Alignment.center,
-          //     width: 20,
-          //     height: 20  ,
-          //     child: Image.asset('assets/GPS+icon.png')),
-          systemOverlayStyle: const SystemUiOverlayStyle(
+        // backgroundColor: secondBackgroundPage,
+        // resizeToAvoidBottomInset: false,
+        appBar: AppBar(title: Text("verification".tr)
+            // style: TextStyle(
+            // color: Colors.black,
+            //         fontWeight: FontWeight.bold,
+            //         fontFamily: 'IranSans')),
+            // backgroundColor: Colors.white, // status bar color
+            // leading: Container(
+            //     alignment: Alignment.center,
+            //     width: 20,
+            //     height: 20  ,
+            //     child: Image.asset('assets/GPS+icon.png')),
+            // systemOverlayStyle: const SystemUiOverlayStyle(
             // Status bar color
-            statusBarColor: statusColor,
+            // statusBarColor: statusColor,
 
             // Status bar brightness (optional)
-            statusBarIconBrightness:
-                Brightness.dark, // For Android (dark icons)
-            statusBarBrightness: Brightness.light, // For iOS (dark icons)
-          ),
-        ),
+            // statusBarIconBrightness:
+            // Brightness.dark, // For Android (dark icons)
+            // statusBarBrightness: Brightness.light, // For iOS (dark icons)
+            // ),
+            ),
         body: SingleChildScrollView(
             child: Container(
           padding: EdgeInsets.only(top: 50),
@@ -224,31 +215,41 @@ class _Login2PageState extends State<Login2Page>
                 ),
               if (withPass) SizedBox(height: 20),
               if (withPass)
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your password',
-                    ),
-                    onChanged: (value) => setState(() {
-                          password = value;
-                        })),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter your password',
+                  ),
+                  validator: (val) =>
+                      val!.length < 6 ? 'Password too short.' : null,
+                  onChanged: (value) => setState(
+                    () {
+                      password = value;
+                    },
+                  ),
+                ),
               if (withPass) SizedBox(height: 5),
               if (withPass)
-                TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter your password again',
-                        fillColor: Colors.black),
-                    onChanged: (value) => setState(() {
-                          if (value != password)
-                            setState(() {
-                              passwordCorrect = false;
-                            });
-                          else
-                            setState(() {
-                              passwordCorrect = true;
-                            });
-                        })),
+                TextFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter your password again',
+                      fillColor: Colors.black),
+                  validator: (val) =>
+                      val != password ? 'Passwords not match .' : null,
+                  onChanged: (value) => setState(
+                    () {
+                      if (value != password)
+                        setState(() {
+                          passwordCorrect = false;
+                        });
+                      else
+                        setState(() {
+                          passwordCorrect = true;
+                        });
+                    },
+                  ),
+                ),
               SizedBox(height: 20),
               ElevatedButton(
                 child: Text(

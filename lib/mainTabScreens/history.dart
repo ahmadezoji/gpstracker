@@ -267,7 +267,7 @@ class _HistoryState extends State<History>
         Checkbox(value: showPoint, onChanged: onChangedPointShow),
         FloatingActionButton(
           heroTag: null,
-          backgroundColor: btnColor,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.date_range, color: Colors.black),
           onPressed: () {
             _selectDate(context);
@@ -276,7 +276,7 @@ class _HistoryState extends State<History>
         const SizedBox(height: 50),
         FloatingActionButton(
           heroTag: null,
-          backgroundColor: btnColor,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
@@ -289,7 +289,7 @@ class _HistoryState extends State<History>
         // Zoom Out
         FloatingActionButton(
           heroTag: null,
-          backgroundColor: btnColor,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
             zoomout();
@@ -303,7 +303,7 @@ class _HistoryState extends State<History>
         // Change Style
         FloatingActionButton(
           heroTag: null,
-          backgroundColor: btnColor,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {
             // selectedStyle = selectedStyle == light ? sattlite : light;

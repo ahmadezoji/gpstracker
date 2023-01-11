@@ -23,7 +23,7 @@ class User {
   }
   @override
   String toString() {
-    return 'name = $fullname';
+    return 'name = $fullname,phone=$phone';
   }
 
   static Map<String, dynamic> toMap(User user) => {

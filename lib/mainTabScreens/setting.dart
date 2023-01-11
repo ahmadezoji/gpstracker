@@ -1,20 +1,14 @@
-import 'dart:convert' as convert;
 import 'dart:core';
 
-import 'package:cargpstracker/dialogs/dialogs.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
-import 'package:cargpstracker/util.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class Setting extends StatefulWidget {
@@ -31,7 +25,7 @@ class Setting extends StatefulWidget {
 
 class _SettingState extends State<Setting> with TickerProviderStateMixin {
   late AnimationController controller;
-  late Device currentDevice;
+  late Device? currentDevice;
   late Config currentDeviceConfig = Config(
       device_id: "",
       language: "farsi",
@@ -48,6 +42,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
   static const platform = const MethodChannel("platfrom.channel.message/info");
 
   bool loading = false;
+  bool offlineMode = false;
 
   final List locale = [
     {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
@@ -108,10 +103,11 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
       setState(() {
         currentDevice = widget.userDevices[0];
       });
-    }
+    } else
+      currentDevice = null;
 
-    print('currentDevice = ${currentDevice.serial}');
-    return currentDevice;
+    print('currentDevice = ${currentDevice!.serial}');
+    return currentDevice!;
   }
 
   onChangedDropDown(Device device) {
@@ -169,10 +165,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
     });
   }
 
-  updateLanguage(Locale locale) {
-    Get.back();
-    Get.updateLocale(locale);
-  }
+  void _onchangedOffline(bool status) {}
 
   @override
   void dispose() {
@@ -181,7 +174,7 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   void applyChanges() async {
     try {
-      bool status = (await setConfig(currentDevice, currentDeviceConfig))!;
+      bool status = (await setConfig(currentDevice!, currentDeviceConfig))!;
       if (status)
         Fluttertoast.showToast(msg: 'Config success and start config thread');
       else
@@ -193,7 +186,6 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(currentDeviceConfig.intervalTime.toString());
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
@@ -283,7 +275,8 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
                               SizedBox(
                                 height: 10,
                               ),
-                              buildToggle("Offline Mode","",_onchangedApn),
+                              buildToggle(
+                                  "offlineMode".tr, "", _onchangedOffline),
                               // buildDropDown(
                               //   "device-fence".tr,
                               //   deviceFences,
@@ -362,13 +355,16 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           lable,
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        ToggleButtons(
-          isSelected: [true, false],
-          onPressed: (int index) {},
-          children: const <Widget>[
-            Icon(Icons.cloud),
-            Icon(Icons.cloud_off),
-          ],
+        Switch(
+          value: offlineMode,
+          onChanged: (value) {
+            setState(() {
+              offlineMode = value;
+              print(offlineMode);
+            });
+          },
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
         ),
       ],
     );

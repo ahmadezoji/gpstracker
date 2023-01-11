@@ -126,7 +126,6 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                       borderRadius: BorderRadius.circular(6),
                     ),
                     filled: true,
-                    hintText: "+98",
                     labelText: "device-sim-num".tr,
                   ),
                 ),

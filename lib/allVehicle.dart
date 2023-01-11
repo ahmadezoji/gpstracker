@@ -45,23 +45,25 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 80.0,
-        child: Row(
-          children: [
-            if (widget.userDevices.length > 0)
-              Expanded(
-                  child: ListView.builder(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.all(8),
-                      itemCount: widget.userDevices.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _vehicleIcon(context, index);
-                      })),
-            _vehicleIcon(context, -1)
-          ],
-        ));
+      padding: EdgeInsets.all(5),
+      height: 55,
+      child: Row(
+        children: [
+          if (widget.userDevices.length > 0)
+            ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              // padding: const EdgeInsets.all(8),
+              itemCount: widget.userDevices.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _vehicleIcon(context, index);
+              },
+            ),
+          _vehicleIcon(context, -1)
+        ],
+      ),
+    );
   }
 
   Widget _vehicleIcon(BuildContext context, int deviceIndex) {
@@ -82,8 +84,8 @@ class _myAllVehicleState extends State<myAllVehicle>
         }
       },
       child: Container(
-        width: 75,
-        height: 75,
+        width: 55,
+        height: 55,
         alignment: Alignment.center,
         margin: EdgeInsets.only(left: 2, right: 2),
         decoration: BoxDecoration(

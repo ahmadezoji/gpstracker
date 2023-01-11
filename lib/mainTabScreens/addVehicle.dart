@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class AddVehicle extends StatefulWidget {
@@ -29,6 +28,7 @@ class _AddVehicleState extends State<AddVehicle>
   late String deviceSimNum;
   late String title = "my vehicle";
   late String type = "minicar";
+  final String prefix = "+98";
   static Map<String, String> devices = {
     "car".tr: 'minicar',
     "motor".tr: "minimotor",
@@ -48,7 +48,10 @@ class _AddVehicleState extends State<AddVehicle>
   void _addVehicle() async {
     type = devices.values.elementAt(selectedValue).toString();
     Device dev = Device(
-        serial: serial, title: title, simPhone: deviceSimNum, type: type);
+        serial: serial,
+        title: title,
+        simPhone: prefix + deviceSimNum,
+        type: type);
     bool? result = await addDevice(dev, widget.currentUser);
     Fluttertoast.showToast(msg: 'add device is $result');
     if (result!) {
@@ -65,17 +68,8 @@ class _AddVehicleState extends State<AddVehicle>
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              // statusBarColor: statusColor,
-
-              // Status bar brightness (optional)
-              // statusBarIconBrightness:
-              //     Brightness.dark, // For Android (dark icons)
-              // statusBarBrightness: Brightness.light, // For iOS (dark icons)
-              ),
+          systemOverlayStyle: const SystemUiOverlayStyle(),
           title: Text("addVehicle".tr),
-          // backgroundColor: NabColor, // status bar color
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -104,7 +98,6 @@ class _AddVehicleState extends State<AddVehicle>
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: "+98",
                   keyboardType: TextInputType.number,
                   onChanged: (value) => setState(() {
                     deviceSimNum = value;
@@ -115,7 +108,7 @@ class _AddVehicleState extends State<AddVehicle>
                       borderRadius: BorderRadius.circular(6),
                     ),
                     filled: true,
-                    hintText: "+98919 xxx xxxx",
+                    prefix: Text(prefix),
                     labelText: "device-sim-num".tr,
                   ),
                 ),

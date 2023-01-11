@@ -21,7 +21,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
-  late String userPhone = '';
+  late String? userPhone;
   bool _isLoading = false;
   @override
   void initState() {
@@ -33,14 +33,14 @@ class _LoginPageState extends State<LoginPage>
     setState(() {
       _isLoading = true;
     });
-    String sentCode = (await OTPverify(userPhone))!;
+    String sentCode = (await OTPverify(userPhone!))!;
     print('code : $sentCode');
     Fluttertoast.showToast(msg: "sending-varify-code".tr);
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (_) =>
-                Login2Page(userPhone: userPhone, validCode: sentCode),
+                Login2Page(userPhone: userPhone!, validCode: sentCode),
             fullscreenDialog: false));
     setState(() {
       _isLoading = false;
@@ -53,76 +53,51 @@ class _LoginPageState extends State<LoginPage>
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        backgroundColor: loginBackgroundColor,
-        appBar: AppBar(
-          title: Text("login".tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'IranSans')),
-          backgroundColor: Colors.white, // status bar color
-          // leading: Image.asset("assets/speed-alarm.png"),
-          systemOverlayStyle: const SystemUiOverlayStyle(
+        // backgroundColor: loginBackgroundColor,
+        appBar: AppBar(title: Text("login".tr)
+            // style: TextStyle(
+            // color: Colors.black,
+            // fontWeight: FontWeight.bold,
+            // fontFamily: 'IranSans')),
+            // backgroundColor: Colors.white, // status bar color
+            // leading: Image.asset("assets/speed-alarm.png"),
+            // systemOverlayStyle: const SystemUiOverlayStyle(
             // Status bar color
-            statusBarColor: statusColor,
+            // statusBarColor: statusColor,
 
             // Status bar brightness (optional)
-            statusBarIconBrightness:
-                Brightness.dark, // For Android (dark icons)
-            statusBarBrightness: Brightness.light, // For iOS (dark icons)
-          ),
-        ),
+            // statusBarIconBrightness:
+            // Brightness.dark, // For Android (dark icons)
+            // statusBarBrightness: Brightness.light, // For iOS (dark icons)
+            // ),
+            ),
         body: SingleChildScrollView(
+          padding: EdgeInsets.only(top: 100, right: 20, left: 20),
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 100.0),
-                child: Center(
-                  child: Container(
-                      width: 200,
-                      height: 150,
-                      /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
-                      child: Image.asset('assets/GPS+icon.png')),
-                ),
-              ),
-              Padding(
-                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-                padding: EdgeInsets.symmetric(horizontal: 15),
+              Center(
                 child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    boxShadow: [
-                      BoxShadow(
-                        color: backPhoneNumberColor,
-                        blurRadius: 1,
-                        spreadRadius: 1,
-                        offset:
-                            const Offset(2, -6), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: IntlPhoneField(
-                    decoration: InputDecoration(
-                      // labelText: "phone_entry".tr,
-                      fillColor: backPhoneNumberColor,
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(14)),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        userPhone = value.countryCode + value.number;
-                      });
-                    },
-                    onCountryChanged: (country) {
-                      // print('Country changed to: ' + country.code);
-                    },
-                    initialCountryCode: "IR",
-                  ),
+                    width: 200,
+                    height: 150,
+                    child: Image.asset('assets/GPS+icon.png')),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              IntlPhoneField(
+                disableLengthCheck: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    userPhone = value.countryCode + value.number;
+                  });
+                },
+                onCountryChanged: (country) {
+                  // print('Country changed to: ' + country.code);
+                },
+                initialCountryCode: "IR",
               ),
               SizedBox(height: 50),
               Container(
@@ -130,10 +105,10 @@ class _LoginPageState extends State<LoginPage>
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Divider(color: Colors.black),
+                    Divider(),
                     Container(
                       width: 250,
-                      color: secondBackgroundPage,
+                      // color: secondBackgroundPage,
                       alignment: Alignment.center,
                       child: Text("Sign in with Google or Facebook?"),
                     )
@@ -146,13 +121,13 @@ class _LoginPageState extends State<LoginPage>
                 child: Row(
                   children: [
                     FloatingActionButton(
-                      backgroundColor: Colors.white,
+                      // backgroundColor: Colors.white,
                       onPressed: () => print('on facebook clicked'),
                       child: Image.asset('assets/facebook.png'),
                     ),
                     SizedBox(width: 40),
                     FloatingActionButton(
-                      backgroundColor: Colors.white,
+                      // backgroundColor: Colors.white,
                       onPressed: () => print('on google clicked'),
                       child: Image.asset('assets/google.png'),
                     )

@@ -87,7 +87,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   void startTimer() async {
     await getCurrentDevice();
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
-      // _getCurrentLocation();
+      _getCurrentLocation();
     });
   }
 
@@ -173,7 +173,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           children: [
             FloatingActionButton(
               heroTag: null,
-              backgroundColor: btnColor,
+              // backgroundColor: btnColor,
               child: const Icon(Icons.location_searching, color: Colors.black),
               onPressed: () {
                 updatePoint();
@@ -183,7 +183,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
             // Zoom In
             FloatingActionButton(
               heroTag: null,
-              backgroundColor: btnColor,
+              // backgroundColor: btnColor,
               child: const Icon(Icons.zoom_in, color: Colors.black),
               onPressed: () {
                 setState(() {
@@ -197,7 +197,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
             // Zoom Out
             FloatingActionButton(
               heroTag: null,
-              backgroundColor: btnColor,
+              // backgroundColor: btnColor,
               child: const Icon(Icons.zoom_out, color: Colors.black),
               onPressed: () {
                 setState(() {
@@ -211,7 +211,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
             // Change Style
             FloatingActionButton(
               heroTag: null,
-              backgroundColor: btnColor,
+              // backgroundColor: btnColor,
               child: const Icon(Icons.layers, color: Colors.black),
               onPressed: () {
                 setState(() {
