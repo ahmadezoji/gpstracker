@@ -154,7 +154,8 @@ class _AddVehicleState extends State<AddVehicle>
                                 bottom: BorderSide(
                                     width: 1.0,
                                     color: Colors.black,
-                                    strokeAlign: StrokeAlign.inside),
+                                    // strokeAlign: StrokeAlign.inside,
+                                ),
                               ),
                             ),
                             child: Row(

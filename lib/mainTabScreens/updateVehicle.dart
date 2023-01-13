@@ -172,7 +172,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                 bottom: BorderSide(
                                     width: 1.0,
                                     color: Colors.black,
-                                    strokeAlign: StrokeAlign.inside),
+                                    // strokeAlign: StrokeAlign.inside,
+                                ),
                               ),
                             ),
                             child: Row(
