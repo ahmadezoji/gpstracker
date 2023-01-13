@@ -54,9 +54,9 @@ dependencies:
   flutter_svg: ^1.1.2
   intl_phone_field: ^3.1.0
   flutter_launcher_icons: ^0.11.0
+  firebase_core_platform_interface: 4.5.1 # note removed ^
+  firebase_messaging: ^13.0.4 # previously I only had this which was pulling in 4.5.2 which you do not want
 
-dependency_overrides:
-  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_test:
