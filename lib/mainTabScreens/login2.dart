@@ -43,6 +43,7 @@ class _Login2PageState extends State<Login2Page>
   @override
   void initState() {
     super.initState();
+    // print('ValidCode : ${widget.validCode}');
     // SmsAutoFill().listenForCode();
 
     // SmsAutoFill().getAppSignature.then((signature) {

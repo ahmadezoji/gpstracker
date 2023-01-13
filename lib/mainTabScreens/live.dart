@@ -63,12 +63,13 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late TextStyle textStyle = TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
-  Device? currentDevice;
+  late Device currentDevice;
   late List<Device> _listDevice = widget.userDevices;
 
   @override
   void dispose() {
     // mapController.dispose();
+
     _timer.cancel();
     super.dispose();
   }
@@ -82,6 +83,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     super.initState();
     _mapController = MapController();
     startTimer();
+  }
+
+  @override
+  void deactivate() {
+    print("deactivate");
+    super.deactivate();
   }
 
   void startTimer() async {
@@ -113,11 +120,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   void _getCurrentLocation() async {
-    Point curPoint = await getCurrentLocation(currentDevice!) as Point;
-    setState(() {
-      currentPos = curPoint;
-      currentLatLng = LatLng(curPoint.lat, curPoint.lon);
-    });
+    try {
+      Point curPoint = (await getCurrentLocation(currentDevice))!;
+      setState(() {
+        currentPos = curPoint;
+        currentLatLng = LatLng(curPoint.lat, curPoint.lon);
+      });
+    } catch (e) {
+      print('${DateTime.now().toString()} - $e-${mounted.toString()}');
+    }
   }
 
   void updatePoint() async {

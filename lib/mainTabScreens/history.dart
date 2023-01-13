@@ -111,7 +111,7 @@ class _HistoryState extends State<History>
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
           circleMarkers.add(CircleMarker(
-              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.yellow));
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.purple));
           dirArr.add(p);
         }
         setState(() {

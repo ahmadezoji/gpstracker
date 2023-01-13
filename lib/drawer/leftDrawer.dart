@@ -39,19 +39,19 @@ class LeftDrawerState extends State<LeftDrawer>
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {
-      // List<Device> devicesList = (await getUserDevice("09192592697"))!;
-      // User currentUser = await getUser("09192592697") as User;
-      // if (devicesList != null && currentUser != null) {
-      //   Navigator.pushReplacement(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (_) => HomePage(
-      //               currentUser: currentUser,
-      //               userLogined: false,
-      //               userDevices: devicesList),
-      //           fullscreenDialog: false));
-      // }
-      goToLoginPage();
+      List<Device> devicesList = (await getUserDevice("09192592697"))!;
+      User currentUser = await getUser("09192592697") as User;
+      if (devicesList != null && currentUser != null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (_) => HomePage(
+                    currentUser: currentUser,
+                    userLogined: false,
+                    userDevices: devicesList),
+                fullscreenDialog: false));
+      }
+      // goToLoginPage();
     } catch (e) {
       print(e);
     }
