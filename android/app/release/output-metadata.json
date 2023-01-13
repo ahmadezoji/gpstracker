@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.next.cargpstracker",
+  "applicationId": "com.nextLLC.cargpstracker",
   "variantName": "processReleaseResources",
   "elements": [
     {
