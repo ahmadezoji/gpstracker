@@ -1,196 +1,180 @@
 import 'dart:core';
 
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
-import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.userPhone}) : super(key: key);
-  final String userPhone;
-
+  const ProfilePage({Key? key, required this.currentUser}) : super(key: key);
+  final User currentUser;
   @override
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePage2State createState() => _ProfilePage2State();
 }
 
-class _ProfilePageState extends State<ProfilePage>
+class _ProfilePage2State extends State<ProfilePage>
     with AutomaticKeepAliveClientMixin<ProfilePage> {
-  late String userName;
-  late String phone;
-  late String email;
-  late String country;
-  late String city;
+  late String fullname = widget.currentUser.fullname;
+  late String email = widget.currentUser.email;
+  late String birthday = widget.currentUser.birthday;
 
   @override
   void initState() {
     super.initState();
   }
 
+  void _updatUser() async {
+    try {
+      User newUser = User(
+          fullname: fullname,
+          email: email,
+          phone: widget.currentUser.phone,
+          birthday: birthday);
+      User currentUser = (await updateUser(newUser))!;
+      if (currentUser != null)
+        Navigator.pop(context, {'user': currentUser});
+      else
+        Fluttertoast.showToast(msg: "error in update user");
+    } catch (error) {
+      Fluttertoast.showToast(msg: "error in update user");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      late double _headerWidth = MediaQuery.of(context).size.width;
-      late double _headerHeight = MediaQuery.of(context).size.height * 0.15;
-      late double _bodyHeight = MediaQuery.of(context).size.height * 0.75;
-      late double _profileSpace = 130;
       return Scaffold(
-          appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              statusBarColor: statusColor,
-
-              // Status bar brightness (optional)
-              statusBarIconBrightness:
-                  Brightness.dark, // For Android (dark icons)
-              statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
-            title: Text("profile".tr, style: TextStyle(color: Colors.black)),
-            backgroundColor: NabColor, // status bar color
-          ),
-          backgroundColor: Colors.white,
-          body: Stack(
-            children: <Widget>[
-              // The containers in the background
-              Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    height: _headerHeight,
-                    color: ProfileheaderColor,
+        body: new Stack(
+          children: <Widget>[
+            // The containers in the background
+            new Column(
+              children: <Widget>[
+                new Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.only(top: 10),
+                  height: MediaQuery.of(context).size.height * .20,
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.arrow_back),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "profile".tr,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Container(
-                      alignment: Alignment.center,
-                      height: _bodyHeight,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 70),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  userName = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "username".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  phone = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "phone".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  email = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "email".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  country = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "country".tr,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextField(
-                                onChanged: (value) => setState(() {
-                                  city = value;
-                                }),
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  filled: true,
-                                  fillColor: textFeildColor,
-                                  labelText: "city".tr,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.blue,
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  'Apply'.tr,
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                ),
-                                onPressed: () {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    top: _headerHeight - (_profileSpace / 2),
-                    left: _headerWidth * 0.5 - (_profileSpace / 2)),
-                alignment: Alignment.center,
-                width: _profileSpace,
-                height: _profileSpace,
-                decoration: BoxDecoration(
-                    color: ProfileheaderColor,
-                    borderRadius: BorderRadius.circular(_profileSpace / 2)),
-                child: SvgPicture.asset(
-                  'assets/profileimg.svg',
                 ),
-              )
-            ],
-          ));
+                new Container(
+                  alignment: Alignment.center,
+                  padding:
+                      EdgeInsets.only(top: 70, left: 10, right: 10, bottom: 20),
+                  height: MediaQuery.of(context).size.height * .80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          TextFormField(
+                            initialValue: fullname,
+                            onChanged: (value) {
+                              setState(() {
+                                fullname = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "profileContent-fullname".tr,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            initialValue: email,
+                            onChanged: (value) {
+                              setState(() {
+                                email = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "profileContent-email".tr,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            initialValue: birthday,
+                            onChanged: (value) {
+                              setState(() {
+                                birthday = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "profileContent-birthday".tr,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                        child: Text(
+                          "apply".tr,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: _updatUser,
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(300, 50)),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            // The card widget with top padding,
+            // incase if you wanted bottom padding to work,
+            // set the `alignment` of container to Alignment.bottomCenter
+            new Container(
+              alignment: Alignment.topCenter,
+              padding: new EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .12,
+                  right: 20.0,
+                  left: 20.0),
+              child: new Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(75)),
+                height: 125.0,
+                width: 125.0,
+                child: Image.asset("assets/bigprofile.png"),
+              ),
+            )
+          ],
+        ),
+      );
     });
   }
 

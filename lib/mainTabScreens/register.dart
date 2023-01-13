@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -35,8 +36,8 @@ class _RegisterPageState extends State<RegisterPage>
 
     void addDevice() async {
       try {
-        var request = http.MultipartRequest(
-            'POST', Uri.parse('http://130.185.77.83:4680/addDevice/'));
+        var request =
+            http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addDevice/'));
         request.fields.addAll({
           'serial': serial,
           'userNum': widget.userPhone,

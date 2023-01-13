@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:cargpstracker/bottomDrawer.dart';
-import 'package:cargpstracker/main.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,10 +24,14 @@ import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
   const History(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   @override
   _HistoryState createState() => _HistoryState();
 }
@@ -75,7 +78,6 @@ class _HistoryState extends State<History>
     _mapController = MapController();
     getCurrentDevice();
     super.initState();
-    print('init history');
   }
 
   Future<Uint8List> loadMarkerImage() async {
@@ -84,9 +86,7 @@ class _HistoryState extends State<History>
   }
 
   void getCurrentDevice() async {
-    // Map<String, dynamic> map = await loadJson('device');
-    // currentDevice = Device.fromJson(map);
-    currentDevice = widget.userDevices[0];
+    if (widget.userDevices.length > 0) currentDevice = widget.userDevices[0];
   }
 
   void fetch(String stamp) async {
@@ -95,8 +95,8 @@ class _HistoryState extends State<History>
       // serial = prefs.getString('serial')!;
       dirArr.clear();
       print(currentDevice!.serial);
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/history/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/history/'));
       request.fields
           .addAll({'serial': currentDevice!.serial, 'timestamp': stamp});
       http.StreamedResponse response = await request.send();
@@ -111,7 +111,7 @@ class _HistoryState extends State<History>
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
           circleMarkers.add(CircleMarker(
-              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.yellow));
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.purple));
           dirArr.add(p);
         }
         setState(() {
@@ -150,10 +150,11 @@ class _HistoryState extends State<History>
         drawerEnableOpenDragGesture: false,
         body: buildMap(),
         extendBody: true,
-        bottomNavigationBar: MyBottomDrawer(
+        bottomNavigationBar: myAllVehicle(
             selectedDevice: _onSelectedDevice,
             userLogined: widget.userLogined,
-            userDevices: widget.userDevices),
+            userDevices: widget.userDevices,
+            currentUser: widget.currentUser),
       );
     });
   }
@@ -265,8 +266,8 @@ class _HistoryState extends State<History>
       children: [
         Checkbox(value: showPoint, onChanged: onChangedPointShow),
         FloatingActionButton(
-          backgroundColor: btnColor,
-          heroTag: "btn1",
+          heroTag: null,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.date_range, color: Colors.black),
           onPressed: () {
             _selectDate(context);
@@ -274,8 +275,8 @@ class _HistoryState extends State<History>
         ),
         const SizedBox(height: 50),
         FloatingActionButton(
-          backgroundColor: btnColor,
-          heroTag: "btn1",
+          heroTag: null,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.zoom_in, color: Colors.black),
           onPressed: () {
             setState(() {
@@ -287,8 +288,8 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Zoom Out
         FloatingActionButton(
-          backgroundColor: btnColor,
-          heroTag: "btn2",
+          heroTag: null,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.zoom_out, color: Colors.black),
           onPressed: () {
             zoomout();
@@ -301,8 +302,8 @@ class _HistoryState extends State<History>
         const SizedBox(height: 5),
         // Change Style
         FloatingActionButton(
-          backgroundColor: btnColor,
-          heroTag: "btn3",
+          heroTag: null,
+          // backgroundColor: btnColor,
           child: const Icon(Icons.satellite, color: Colors.black),
           onPressed: () {
             // selectedStyle = selectedStyle == light ? sattlite : light;

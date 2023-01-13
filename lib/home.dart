@@ -3,6 +3,8 @@ import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +19,14 @@ enum languages { english, farsi }
 
 class HomePage extends StatefulWidget {
   const HomePage(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final bool userLogined;
   final List<Device> userDevices;
+  final User currentUser;
 
   @override
   HomePageState createState() => HomePageState();
@@ -30,9 +36,27 @@ class HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
   final String title = 'App_Name'.tr;
   final bool switchVal = false;
+  late List<Device> _listDevice = widget.userDevices;
+  late User _user = widget.currentUser;
   @override
   void initState() {
     super.initState();
+    _listDevice = widget.userDevices;
+    _user = widget.currentUser;
+  }
+
+  void onRefresh() async {
+    try {
+      User tmpUser = (await getUser(widget.currentUser.phone))!;
+      List<Device> tempArray = (await getUserDevice(widget.currentUser.phone))!;
+      setState(() {
+        _listDevice = tempArray;
+        _user = tmpUser;
+      });
+      print(_listDevice);
+    } catch (error) {
+      print('refresh = $error');
+    }
   }
 
   @override
@@ -58,23 +82,11 @@ class HomePageState extends State<HomePage>
             title: Text(title,
                 style: TextStyle(color: fontColor, fontFamily: 'IranSans')),
             // iconTheme: IconThemeData(color: fontColor),
-            backgroundColor: NabColor,
-            leading: widget.userLogined
-                ? IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () => scaffoldKey.currentState!.openDrawer(),
-                  )
-                : TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                    child: Text("login".tr,
-                        style: TextStyle(
-                            color: fontColor, fontFamily: 'IranSans')),
-                  ),
+            // backgroundColor: NabColor,
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => scaffoldKey.currentState!.openDrawer(),
+            ),
             // status bar color
             actions: [
               IconButton(
@@ -105,12 +117,24 @@ class HomePageState extends State<HomePage>
                 },
                 child: SvgPicture.asset("assets/lang.svg", color: fontColor),
               ),
-              SizedBox(width: 30),
+              SizedBox(width: 10),
+              IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    onRefresh();
+                  }),
+              SizedBox(width: 10),
             ]),
         body: Center(
-          child: new MyStatefulWidget(userLogined: widget.userLogined, userDevices:widget.userDevices)
-        ),
-        drawer: LeftDrawer(),
+            child: new MyStatefulWidget(
+          userLogined: widget.userLogined,
+          userDevices: _listDevice,
+          currentUser: _user,
+        )),
+        drawer: LeftDrawer(
+            currentUser: _user,
+            userLogined: widget.userLogined,
+            userDevices: _listDevice),
       );
     });
   }

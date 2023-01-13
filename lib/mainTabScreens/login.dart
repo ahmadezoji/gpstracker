@@ -1,14 +1,18 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:cargpstracker/mainTabScreens/loginByPass.dart';
+import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,7 +21,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
-  late String userPhone = '';
+  late String? userPhone;
   bool _isLoading = false;
   @override
   void initState() {
@@ -26,101 +30,111 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void sendCode() async {
-    try {
-      if (userPhone.isEmpty) {
-        Fluttertoast.showToast(msg: 'please fill phone number');
-        return;
-      }
-      setState(() {
-        _isLoading = true;
-      });
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
-      request.fields.addAll({'phone': userPhone});
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseData = await response.stream.toBytes();
-        final responseString = String.fromCharCodes(responseData);
-        final json = jsonDecode(responseString);
-        // print(json);
-        if (json["status"] == true) {
-          Fluttertoast.showToast(msg: "sending-varify-code".tr);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      OtpPage(code: json["code"], userPhone: userPhone),
-                  fullscreenDialog: false));
-
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (error) {}
+    setState(() {
+      _isLoading = true;
+    });
+    String sentCode = (await OTPverify(userPhone!))!;
+    print('code : $sentCode');
+    Fluttertoast.showToast(msg: "sending-varify-code".tr);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                Login2Page(userPhone: userPhone!, validCode: sentCode),
+            fullscreenDialog: false));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    late Color fontColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.white
-        : Colors.blue;
-    late Color backColor = Theme.of(context).brightness == Brightness.dark
-        ? Color.fromARGB(255, 20, 20, 20)
-        : Colors.white;
+    super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text("Login Page"),
-        ),
+        // backgroundColor: loginBackgroundColor,
+        appBar: AppBar(title: Text("login".tr)
+            // style: TextStyle(
+            // color: Colors.black,
+            // fontWeight: FontWeight.bold,
+            // fontFamily: 'IranSans')),
+            // backgroundColor: Colors.white, // status bar color
+            // leading: Image.asset("assets/speed-alarm.png"),
+            // systemOverlayStyle: const SystemUiOverlayStyle(
+            // Status bar color
+            // statusBarColor: statusColor,
+
+            // Status bar brightness (optional)
+            // statusBarIconBrightness:
+            // Brightness.dark, // For Android (dark icons)
+            // statusBarBrightness: Brightness.light, // For iOS (dark icons)
+            // ),
+            ),
         body: SingleChildScrollView(
+          padding: EdgeInsets.only(top: 100, right: 20, left: 20),
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 60.0),
-                child: Center(
-                  child: Container(
-                      width: 200,
-                      height: 150,
-                      /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
-                      child: Image.asset('assets/GPS+icon.png')),
-                ),
+              Center(
+                child: Container(
+                    width: 200,
+                    height: 150,
+                    child: Image.asset('assets/GPS+icon.png')),
               ),
-              Padding(
-                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      userPhone = value;
-                    });
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'موبایل',
-                      hintText: 'شماره تماس'),
-                ),
+              SizedBox(
+                height: 20,
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => LoginByPassPage(userPhone: userPhone),
-                          fullscreenDialog: false));
+              IntlPhoneField(
+                disableLengthCheck: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    userPhone = value.countryCode + value.number;
+                  });
                 },
-                child: Text(
-                  'Login With Password',
-                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                onCountryChanged: (country) {
+                  // print('Country changed to: ' + country.code);
+                },
+                initialCountryCode: "IR",
+              ),
+              SizedBox(height: 50),
+              Container(
+                alignment: Alignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Divider(),
+                    Container(
+                      width: 250,
+                      // color: secondBackgroundPage,
+                      alignment: Alignment.center,
+                      child: Text("Sign in with Google or Facebook?"),
+                    )
+                  ],
                 ),
               ),
+              SizedBox(height: 20),
+              Container(
+                width: 170,
+                child: Row(
+                  children: [
+                    FloatingActionButton(
+                      // backgroundColor: Colors.white,
+                      onPressed: () => print('on facebook clicked'),
+                      child: Image.asset('assets/facebook.png'),
+                    ),
+                    SizedBox(width: 40),
+                    FloatingActionButton(
+                      // backgroundColor: Colors.white,
+                      onPressed: () => print('on google clicked'),
+                      child: Image.asset('assets/google.png'),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               ElevatedButton.icon(
                 icon: _isLoading
                     ? const CircularProgressIndicator()
@@ -132,25 +146,9 @@ class _LoginPageState extends State<LoginPage>
                 onPressed: _isLoading ? null : sendCode,
                 style: ElevatedButton.styleFrom(fixedSize: const Size(250, 50)),
               ),
-              // Container(
-              //   height: 50,
-              //   width: 250,
-              //   decoration: BoxDecoration(
-              //       color: Colors.blue, borderRadius: BorderRadius.circular(5)),
-              //   child: TextButton(
-              //     onPressed: () {
-              //       sendCode();
-              //     },
-              //     child: Text(
-              //       "Login".tr,
-              //       style: TextStyle(color: Colors.white, fontSize: 20),
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: 130,
               ),
-              Text('New User? Create Account')
             ],
           ),
         ),

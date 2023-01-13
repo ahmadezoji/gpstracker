@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/mainTabScreens/register.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -35,8 +36,8 @@ class _OtpPageState extends State<OtpPage>
 
   void addUser() async {
     try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/addUser/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addUser/'));
       request.fields.addAll({'phone': widget.userPhone});
       http.StreamedResponse response = await request.send();
 
@@ -83,8 +84,8 @@ class _OtpPageState extends State<OtpPage>
 
   void resendCode() async {
     try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://130.185.77.83:4680/phoneVerify/'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/phoneVerify/'));
       request.fields.addAll({'phone': widget.userPhone});
       http.StreamedResponse response = await request.send();
 

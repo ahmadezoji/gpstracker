@@ -1,10 +1,8 @@
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
-import 'package:cargpstracker/mainTabScreens/GpsPlusDemo.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
-import 'package:cargpstracker/mainTabScreens/historyDemo.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
-import 'package:cargpstracker/mainTabScreens/liveDemo.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,40 +16,49 @@ import 'firebase_options.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget(
-      {Key? key, required this.userLogined, required this.userDevices})
+      {Key? key,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
+  final User currentUser;
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 1;
+  bool activeLive = true;
   void _onItemTapped(int index) {
+    if (index == 1)
+      activeLive = true;
+    else
+      activeLive = false;
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  late bool userLogined = false;
+  // late bool userLogined = false;
 
   @override
   void initState() {
     // initFirebase();
-    init();
+    // init();
     super.initState();
   }
-
-  void init() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('phone');
-    if (phone == null)
-      userLogined = false;
-    else {
-      userLogined = true;
-    }
-  }
+  //
+  // void init() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? phone = prefs.getString('phone');
+  //   if (phone == null)
+  //     userLogined = false;
+  //   else {
+  //     userLogined = true;
+  //   }
+  // }
 
   // void initFirebase() async {
   //   // final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -89,14 +96,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   //   }
   // }
 
-  Future<bool> getLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('phone');
-    if (phone == null)
-      return false;
-    else
-      return true;
-  }
+  // Future<bool> getLoginStatus() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? phone = prefs.getString('phone');
+  //   if (phone == null)
+  //     return false;
+  //   else
+  //     return true;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +121,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           children: <Widget>[
             GpsPlus(),
             Live(
+                active: activeLive,
                 userLogined: widget.userLogined,
-                userDevices: widget.userDevices),
+                userDevices: widget.userDevices,
+                currentUser: widget.currentUser),
             History(
                 userLogined: widget.userLogined,
-                userDevices: widget.userDevices),
+                userDevices: widget.userDevices,
+                currentUser: widget.currentUser),
             // !userLogined ? GpsPlusDemo() : GpsPlus(),
             // !userLogined ? LiveDemo() : Live(),
             // !userLogined ? HistoryDemo() : History(),
@@ -159,7 +169,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           currentIndex: _selectedIndex,
           selectedItemColor: selectedFontColor,
           onTap: _onItemTapped,
-          // fixedColor: Colors.red,
           selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 16),
           unselectedFontSize: 16,
           selectedIconTheme:

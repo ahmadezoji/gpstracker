@@ -3,11 +3,15 @@ import 'dart:io';
 
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'mainTabScreens/login4.dart';
 
 class SpalshScreen extends StatefulWidget {
   @override
@@ -18,50 +22,99 @@ class _SpalshScreenState extends State<SpalshScreen>
     with TickerProviderStateMixin {
   late AnimationController controller;
   List<int>? pattern;
-  late bool userLogined = false;
   List<Device> devicesList = [];
+  late User currentUser;
 
   @override
   void initState() {
     super.initState();
     // SystemChrome.setEnabledSystemUIOverlays ([]);
-    getShared();
-    HttpOverrides.global = MyHttpOverrides();
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    )..addListener(() {});
-    controller.repeat(reverse: false);
 
-    // Timer(Duration(seconds: 3), () => pushPage());
+    HttpOverrides.global = MyHttpOverrides();
+    // controller = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 3),
+    // )..addListener(() {
+    //     getShared();
+    //   });
+    // controller.repeat(reverse: false);
+
+    Timer(Duration(seconds: 3), () => getShared());
   }
 
   void getShared() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('phone');
-    if (phone == null || phone == '') {
-      userLogined = false;
-      getUserDevice("09192592697").then((list) async {
-        devicesList = list!;
-        pushPage();
-      });
-    } else {
-      userLogined = true;
-      getUserDevice(phone).then((list) async {
-        devicesList = list!;
-        pushPage();
-      });
+    try {
+      String? phone = await load(SHARED_PHONE_KEY);
+      String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
+
+      // String phone = "09192592697";
+      // String withPass = "true";
+      if (phone != null) {
+        currentUser = (await getUser(phone))!;
+        devicesList = (await getUserDevice(phone))!;
+        if (withPass == "true") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new Login4Page(
+                    currentUser: currentUser, userDevices: devicesList)),
+          );
+
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => new HomePage(
+          //           currentUser: currentUser,
+          //           userLogined: true,
+          //           userDevices: devicesList)),
+          // );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new HomePage(
+                    currentUser: currentUser,
+                    userLogined: true,
+                    userDevices: devicesList)),
+          );
+        }
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => new LoginPage()),
+        );
+      }
+    } catch (e) {
+      print('exception : $e');
     }
+
+    // phone = "09127060772";
+    // if (phone == null || phone == '') {
+    // userLogined = false;
+    // getUserDevice("09127060772").then((list) async {
+    //   devicesList = list!;
+    //   pushPage();
+    // });
+    //   Navigator.pushReplacement(
+    //       context, MaterialPageRoute(builder: (context) => new LoginPage()));
+    // } else {
+    // userLogined = true;
+    // getUserDevice(phone).then((list) async {
+    //   devicesList = list!;
+    //   pushPage();
+    // });
+    // }
   }
 
   void pushPage() async {
     try {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new HomePage(
-                userLogined: userLogined, userDevices: devicesList)),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => new HomePage(
+      //           userLogined: userLogined, userDevices: devicesList)),
+      // );
+
       // final prefs = await SharedPreferences.getInstance();
       // String? phone = prefs.getString('phone');
       // print(phone);
@@ -83,7 +136,7 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   @override
   void dispose() {
-    controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
@@ -97,10 +150,10 @@ class _SpalshScreenState extends State<SpalshScreen>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Lottie.asset('assets/splash-screen.json'),
-              CircularProgressIndicator(
-                value: controller.value,
-                semanticsLabel: 'Linear progress indicator',
-              ),
+              // CircularProgressIndicator(
+              //   value: controller.value,
+              //   semanticsLabel: 'Linear progress indicator',
+              // ),
             ],
           ),
         ),

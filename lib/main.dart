@@ -1,7 +1,11 @@
 import 'package:cargpstracker/LacaleString.dart';
+import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,9 +38,41 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           translations: LocaleString(),
           locale: Locale('en', 'US'),
-          title: 'App_Name'.tr,
-          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-          home: SpalshScreen(),
+          title: "App_Name".tr,
+          // theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+          theme: themeNotifier.isDark
+              ? ThemeData(
+                  brightness: Brightness.dark,
+                  // primarySwatch: Colors.blue,
+                  // textTheme: TextTheme(
+                  //   headline1: TextStyle(color: Colors.white),
+                  //   headline2: TextStyle(color: Colors.white),
+                  //   bodyText2: TextStyle(color: Colors.white),
+                  //   subtitle1: TextStyle(color: Colors.white),
+                  //   subtitle2: TextStyle(color: Colors.white),
+                  // ),
+                )
+              : ThemeData(
+                  brightness: Brightness.light,
+                  appBarTheme: AppBarTheme(backgroundColor: NabColor),
+                  floatingActionButtonTheme: FloatingActionButtonThemeData(
+                      backgroundColor: Colors.white)
+                  // textTheme: TextTheme(
+                  //   headline1: TextStyle(color: Colors.black),
+                  //   headline2: TextStyle(color: Colors.black),
+                  //   bodyText2: TextStyle(color: Colors.black),
+                  //   subtitle1: TextStyle(color: Colors.black),
+                  //   subtitle2: TextStyle(color: Colors.black),
+                  // ),
+                  ),
+          initialRoute: '/',
+          routes: {
+            // When navigating to the "/" route, build the FirstScreen widget.
+            '/': (context) => SpalshScreen(),
+            // When navigating to the "/second" route, build the SecondScreen widget.
+            '/gpsplus': (context) => GpsPlus(),
+          },
+          // home: SpalshScreen(),
         );
       }),
     );
