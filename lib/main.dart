@@ -8,6 +8,7 @@ import 'package:cargpstracker/util.dart';
 
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +20,9 @@ import 'package:provider/provider.dart';
 //   print("Handling a background message: ${message.messageId}");
 // }
 
-void main() {
+void main()async {
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  await dotenv.load();
   runApp(MyApp());
 }
 

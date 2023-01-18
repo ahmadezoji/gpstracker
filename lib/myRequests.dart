@@ -7,6 +7,30 @@ import 'package:cargpstracker/util.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:http/http.dart' as http;
 
+Future<bool?> OTPverifyNew(String userPhone) async {
+  try {
+    if (userPhone.isEmpty) {
+      return null;
+    }
+    var request =
+        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/phoneVerifyNew/'));
+    request.fields.addAll({'phone': userPhone});
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final json = convert.jsonDecode(responseString);
+      print(json);
+      return json["status"];
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 Future<String?> OTPverify(String userPhone) async {
   try {
     if (userPhone.isEmpty) {

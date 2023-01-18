@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
-
+import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -23,9 +24,13 @@ class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
   late String? userPhone;
   bool _isLoading = false;
+  UserProfile? _user;
+  late Auth0 auth0;
+
   @override
   void initState() {
     super.initState();
+    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
     // print('initState Live');
   }
 
@@ -33,18 +38,36 @@ class _LoginPageState extends State<LoginPage>
     setState(() {
       _isLoading = true;
     });
-    String sentCode = (await OTPverify(userPhone!))!;
-    print('code : $sentCode');
+    // String sentCode = (await OTPverify(userPhone!))!;
+    // print('code : $sentCode');
+    bool bb = (await OTPverifyNew(userPhone!))!;
+    print(bb);
+    if (!bb) return;
     Fluttertoast.showToast(msg: "sending-varify-code".tr);
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (_) =>
-                Login2Page(userPhone: userPhone!, validCode: sentCode),
+                Login2Page(userPhone: userPhone!, validCode: "sentCode"),
             fullscreenDialog: false));
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> login() async {
+    try {
+      var credentials = await auth0
+          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+          .login();
+
+      setState(() {
+        _user = credentials.user;
+      });
+      print(_user!.email);
+    } catch (error) {
+      print('refresh = $error');
+    }
   }
 
   @override
@@ -128,7 +151,7 @@ class _LoginPageState extends State<LoginPage>
                     SizedBox(width: 40),
                     FloatingActionButton(
                       // backgroundColor: Colors.white,
-                      onPressed: () => print('on google clicked'),
+                      onPressed: () => login(),
                       child: Image.asset('assets/google.png'),
                     )
                   ],
