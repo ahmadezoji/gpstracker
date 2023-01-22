@@ -5,13 +5,14 @@ class User {
   final String email;
   final String phone;
   final String birthday;
+  final String pictureUrl;
 
-  const User({
-    required this.fullname,
-    required this.email,
-    required this.phone,
-    required this.birthday,
-  });
+  const User(
+      {required this.fullname,
+      required this.email,
+      required this.phone,
+      required this.birthday,
+      required this.pictureUrl});
 
   factory User.fromJson(Map<String, dynamic> jsonData) {
     return User(
@@ -19,8 +20,10 @@ class User {
       email: jsonData['email'],
       phone: jsonData['phone'],
       birthday: jsonData["birthday"],
+      pictureUrl: jsonData["pictureUrl"],
     );
   }
+
   @override
   String toString() {
     return 'name = $fullname,phone=$phone';
@@ -30,7 +33,8 @@ class User {
         'fullname': user.fullname,
         'email': user.email,
         'phone': user.phone,
-        'birthday': user.birthday
+        'birthday': user.birthday,
+        'pictureUrl': user.pictureUrl
       };
 
   static String encode(List<User> users) => json.encode(

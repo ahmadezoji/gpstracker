@@ -9,9 +9,11 @@ import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:auth0_flutter/auth0_flutter.dart';
 
 class LeftDrawer extends StatefulWidget {
   const LeftDrawer(
@@ -31,26 +33,41 @@ class LeftDrawer extends StatefulWidget {
 class LeftDrawerState extends State<LeftDrawer>
     with AutomaticKeepAliveClientMixin<LeftDrawer> {
   late User _currentUser = widget.currentUser;
+  late Auth0 auth0;
+
   @override
   void initState() {
     super.initState();
+    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+  }
+
+  Future<void> loginWithAuth0() async {
+    try {
+      var credentials = await auth0
+          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+          .logout();
+      delete(SHARED_EMAIL_KEY);
+      goToLoginPage();
+    } catch (error) {
+      print('refresh = $error');
+    }
   }
 
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {
-      List<Device> devicesList = (await getUserDevice("09192592697"))!;
-      User currentUser = await getUser("09192592697") as User;
-      if (devicesList != null && currentUser != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (_) => HomePage(
-                    currentUser: currentUser,
-                    userLogined: false,
-                    userDevices: devicesList),
-                fullscreenDialog: false));
-      }
+      // List<Device> devicesList = (await getUserDevice("09192592697"))!;
+      // User currentUser = await getUser("09192592697") as User;
+      // if (devicesList != null && currentUser != null) {
+      //   Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (_) => HomePage(
+      //               currentUser: currentUser,
+      //               userLogined: false,
+      //               userDevices: devicesList),
+      //           fullscreenDialog: false));
+      // }
       // goToLoginPage();
     } catch (e) {
       print(e);
@@ -79,7 +96,16 @@ class LeftDrawerState extends State<LeftDrawer>
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image(image: AssetImage("assets/user_outline.png")),
+              _currentUser.pictureUrl == ""
+                  ? Image(image: AssetImage("assets/user_outline.png"))
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(35.0),
+                      child: Image.network(
+                        _currentUser.pictureUrl,
+                        height: 70.0,
+                        width: 70.0,
+                      ),
+                    ),
               Text(_currentUser.fullname,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Text(_currentUser.phone,
@@ -198,7 +224,7 @@ class LeftDrawerState extends State<LeftDrawer>
               ],
             ),
             onTap: () {
-              widget.userLogined ? logout() : goToLoginPage();
+              widget.userLogined ? loginWithAuth0() : goToLoginPage();
             },
           ),
         ],

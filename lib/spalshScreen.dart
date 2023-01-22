@@ -44,14 +44,14 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   void getShared() async {
     try {
-      String? phone = await load(SHARED_PHONE_KEY);
+      String? email = await load(SHARED_EMAIL_KEY);
       String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
 
       // String phone = "09192592697";
       // String withPass = "true";
-      if (phone != null) {
-        currentUser = (await getUser(phone))!;
-        devicesList = (await getUserDevice(phone))!;
+      if (email != null) {
+        currentUser = (await getUser(email))!;
+        devicesList = (await getUserDevice(currentUser))!;
         if (withPass == "true") {
           Navigator.pushReplacement(
             context,
@@ -79,7 +79,7 @@ class _SpalshScreenState extends State<SpalshScreen>
           );
         }
       } else {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => new LoginPage()),
         );

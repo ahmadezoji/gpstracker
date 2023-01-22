@@ -63,7 +63,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late TextStyle textStyle = TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
-  late Device currentDevice;
+  late Device? currentDevice;
   late List<Device> _listDevice = widget.userDevices;
 
   @override
@@ -100,7 +100,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   void onRefresh() async {
     try {
-      List<Device> tempArray = (await getUserDevice(widget.currentUser.phone))!;
+      List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
       setState(() {
         _listDevice = tempArray;
       });
@@ -121,7 +121,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   void _getCurrentLocation() async {
     try {
-      Point curPoint = (await getCurrentLocation(currentDevice))!;
+      Point curPoint = (await getCurrentLocation(currentDevice!))!;
       setState(() {
         currentPos = curPoint;
         currentLatLng = LatLng(curPoint.lat, curPoint.lon);

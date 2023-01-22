@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
+import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -15,10 +16,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class Login2Page extends StatefulWidget {
-  const Login2Page({Key? key, required this.userPhone, required this.validCode})
-      : super(key: key);
-  final String userPhone;
-  final String validCode;
+  const Login2Page({Key? key, required this.authUser}) : super(key: key);
+  final UserProfile? authUser;
 
   @override
   _Login2PageState createState() => _Login2PageState();
@@ -31,18 +30,23 @@ class _Login2PageState extends State<Login2Page>
   late bool isTrueOTP = false;
   late bool withPass = false;
   bool _isLoading = false;
-  late String currentCode = widget.validCode;
-
+  late String currentCode;
   late String password = "";
   late String repassword = "";
-
   late bool passwordCorrect = false;
-
-  late User currentUser;
+  late User? currentUser;
 
   @override
   void initState() {
     super.initState();
+    if (widget.authUser != null) {
+      setState(() {
+        isTrueOTP = true;
+      });
+      _addUserAuth();
+    } else {
+      // sendCode();
+    }
     // print('ValidCode : ${widget.validCode}');
     // SmsAutoFill().listenForCode();
 
@@ -63,30 +67,49 @@ class _Login2PageState extends State<Login2Page>
     // print(SmsAutoFill().listenForCode);
   }
 
-  void updatePass(String password) async {
-    var request =
-        http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updatePass/'));
-    request.fields.addAll({'phone': widget.userPhone, 'password': password});
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
+  void sendCode() async {
+    // bool status = (await OTPverifyNew(widget.userPhone!))!;
+    // if (status) Fluttertoast.showToast(msg: "sending-varify-code".tr);
   }
+
 
   void updateShared() async {
     save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
   }
 
-  void _addUser() async {
+  void _addUserOTP() async {
+    // try {
+    //   String? phone = widget.userPhone;
+    //   User user = User(
+    //       fullname: "", email: "", phone: phone!, birthday: "", pictureUrl: "");
+    //   currentUser = (await addUser(user))!;
+    //   if (currentUser != null) {
+    //     save(SHARED_PHONE_KEY, widget.userPhone!)
+    //         .then((value) => print('shared uphone is = $value'));
+    //   }
+    // } catch (error) {
+    //   print('_addUser Exception= $error');
+    // }
+  }
+
+  void _addUserAuth() async {
     try {
-      currentUser = (await addUser(widget.userPhone))!;
+      final _pictureUrl = widget.authUser?.pictureUrl ?? "";
+      final _fullname = widget.authUser?.nickname ?? "";
+      final _email = widget.authUser?.email ?? "saam@gmail.com";
+      final _phone = widget.authUser?.phoneNumber ?? "";
+      final _birthday = widget.authUser?.birthdate ?? "";
+      User user = User(
+          fullname: _fullname.toString(),
+          email: _email.toString(),
+          phone: _phone.toString(),
+          birthday: _birthday.toString(),
+          pictureUrl: _pictureUrl.toString());
+      print('user = $user');
+      currentUser = (await addUser(user))!;
       if (currentUser != null) {
-        save(SHARED_PHONE_KEY, widget.userPhone)
-            .then((value) => print('shared uphone is = $value'));
+        save(SHARED_EMAIL_KEY, currentUser!.email)
+            .then((value) => print('shared email is = $value'));
       }
     } catch (error) {
       print('_addUser Exception= $error');
@@ -95,17 +118,18 @@ class _Login2PageState extends State<Login2Page>
 
   void goToNextStep() async {
     if (withPass) {
-      updatePass(password);
+      updatePass(currentUser!, password);
       updateShared();
     }
-    List<Device> devicesList = (await getUserDevice(currentUser.phone))!;
+    print(currentUser);
+    List<Device> devicesList = (await getUserDevice(currentUser!))!;
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (_) => HomePage(
                 userLogined: true,
                 userDevices: devicesList,
-                currentUser: currentUser),
+                currentUser: currentUser!),
             fullscreenDialog: false));
   }
 
@@ -124,16 +148,16 @@ class _Login2PageState extends State<Login2Page>
       isTrueOTP = otpStatuse;
     });
     if (isTrueOTP) {
-      _addUser();
+      _addUserOTP();
     }
   }
 
   _sendAgain() async {
-    String? sentCode = await OTPverify(widget.userPhone);
-    print('code : $sentCode');
-    setState(() {
-      currentCode = sentCode!;
-    });
+    // String? sentCode = await OTPverify(widget.userPhone!);
+    // print('code : $sentCode');
+    // setState(() {
+    //   currentCode = sentCode!;
+    // });
   }
 
   @override

@@ -47,8 +47,8 @@ class HomePageState extends State<HomePage>
 
   void onRefresh() async {
     try {
-      User tmpUser = (await getUser(widget.currentUser.phone))!;
-      List<Device> tempArray = (await getUserDevice(widget.currentUser.phone))!;
+      User tmpUser = (await getUser(widget.currentUser.email))!;
+      List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
       setState(() {
         _listDevice = tempArray;
         _user = tmpUser;

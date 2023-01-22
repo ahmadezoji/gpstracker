@@ -57,7 +57,7 @@ class _Login4PageState extends State<Login4Page>
   void goToNextStep() async {
     updateShared();
     print(widget.currentUser.phone + password);
-    bool status = (await loginWithPass(widget.currentUser.phone, password))!;
+    bool status = (await loginWithPass(widget.currentUser.email, password))!;
     if (status)
       Navigator.pushReplacement(
         context,
