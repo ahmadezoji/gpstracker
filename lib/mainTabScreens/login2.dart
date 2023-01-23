@@ -10,6 +10,7 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -106,10 +107,14 @@ class _Login2PageState extends State<Login2Page>
           birthday: _birthday.toString(),
           pictureUrl: _pictureUrl.toString());
       print('user = $user');
-      currentUser = (await addUser(user))!;
+      currentUser = (await addUser(user));
       if (currentUser != null) {
         save(SHARED_EMAIL_KEY, currentUser!.email)
             .then((value) => print('shared email is = $value'));
+      }else{
+        late Auth0 auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+        var credentials = await auth0
+            .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).logout();
       }
     } catch (error) {
       print('_addUser Exception= $error');

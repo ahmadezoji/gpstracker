@@ -1,6 +1,6 @@
 import 'package:cargpstracker/LacaleString.dart';
-import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
+import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 //   print("Handling a background message: ${message.messageId}");
 // }
 
-void main()async {
+void main() async {
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await dotenv.load();
   runApp(MyApp());
@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
             '/': (context) => SpalshScreen(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/gpsplus': (context) => GpsPlus(),
+            '/login': (context) => LoginPage(),
           },
           // home: SpalshScreen(),
         );
