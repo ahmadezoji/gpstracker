@@ -125,6 +125,9 @@ flutter_icons:
   ios: true
   image_path: "assets/GPS+icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "assets/christmas-background.png"
+  adaptive_icon_foreground: "assets/GPS+icon.png"
+  remove_alpha_ios: true
   web:
     generate: true
     image_path: "assets/GPS+icon.png"

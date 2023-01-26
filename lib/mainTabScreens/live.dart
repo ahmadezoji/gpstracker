@@ -18,17 +18,17 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class Live extends StatefulWidget {
-  const Live(
-      {Key? key,
-      required this.active,
-      required this.userLogined,
-      required this.userDevices,
-      required this.currentUser})
+  const Live({Key? key,
+    required this.active,
+    required this.userLogined,
+    required this.userDevices,
+    required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
   final User currentUser;
   final bool active;
+
   @override
   _LiveState createState() => _LiveState();
 }
@@ -46,7 +46,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late double zoom = 11.0;
 
   Point? currentPos = new Point(
-      lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
+      lat: 0.0,
+      lon: 0.0,
+      dateTime: '',
+      speed: 0.0,
+      mileage: 0.0,
+      heading: 0.0);
   Point defaultPos = Point(
       lat: 41.025819,
       lon: 29.230415,
@@ -63,7 +68,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late TextStyle textStyle = TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
-  late Device? currentDevice;
+  Device? currentDevice;
   late List<Device> _listDevice = widget.userDevices;
 
   @override
@@ -116,7 +121,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         currentDevice = _listDevice[0];
       });
     }
-    print('currentDevice = $currentDevice');
+    // print('currentDevice = $currentDevice');
   }
 
   void _getCurrentLocation() async {
@@ -148,32 +153,40 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     print(widget.active);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-      return GestureDetector(
-          child: Scaffold(
-        key: _key,
-        drawerEnableOpenDragGesture: true,
-        body: currentDevice == null
-            ? Center(child: Text("there is no device to show"))
-            : buildMap(themeNotifier),
-        extendBody: true,
-        bottomNavigationBar: myAllVehicle(
-          selectedDevice: _onSelectedDevice,
-          userLogined: widget.userLogined,
-          userDevices: _listDevice,
-          currentUser: widget.currentUser,
-        ),
-      ));
-    });
+          return
+            Scaffold(
+              key: _key,
+              drawerEnableOpenDragGesture: true,
+              body: currentDevice == null ? Center(
+                  child: Text("there is no device to show")) : buildMap(
+                  themeNotifier),
+              extendBody: true,
+              bottomNavigationBar: myAllVehicle(
+                selectedDevice: _onSelectedDevice,
+                userLogined: widget.userLogined,
+                userDevices: _listDevice,
+                currentUser: widget.currentUser,
+              ),
+            );
+        });
   }
 
   Row _floatingBottons() {
-    btnColor = Theme.of(context).brightness == Brightness.dark
+    btnColor = Theme
+        .of(context)
+        .brightness == Brightness.dark
         ? Colors.blue
         : lightIconColor;
 
     final List<Locale> systemLocales = window.locales;
-    late double screenWidth = MediaQuery.of(context).size.width;
-    late double screenHeight = MediaQuery.of(context).size.height;
+    late double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    late double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,8 +250,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     );
   }
 
-  Widget BlurBox(
-      BuildContext context, Device currentDevice, Point currentPoint) {
+  Widget BlurBox(BuildContext context, Device currentDevice,
+      Point currentPoint) {
     return Padding(
         padding: EdgeInsets.only(
             top: 50,
@@ -283,7 +296,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => new UpdateVehicle(
+                                        builder: (context) =>
+                                        new UpdateVehicle(
                                             currentDeveice: currentDevice)),
                                   ).then((value) => onRefresh());
                                 },
@@ -358,7 +372,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       style: textStyle,
                                     ),
                                     Text(
-                                        '${currentPoint.lat.toStringAsFixed(5)}',
+                                        '${currentPoint.lat.toStringAsFixed(
+                                            5)}',
                                         style: TextStyle(fontSize: 12))
                                   ],
                                 ),
@@ -369,7 +384,8 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                       style: textStyle,
                                     ),
                                     Text(
-                                        '${currentPoint.lon.toStringAsFixed(5)}',
+                                        '${currentPoint.lon.toStringAsFixed(
+                                            5)}',
                                         style: TextStyle(fontSize: 12))
                                   ],
                                 ),
@@ -387,7 +403,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   }
 
   String getMapThem() {
-    return Theme.of(context).brightness == Brightness.dark
+    return Theme
+        .of(context)
+        .brightness == Brightness.dark
         ? AppConstants.DARK_STYLE
         : AppConstants.LIGHT_STYLE;
   }
@@ -399,10 +417,11 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         width: 80,
         height: 80,
         point: currentLatLng,
-        builder: (ctx) => Icon(
-          Icons.my_location,
-          color: Colors.blue,
-        ),
+        builder: (ctx) =>
+            Icon(
+              Icons.my_location,
+              color: Colors.blue,
+            ),
       ),
     ];
 
@@ -413,10 +432,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         children: [
           Center(
               child: Container(
-            width: 150,
-            height: 150,
-            color: Colors.yellow,
-          ))
+                width: 150,
+                height: 150,
+                color: Colors.yellow,
+              ))
         ],
         mapController: _mapController,
         options: MapOptions(
@@ -428,7 +447,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         layers: [
           TileLayerOptions(
             urlTemplate:
-                "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked ? AppConstants.SATELLITE_STYLE : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
+            "https://api.mapbox.com/styles/v1/saamezoji/${sattliteChecked
+                ? AppConstants.SATELLITE_STYLE
+                : getMapThem()}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}",
             additionalOptions: {
               'mapStyleId': AppConstants.mapBoxStyleId,
               'accessToken': AppConstants.mapBoxAccessToken,
