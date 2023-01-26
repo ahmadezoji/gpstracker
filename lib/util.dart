@@ -26,7 +26,7 @@ const vehicleCardColor = Color.fromRGBO(236, 236, 236, 1.0);
 const selectedVehicleCardColor = Color.fromRGBO(70, 175, 208, 1.0);
 const backPhoneNumberColor = Color.fromRGBO(222, 235, 255, 1.0);
 const secondBackgroundPage = Color.fromRGBO(240, 246, 255, 1.0); //F0F6FF
-
+const backRechargBtn = Color.fromRGBO(70,175,208, 1.0);
 class AppConstants {
   static const String LIGHT_STYLE = 'ckzcmemek003x14rwpyjekvla';
   static const String DARK_STYLE = 'cl9hrft5q000m14tnst6lreof';
@@ -36,6 +36,7 @@ class AppConstants {
   static const String mapBoxStyleId = LIGHT_STYLE;
 }
 
+const SHARED_SWITCH_PATTERN_KEY = "switch-pattern-key";
 const SHARED_EMAIL_KEY = "current-user-email-key";
 const SHARED_PHONE_KEY = "current-user-phone-key";
 const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";

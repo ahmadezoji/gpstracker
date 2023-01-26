@@ -1,3 +1,4 @@
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,8 @@ class _SetPatternState extends State<SetPattern> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   void saveShared(List<int> input) async {
     List<String> strList = input.map((i) => i.toString()).toList();
-    final prefs = await SharedPreferences.getInstance();
-   prefs.setStringList('pattern', strList).then((bool success) async {
-      print('save pattern');
-    }); 
+    bool result = await savelist(SHARED_SWITCH_PATTERN_KEY, strList);
+    print(result);
   }
 
   @override

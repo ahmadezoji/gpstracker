@@ -106,13 +106,30 @@ class LeftDrawerState extends State<LeftDrawer>
                         width: 70.0,
                       ),
                     ),
-              Text(_currentUser.fullname,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(_currentUser.phone,
-                  style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              Text(_currentUser.email,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal))
+              SizedBox(
+                height: 5,
+              ),
+              _currentUser.fullname == ""
+                  ? Text("profileContent-fullname".tr,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                  : Text(_currentUser.fullname,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              _currentUser.phone == ""
+                  ? Text("profileContent-phone".tr,
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal))
+                  : Text(_currentUser.phone,
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal)),
+              _currentUser.email == ""
+                  ? Text("profileContent-email".tr,
+                      style: TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.normal))
+                  : Text(_currentUser.email,
+                      style: TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.normal))
             ],
           )
         : Column(

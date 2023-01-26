@@ -70,7 +70,9 @@ class LocaleString extends Translations {
           "device-apnUser": "APN User",
           "device-apnPass": "APN Password",
           "device-alarmingMethod": "Alarming Method",
-          "offlineMode": "Offline Mode"
+          "offlineMode": "Offline Mode",
+          "signOn": "Sign on",
+          "simcardManagement" : "Sim Management"
         },
         'fa_IR': {
           'App_Name': 'موقعیت یاب',
@@ -137,7 +139,9 @@ class LocaleString extends Translations {
           "device-apnUser": "نام کاربری APN",
           "device-apnPass": "رمز عبور APN",
           "device-alarmingMethod": "متد هشداردهی",
-          "offlineMode": "آفلاین"
+          "offlineMode": "آفلاین",
+          "signOn": "ورود",
+          "simcardManagement" : "سیم کارت"
         },
       };
 }

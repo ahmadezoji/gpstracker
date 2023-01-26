@@ -20,7 +20,7 @@ class _CheckPatternState extends State<CheckPattern>
     super.initState();
   }
   void pop(bool status){
-    Navigator.pop(context, {"status": status});
+    Navigator.pop(context, status);
   }
   void switchChange() async {}
 

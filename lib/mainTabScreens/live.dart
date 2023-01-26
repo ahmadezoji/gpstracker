@@ -7,6 +7,7 @@ import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
+import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:cargpstracker/util.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+
 
 class Live extends StatefulWidget {
   const Live({Key? key,
@@ -59,7 +61,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       speed: 0.0,
       mileage: 0,
       heading: 0.0);
-  late LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
+  LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
   static const double CHANGE_ZOOM = 12;
@@ -126,13 +128,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   void _getCurrentLocation() async {
     try {
-      Point curPoint = (await getCurrentLocation(currentDevice!))!;
+      Point? curPoint = await getCurrentLocation(currentDevice!);
+      if(curPoint==null)
+        return;
       setState(() {
         currentPos = curPoint;
         currentLatLng = LatLng(curPoint.lat, curPoint.lon);
       });
     } catch (e) {
-      print('${DateTime.now().toString()} - $e-${mounted.toString()}');
+      print('$e');
     }
   }
 
@@ -418,10 +422,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         height: 80,
         point: currentLatLng,
         builder: (ctx) =>
-            Icon(
-              Icons.my_location,
-              color: Colors.blue,
-            ),
+        getMarkerPoint()
       ),
     ];
 

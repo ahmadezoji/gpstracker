@@ -15,7 +15,14 @@ Future<String?> load(String key) async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
 }
-
+Future<bool> savelist(String key, List<String> list) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.setStringList(key, list);
+}
+Future<List<String>?> loadList(String key) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList(key);
+}
 Future<bool> saveJson(String key, Map<String, dynamic> val) async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.setString(key, jsonEncode(val));

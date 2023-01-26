@@ -51,7 +51,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application.kt ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.next.cargpstracker"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

@@ -119,7 +119,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // ),
         body: IndexedStack(
           children: <Widget>[
-            GpsPlus(),
+            new GpsPlus(),
             Live(
                 active: activeLive,
                 userLogined: widget.userLogined,

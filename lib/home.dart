@@ -2,6 +2,7 @@ import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -38,11 +39,25 @@ class HomePageState extends State<HomePage>
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
   late User _user = widget.currentUser;
+
   @override
   void initState() {
     super.initState();
     _listDevice = widget.userDevices;
     _user = widget.currentUser;
+  }
+
+  void _onSimMangment() async {
+    print('start');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => SimCardPage(
+                  currentUser: _user,
+                  userDevices: _listDevice,
+                  userLogined: false,
+                ),
+            fullscreenDialog: false));
   }
 
   void onRefresh() async {
@@ -89,6 +104,14 @@ class HomePageState extends State<HomePage>
             ),
             // status bar color
             actions: [
+              SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  _onSimMangment();
+                },
+                child: SvgPicture.asset("assets/simcard-icon.svg"),
+              ),
+              SizedBox(width: 10),
               IconButton(
                   icon: Icon(
                     themeNotifier.isDark
@@ -102,14 +125,6 @@ class HomePageState extends State<HomePage>
                         : themeNotifier.isDark = true;
                     print("Theme change clicked");
                   }),
-              SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  showTimeZoneDlgBox(context);
-                },
-                child:
-                    SvgPicture.asset("assets/timezone.svg", color: fontColor),
-              ),
               SizedBox(width: 10),
               GestureDetector(
                 onTap: () {

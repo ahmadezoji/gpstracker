@@ -4,15 +4,19 @@ import 'dart:io';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 import 'mainTabScreens/login4.dart';
-
+Widget getMarkerPoint(){
+  return  Lottie.asset("assets/point.json");
+}
 class SpalshScreen extends StatefulWidget {
   @override
   _SpalshScreenState createState() => _SpalshScreenState();
@@ -81,7 +85,7 @@ class _SpalshScreenState extends State<SpalshScreen>
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => new LoginPage()),
+          MaterialPageRoute(builder: (context) => new SignOnPage()),
         );
       }
     } catch (e) {
@@ -149,7 +153,7 @@ class _SpalshScreenState extends State<SpalshScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Lottie.asset('assets/splash-screen.json'),
+              Lottie.asset('assets/new-splash-screen.json'),
               // CircularProgressIndicator(
               //   value: controller.value,
               //   semanticsLabel: 'Linear progress indicator',
