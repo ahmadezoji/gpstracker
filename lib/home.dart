@@ -104,12 +104,9 @@ class HomePageState extends State<HomePage>
             ),
             // status bar color
             actions: [
-              SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  _onSimMangment();
-                },
-                child: SvgPicture.asset("assets/simcard-icon.svg"),
+              IconButton(
+                icon: SvgPicture.asset("assets/simcard-icon.svg"),
+                onPressed: () => _onSimMangment(),
               ),
               SizedBox(width: 10),
               IconButton(
@@ -126,11 +123,9 @@ class HomePageState extends State<HomePage>
                     print("Theme change clicked");
                   }),
               SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  showLangDlgBox(context);
-                },
-                child: SvgPicture.asset("assets/lang.svg", color: fontColor),
+              IconButton(
+                icon: SvgPicture.asset("assets/lang.svg", color: fontColor),
+                onPressed: () => showLangDlgBox(context),
               ),
               SizedBox(width: 10),
               IconButton(
