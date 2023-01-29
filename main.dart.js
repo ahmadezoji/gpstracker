@@ -29729,7 +29729,7 @@ MK(a){return A.b9a(a)},
 b9a(a){var s=0,r=A.K(t.op),q,p=2,o,n,m,l,k,j,i,h,g,f
 var $async$MK=A.G(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
-n=A.je("POST",A.e2("http://130.185.77.83:4681/addUser/",0,null))
+n=A.je("POST",A.e2("https://130.185.77.83:4682/addUser/",0,null))
 h=t.N
 n.x.N(0,A.ak(["phone",a.c,"fullname",a.a,"email",a.b,"birthday",a.d,"pictureUrl",a.e],h,h))
 s=7
@@ -29777,7 +29777,7 @@ var $async$MW=A.G(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
 if(a.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/getUser/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/getUser/",0,null))
 h=t.N
 n.x.N(0,A.ak(["email",a],h,h))
 s=7
@@ -29825,7 +29825,7 @@ n=A.a([],t.lm)
 f=a1.b
 if(f.length===0){q=null
 s=1
-break}m=A.je("POST",A.e2("http://130.185.77.83:4681/getDeviceByUser/",0,null))
+break}m=A.je("POST",A.e2("https://130.185.77.83:4682/getDeviceByUser/",0,null))
 e=t.N
 m.x.N(0,A.ak(["email",f],e,e))
 s=7
@@ -29874,7 +29874,7 @@ s=p}while(true)switch(s){case 0:p=4
 i=b.b
 if(i.length===0||a.a.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/addDevice/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/addDevice/",0,null))
 h=t.N
 n.x.N(0,A.ak(["serial",a.a,"userEmail",i,"deviceSimNum",a.b,"type",a.d,"title",a.c],h,h))
 A.bm("user.email="+i)
@@ -29917,7 +29917,7 @@ a77(a,b){return A.bcg(a,b)},
 bcg(a,b){var s=0,r=A.K(t.X7),q,p=2,o,n,m,l,k,j,i,h,g,f
 var $async$a77=A.G(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:p=4
-n=A.je("POST",A.e2("http://130.185.77.83:4681/updatePass/",0,null))
+n=A.je("POST",A.e2("https://130.185.77.83:4682/updatePass/",0,null))
 h=t.N
 n.x.N(0,A.ak(["email",a.b,"password",b],h,h))
 s=7
@@ -29963,7 +29963,7 @@ s=p}while(true)switch(s){case 0:p=4
 i=a.a
 if(i.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/updateDevice/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/updateDevice/",0,null))
 h=t.N
 n.x.N(0,A.ak(["serial",i,"deviceSimNum",a.b,"type",a.d,"title",a.c],h,h))
 s=7
@@ -30008,7 +30008,7 @@ s=p}while(true)switch(s){case 0:p=4
 i=a.a
 if(i.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/deleteDevice/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/deleteDevice/",0,null))
 h=t.N
 n.x.N(0,A.ak(["serial",i],h,h))
 s=7
@@ -30052,7 +30052,7 @@ s=p}while(true)switch(s){case 0:p=4
 i=a.b
 if(i.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/updateUser/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/updateUser/",0,null))
 h=t.N
 n.x.N(0,A.ak(["phone",a.c,"email",i,"birthday",a.d,"fullname",a.a],h,h))
 s=7
@@ -30098,7 +30098,7 @@ if(a.length===0){q=null
 s=1
 break}if(b.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/loginByPass/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/loginByPass/",0,null))
 i=t.N
 n.x.N(0,A.ak(["email",a,"password",b],i,i))
 A.bm(n)
@@ -30140,7 +30140,7 @@ a6T(a){return A.baw(a)},
 baw(a){var s=0,r=A.K(t.PR),q,p=2,o,n,m,l,k,j,i,h,g
 var $async$a6T=A.G(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
-n=A.je("POST",A.e2("http://130.185.77.83:4681/live/",0,null))
+n=A.je("POST",A.e2("https://130.185.77.83:4682/live/",0,null))
 i=t.N
 n.x.N(0,A.ak(["serial",a.a],i,i))
 s=7
@@ -30185,7 +30185,7 @@ s=p}while(true)switch(s){case 0:p=4
 h=a6.a
 if(h.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/getConfig/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/getConfig/",0,null))
 g=t.N
 n.x.N(0,A.ak(["serial",h],g,g))
 s=7
@@ -30245,7 +30245,7 @@ s=p}while(true)switch(s){case 0:p=4
 h=a8.a
 if(h.length===0){q=null
 s=1
-break}n=A.je("POST",A.e2("http://130.185.77.83:4681/setConfig/",0,null))
+break}n=A.je("POST",A.e2("https://130.185.77.83:4682/setConfig/",0,null))
 g=n.x
 f=a9.b
 f===$&&A.b()
@@ -52745,7 +52745,7 @@ s=q}while(true)switch(s){case 0:q=3
 f=o.cx
 B.b.a6(f)
 A.bm(o.k1.a)
-n=A.je("POST",A.e2("http://130.185.77.83:4681/history/",0,null))
+n=A.je("POST",A.e2("https://130.185.77.83:4682/history/",0,null))
 e=t.N
 n.x.N(0,A.ak(["serial",o.k1.a,"timestamp",a4],e,e))
 s=6
