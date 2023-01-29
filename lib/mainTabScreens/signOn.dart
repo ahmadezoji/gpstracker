@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/user.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
@@ -35,18 +38,39 @@ class _SignOnPageState extends State<SignOnPage>
 
   Future<void> loginWithAuth0() async {
     try {
-      var credentials = await auth0
-          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-          .login();
+      // var credentials = await auth0
+      //     .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+      //     .login();
 
-      if (credentials.user != null) {
-        UserProfile? _user = credentials.user;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => Login2Page(authUser: _user),
-                fullscreenDialog: false));
-      }
+      // if (credentials.user != null) {
+      //   UserProfile? _user = credentials.user;
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (_) => Login2Page(authUser: _user),
+      //           fullscreenDialog: false));
+      // }
+      final _pictureUrl = "";
+      final _fullname = "";
+      final _email = "saam.ezoji@gmail.com";
+      final _phone = "";
+      final _birthday = "";
+      User user = User(
+          fullname: _fullname.toString(),
+          email: _email.toString(),
+          phone: _phone.toString(),
+          birthday: _birthday.toString(),
+          pictureUrl: _pictureUrl.toString());
+      User? currentUser = (await addUser(user));
+      List<Device> devicesList = (await getUserDevice(currentUser!))!;
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(
+                  userLogined: true,
+                  userDevices: devicesList,
+                  currentUser: currentUser),
+              fullscreenDialog: false));
     } catch (error) {
       print('refresh = $error');
     }

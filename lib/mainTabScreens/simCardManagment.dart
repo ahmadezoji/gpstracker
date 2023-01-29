@@ -51,17 +51,20 @@ class _SimCardPageState extends State<SimCardPage>
     });
     makeMyRequest();
   }
+
   void makeMyRequest() async {
     print('code');
     await Permission.phone.request();
     if (!await Permission.phone.isGranted) {
       throw Exception("permission missing");
     }
-    int subscriptionId = 1; // sim card subscription Id
-    String code = "*140*11#"; // ussd code payload
+    int subscriptionId = 2; // sim card subscription Id
+    String code =
+        "*123#"; //"*140*11#";//"*123#" #turkcell remian; // ussd code payload
     print(code);
     try {
-      String ussdSuccessMessage = await UssdService.makeRequest(subscriptionId, code);
+      String ussdSuccessMessage =
+          await UssdService.makeRequest(subscriptionId, code);
       print("succes! message: $ussdSuccessMessage");
     } on PlatformException catch (e) {
       print("error! code: ${e.code} - message: ${e.message}");
@@ -75,10 +78,12 @@ class _SimCardPageState extends State<SimCardPage>
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(title: Text("Sim Management".tr)),
-        body: Container(
+        body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
+          scrollDirection: Axis.vertical,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               myAllVehicle(
                 selectedDevice: _onSelectedDevice,
@@ -99,6 +104,7 @@ class _SimCardPageState extends State<SimCardPage>
                 height: 70,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Total Balance: ',
@@ -107,8 +113,11 @@ class _SimCardPageState extends State<SimCardPage>
                   Text('54710 IRR'),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Remaining Internet Value: ',
@@ -121,16 +130,20 @@ class _SimCardPageState extends State<SimCardPage>
                 height: 70,
               ),
               Row(
-
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: 120,
                     width: 120,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),color: backRechargBtn),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: backRechargBtn),
                     child: Text('Recharge'),
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   GestureDetector(
                     onTap: () {
                       makeMyRequest();
@@ -139,12 +152,14 @@ class _SimCardPageState extends State<SimCardPage>
                       height: 120,
                       width: 120,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),color: backRechargBtn),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: backRechargBtn),
                       child: Text('Buy Internet '),
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),
