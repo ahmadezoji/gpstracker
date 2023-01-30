@@ -4,9 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad201fac15a88598107ec645f351f5b4/jetified-window-java-1.0.0-beta04/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad201fac15a88598107ec645f351f5b4/jetified-window-java-1.0.0-beta04/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad201fac15a88598107ec645f351f5b4/jetified-window-java-1.0.0-beta04/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/051954185797d7bd40e6135889def059/transformed/jetified-window-java-1.0.0-beta04/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/051954185797d7bd40e6135889def059/transformed/jetified-window-java-1.0.0-beta04/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/051954185797d7bd40e6135889def059/transformed/jetified-window-java-1.0.0-beta04/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/00bcc53f64a287e9d54a83747876a3c0/jetified-window-java-1.0.0-beta04/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/00bcc53f64a287e9d54a83747876a3c0/jetified-window-java-1.0.0-beta04/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/00bcc53f64a287e9d54a83747876a3c0/jetified-window-java-1.0.0-beta04/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

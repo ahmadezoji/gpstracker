@@ -2,6 +2,8 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/user.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -55,7 +57,16 @@ class _AddVehicleState extends State<AddVehicle>
     bool? result = await addDevice(dev, widget.currentUser);
     Fluttertoast.showToast(msg: 'add device is $result');
     if (result!) {
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      List<Device> devicesList = (await getUserDevice(widget.currentUser))!;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => new HomePage(
+                currentUser: widget.currentUser,
+                userLogined: true,
+                userDevices: devicesList)),
+      );
     }
   }
 
@@ -152,9 +163,9 @@ class _AddVehicleState extends State<AddVehicle>
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1.0,
-                                    color: Colors.black,
-                                    // strokeAlign: StrokeAlign.inside,
+                                  width: 1.0,
+                                  color: Colors.black,
+                                  // strokeAlign: StrokeAlign.inside,
                                 ),
                               ),
                             ),

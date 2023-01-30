@@ -26,7 +26,8 @@ const vehicleCardColor = Color.fromRGBO(236, 236, 236, 1.0);
 const selectedVehicleCardColor = Color.fromRGBO(70, 175, 208, 1.0);
 const backPhoneNumberColor = Color.fromRGBO(222, 235, 255, 1.0);
 const secondBackgroundPage = Color.fromRGBO(240, 246, 255, 1.0); //F0F6FF
-const backRechargBtn = Color.fromRGBO(70,175,208, 1.0);
+const backRechargBtn = Color.fromRGBO(70, 175, 208, 1.0);
+
 class AppConstants {
   static const String LIGHT_STYLE = 'ckzcmemek003x14rwpyjekvla';
   static const String DARK_STYLE = 'cl9hrft5q000m14tnst6lreof';
@@ -41,9 +42,11 @@ const SHARED_EMAIL_KEY = "current-user-email-key";
 const SHARED_PHONE_KEY = "current-user-phone-key";
 const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";
 const SHARED_REMEMBERED_PASS_KEY = "remembered-pass";
+const SHARED_CURRENT_DEVICE_KEY = "current-device-key";
 
-const HTTP_URL = 'https://130.185.77.83:4682';
-    //'http://130.185.77.83:4681'; // 'http://0.0.0.0:4680' //'https://130.185.77.83:4681'
+const HTTP_URL = 'http://130.185.77.83:4681';
+//'https://130.185.77.83:4682';
+//'http://130.185.77.83:4681'; // 'http://0.0.0.0:4680' //'https://130.185.77.83:4681'
 
 String getTypeAsset(String type) {
   if (type.toLowerCase().contains("car"))
@@ -59,3 +62,5 @@ String getTypeAsset(String type) {
   else
     return "assets/minicar.svg";
 }
+
+const COMMAND = {'1': '222#', '2': '333#'};

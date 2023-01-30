@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.auth0.android:jwtdecode:2.0.2@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d9e2d1098cf0c984f81706378f3b984/jetified-jwtdecode-2.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d9e2d1098cf0c984f81706378f3b984/jetified-jwtdecode-2.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d9e2d1098cf0c984f81706378f3b984/jetified-jwtdecode-2.0.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.auth0.android/jwtdecode/2.0.2/b2c2e34ab7e57a800923af6f1a73053cdff875c5/jwtdecode-2.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.auth0.android/jwtdecode/2.0.2/34d8ffb28f4cca3c3d1556a747d08d482c881a61/jwtdecode-2.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

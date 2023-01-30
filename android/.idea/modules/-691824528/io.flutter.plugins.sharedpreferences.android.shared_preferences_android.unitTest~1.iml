@@ -25,9 +25,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/test/java" isTestSource="true" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/testDebug" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/ap_generated_sources/debugUnitTest/out">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/ap_generated_sources/debugUnitTest/out" isTestSource="true" generated="true" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/ap_generated_sources/debugUnitTest/out" />
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="io.flutter.plugins.sharedpreferences.android.shared_preferences_android.main~1" scope="TEST" />

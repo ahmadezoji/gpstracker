@@ -1,5 +1,6 @@
 import 'package:cargpstracker/check_pattern.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/setPattern.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cargpstracker/myRequests.dart';
 
 class GpsPlus extends StatefulWidget {
   const GpsPlus({
@@ -28,7 +30,6 @@ class GpsPlusState extends State<GpsPlus>
   }
 
   void switchChange(bool value) async {
-
     List<String>? savedStrList = await loadList(SHARED_SWITCH_PATTERN_KEY);
     List<int>? intProductList = savedStrList?.map((i) => int.parse(i)).toList();
     if (intProductList == null) {
@@ -53,7 +54,16 @@ class GpsPlusState extends State<GpsPlus>
       ).then((value) => changeSwitch(value));
     }
   }
-  void changeSwitch(bool statue) {
+
+  void changeSwitch(bool status) async {
+    Map<String, dynamic>? currentDeviceMap =
+        await loadJson(SHARED_CURRENT_DEVICE_KEY);
+    Device current = Device.fromJson(currentDeviceMap!);
+    if (status) {
+      // bool? result = await setCommand(current, COMMAND['1']!);
+    } else {
+      // bool? result = await setCommand(current, COMMAND['2']!);
+    }
     setState(() {
       switchLockState = !switchLockState;
     });

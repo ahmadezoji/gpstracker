@@ -52,7 +52,7 @@ class _SignOnPageState extends State<SignOnPage>
       // }
       final _pictureUrl = "";
       final _fullname = "";
-      final _email = "saam.ezoji@gmail.com";
+      final _email = "saam.ezoji.2021@gmail.com";
       final _phone = "";
       final _birthday = "";
       User user = User(
@@ -61,8 +61,10 @@ class _SignOnPageState extends State<SignOnPage>
           phone: _phone.toString(),
           birthday: _birthday.toString(),
           pictureUrl: _pictureUrl.toString());
+
       User? currentUser = (await addUser(user));
       List<Device> devicesList = (await getUserDevice(currentUser!))!;
+      print(currentUser);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

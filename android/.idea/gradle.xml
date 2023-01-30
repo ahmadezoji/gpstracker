@@ -10,8 +10,9 @@
         <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.4.3/android" />
-            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/firebase_core-1.20.0/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/auth0_flutter-1.0.2/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/cloud_firestore-4.3.1/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/firebase_core-2.4.1/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.9/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.17/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android" />

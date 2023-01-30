@@ -95,12 +95,9 @@ class _UpdateVehicleState extends State<UpdateVehicle>
           actions: [
             Container(
               padding: EdgeInsets.only(right: 10, left: 10),
-              child: GestureDetector(
-                onTap: () => showAlertDialog(context, _deleteVehicle),
-                child: Icon(
-                  Icons.delete,
-                  size: 25,
-                ),
+              child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => showAlertDialog(context, _deleteVehicle),
               ),
             )
           ],
@@ -170,9 +167,9 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1.0,
-                                    color: Colors.black,
-                                    // strokeAlign: StrokeAlign.inside,
+                                  width: 1.0,
+                                  color: Colors.black,
+                                  // strokeAlign: StrokeAlign.inside,
                                 ),
                               ),
                             ),
