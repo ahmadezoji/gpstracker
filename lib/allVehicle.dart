@@ -50,15 +50,17 @@ class _myAllVehicleState extends State<myAllVehicle>
       child: Row(
         children: [
           if (widget.userDevices.length > 0)
-            ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              // padding: const EdgeInsets.all(8),
-              itemCount: widget.userDevices.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _vehicleIcon(context, index);
-              },
+            Expanded(
+              child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                // padding: const EdgeInsets.all(8),
+                itemCount: widget.userDevices.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _vehicleIcon(context, index);
+                },
+              ),
             ),
           _vehicleIcon(context, -1)
         ],
