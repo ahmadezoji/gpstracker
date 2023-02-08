@@ -127,12 +127,12 @@ class HomePageState extends State<HomePage>
                 icon: SvgPicture.asset("assets/lang.svg", color: fontColor),
                 onPressed: () => showLangDlgBox(context),
               ),
-              SizedBox(width: 10),
-              IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () {
-                    onRefresh();
-                  }),
+              // SizedBox(width: 10),
+              // IconButton(
+              //     icon: Icon(Icons.refresh),
+              //     onPressed: () {
+              //       onRefresh();
+              //     }),
               SizedBox(width: 10),
             ]),
         body: Center(
