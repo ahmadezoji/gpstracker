@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":shared_preferences_android:androidTest" external.linked.project.path="$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":google_sign_in_android:androidTest" external.linked.project.path="$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
@@ -12,8 +12,8 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/main/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/debug/res;file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/resValues/debug" />
-        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/androidTest/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/resValues/androidTest/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/main/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/debug/res;file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/androidTest/res;file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/resValues/androidTest/debug" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="PROJECT_TYPE" value="1" />
       </configuration>
@@ -21,17 +21,17 @@
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/androidTest" />
-    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android/src/androidTestDebug" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/aidl_source_output_dir/debugAndroidTest/out" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/ap_generated_sources/debugAndroidTest/out" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/renderscript_source_output_dir/debugAndroidTest/out" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/resValues/androidTest/debug" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/res/rs/androidTest/debug" />
-    <content url="file://$MODULE_DIR$/../../../../build/shared_preferences_android/generated/source/buildConfig/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android/src/androidTestDebug" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/ap_generated_sources/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/resValues/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/google_sign_in_android/generated/source/buildConfig/androidTest/debug" />
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="io.flutter.plugins.sharedpreferences.android.shared_preferences_android.main~1" scope="TEST" />
+    <orderEntry type="module" module-name="android.google_sign_in_android.main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
@@ -45,9 +45,23 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:guava:31.1-android" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.checkerframework:checker-qual:3.12.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.errorprone:error_prone_annotations:2.11.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth:20.4.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth-api-phone:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-auth-base:18.0.4@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-fido:19.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-base:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-tasks:18.0.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-basement:18.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.activity:activity:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.core:core:1.6.0@aar" level="project" />
@@ -63,5 +77,5 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.window:window-java:1.0.0-beta04@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.window:window:1.0.0-beta04@aar" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="android.shared_preferences_android.main" />
+  <component name="TestModuleProperties" production-module="android.google_sign_in_android.main" />
 </module>

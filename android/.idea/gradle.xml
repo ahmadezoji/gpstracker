@@ -14,10 +14,13 @@
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/cloud_firestore-4.3.1/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/firebase_core-2.4.1/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.9/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.5/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.17/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/permission_handler_android-10.2.0/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.12/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/smart_auth-1.0.5/android" />
             <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/sms_autofill-2.2.0/android" />
+            <option value="$PROJECT_DIR$/../../../../.pub-cache/hosted/pub.dartlang.org/ussd_service-0.1.1/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
           </set>

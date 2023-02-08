@@ -13,15 +13,17 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e86667e4fd5ed987a9cb2acbeb89297/jetified-libs.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b01219a69fc97e97a59837338c9a0e2c/jetified-libs.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/shared_preferences_android/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/cloud_firestore/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/firebase_core/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/sms_autofill/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
+                <arg>$MODULE_DIR$/../../../../build/permission_handler_android/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/fluttertoast/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/path_provider_android/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/smart_auth/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$MODULE_DIR$/../../../../build/auth0_flutter/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
+                <arg>$MODULE_DIR$/../../../../build/ussd_service/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d731d86afe7ba95daa97cb8a012ca45c/jetified-armeabi_v7a_debug-1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/212953798349d7a666df7bea7829c435/jetified-arm64_v8a_debug-1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6f83c825b4c428f8f2be7919c38fee56/jetified-x86_64_debug-1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f.jar</arg>
@@ -109,14 +111,17 @@
     <content url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/androidTest/debug" />
     <orderEntry type="jdk" jdkName="Android API 33 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="io.flutter.plugins.sharedpreferences.android.shared_preferences_android.main~1" scope="TEST" />
+    <orderEntry type="module" module-name="io.flutter.plugins.sharedpreferences.android.shared_preferences_android.main" scope="TEST" />
     <orderEntry type="module" module-name="android.cloud_firestore.main" scope="TEST" />
     <orderEntry type="module" module-name="android.firebase_core.main" scope="TEST" />
     <orderEntry type="module" module-name="android.sms_autofill.main" scope="TEST" />
-    <orderEntry type="module" module-name="com.example.FlutterToast.android.fluttertoast.main~1" scope="TEST" />
+    <orderEntry type="module" module-name="android.permission_handler_android.main" scope="TEST" />
+    <orderEntry type="module" module-name="com.example.FlutterToast.android.fluttertoast.main" scope="TEST" />
     <orderEntry type="module" module-name="android.path_provider_android.main" scope="TEST" />
     <orderEntry type="module" module-name="android.smart_auth.main" scope="TEST" />
     <orderEntry type="module" module-name="android.auth0_flutter.main" scope="TEST" />
+    <orderEntry type="module" module-name="android.ussd_service.main" scope="TEST" />
+    <orderEntry type="module" module-name="android.google_sign_in_android.main" scope="TEST" />
     <orderEntry type="module" module-name="android.app.main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: ./../build/app/intermediates/flutter/debug/libs.jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.flutter:armeabi_v7a_debug:1.0.0-1736a5562c4fc521ffc6a81bff467706ed23699f" level="project" />
