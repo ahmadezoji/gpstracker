@@ -58,6 +58,7 @@ class _AddVehicleState extends State<AddVehicle>
     Fluttertoast.showToast(msg: 'add device is $result');
     if (result!) {
       // Navigator.pop(context);
+      //add pushreplacment
       List<Device> devicesList = (await getUserDevice(widget.currentUser))!;
       Navigator.pushReplacement(
         context,
