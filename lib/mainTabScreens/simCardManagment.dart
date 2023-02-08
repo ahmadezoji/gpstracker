@@ -17,8 +17,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-// import 'package:ussd_service/ussd_service.dart';
-// import 'package:permission_handler/permission_handler.dart';
+import 'package:ussd_service/ussd_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SimCardPage extends StatefulWidget {
   const SimCardPage(
@@ -54,21 +54,21 @@ class _SimCardPageState extends State<SimCardPage>
 
   void makeMyRequest() async {
     print('code');
-    // await Permission.phone.request();
-    // if (!await Permission.phone.isGranted) {
-    //   throw Exception("permission missing");
-    // }
+    await Permission.phone.request();
+    if (!await Permission.phone.isGranted) {
+      throw Exception("permission missing");
+    }
     int subscriptionId = 2; // sim card subscription Id
     String code =
         "*123#"; //"*140*11#";//"*123#" #turkcell remian; // ussd code payload
     print(code);
-    // try {
-    //   String ussdSuccessMessage =
-    //       await UssdService.makeRequest(subscriptionId, code);
-    //   print("succes! message: $ussdSuccessMessage");
-    // } on PlatformException catch (e) {
-    //   print("error! code: ${e.code} - message: ${e.message}");
-    // }
+    try {
+      String ussdSuccessMessage =
+          await UssdService.makeRequest(subscriptionId, code);
+      print("succes! message: $ussdSuccessMessage");
+    } on PlatformException catch (e) {
+      print("error! code: ${e.code} - message: ${e.message}");
+    }
   }
 
   @override
