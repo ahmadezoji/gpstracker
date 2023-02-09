@@ -17,7 +17,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  // Optional clientId
+  clientId:
+  '584098077970-8qve4rlvuv00n7o2837523bd5cdedeos.apps.googleusercontent.com',
+  scopes: <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
 class SignOnPage extends StatefulWidget {
   @override
   _SignOnPageState createState() => _SignOnPageState();
@@ -28,14 +37,33 @@ class _SignOnPageState extends State<SignOnPage>
   late String userPhone = "";
   bool _isLoading = false;
   late Auth0 auth0;
+  GoogleSignInAccount? _currentUser;
 
   @override
   void initState() {
     super.initState();
-    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+    // auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
     // print('initState Live');
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+      print('_currentUser : $_currentUser');
+      if (_currentUser != null) {
+        // _handleGetContact(_currentUser!);
+      }
+    });
+    _googleSignIn.signInSilently();
+
   }
 
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
   Future<void> loginWithAuth0() async {
     try {
       // var credentials = await auth0
@@ -115,7 +143,7 @@ class _SignOnPageState extends State<SignOnPage>
                 height: 40,
               ),
               GestureDetector(
-                onTap: () => loginWithAuth0(),
+                onTap: () => _handleSignIn(),
                 child: Container(
                   alignment: Alignment.center,
                   width: 200,

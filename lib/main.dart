@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await dotenv.load();
+  // await dotenv.load();
   runApp(MyApp());
 }
 
