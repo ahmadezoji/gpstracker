@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.currentUser}) : super(key: key);
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   _ProfilePage2State createState() => _ProfilePage2State();
@@ -32,13 +32,13 @@ class _ProfilePage2State extends State<ProfilePage>
 
   void _updatUser() async {
     try {
-      User newUser = User(
+      myUser newUser = myUser(
           fullname: fullname,
           email: email,
           phone: widget.currentUser.phone,
           birthday: birthday,
           pictureUrl: "");
-      User currentUser = (await updateUser(newUser))!;
+      myUser currentUser = (await updateUser(newUser))!;
       if (currentUser != null)
         Navigator.pop(context, {'user': currentUser});
       else

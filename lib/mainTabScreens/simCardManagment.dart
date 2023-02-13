@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
@@ -29,7 +29,7 @@ class SimCardPage extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   _SimCardPageState createState() => _SimCardPageState();

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';

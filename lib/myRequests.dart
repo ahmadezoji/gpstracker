@@ -2,7 +2,7 @@ import 'dart:convert' as convert;
 
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:http/http.dart' as http;
@@ -78,7 +78,7 @@ Future<String?> OTPverify(String userPhone) async {
   }
 }
 
-Future<User?> addUser(User user) async {
+Future<myUser?> addUser(myUser user) async {
   try {
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addUser/'));
@@ -97,7 +97,7 @@ Future<User?> addUser(User user) async {
       final json = convert.jsonDecode(responseString);
       print('json = $json');
       if (json != null) {
-        return User.fromJson(json);
+        return myUser.fromJson(json);
       } else {
         return null;
       }
@@ -111,7 +111,7 @@ Future<User?> addUser(User user) async {
   }
 }
 
-Future<User?> getUser(String email) async {
+Future<myUser?> getUser(String email) async {
   try {
     if (email.isEmpty) return null;
     var request =
@@ -126,7 +126,7 @@ Future<User?> getUser(String email) async {
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
       print('json = $json');
-      return User.fromJson(json);
+      return myUser.fromJson(json);
     } else {
       return null;
     }
@@ -136,7 +136,7 @@ Future<User?> getUser(String email) async {
   }
 }
 
-Future<List<Device>?> getUserDevice(User user) async {
+Future<List<Device>?> getUserDevice(myUser user) async {
   try {
     List<Device> devicesList = [];
     if (user.email.isEmpty) return null;
@@ -169,7 +169,7 @@ Future<List<Device>?> getUserDevice(User user) async {
   }
 }
 
-Future<bool?> addDevice(Device device, User user) async {
+Future<bool?> addDevice(Device device, myUser user) async {
   try {
     List<Device> devicesList = [];
     if (user.email.isEmpty || device.serial.isEmpty) return null;
@@ -199,7 +199,7 @@ Future<bool?> addDevice(Device device, User user) async {
   }
 }
 
-Future<bool?> updatePass(User user, String password) async {
+Future<bool?> updatePass(myUser user, String password) async {
   try {
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updatePass/'));
@@ -272,7 +272,7 @@ Future<bool?> deleteDevice(Device device) async {
   }
 }
 
-Future<User?> updateUser(User user) async {
+Future<myUser?> updateUser(myUser user) async {
   try {
     if (user.email.isEmpty) return null;
     var request =
@@ -291,7 +291,7 @@ Future<User?> updateUser(User user) async {
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
       print(json);
-      return User.fromJson(json);
+      return myUser.fromJson(json);
     } else {
       return null;
     }

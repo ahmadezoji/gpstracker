@@ -4,7 +4,7 @@ import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
       : super(key: key);
   final bool userLogined;
   final List<Device> userDevices;
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   HomePageState createState() => HomePageState();
@@ -38,7 +38,7 @@ class HomePageState extends State<HomePage>
   final String title = 'App_Name'.tr;
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
-  late User _user = widget.currentUser;
+  late myUser _user = widget.currentUser;
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class HomePageState extends State<HomePage>
 
   void onRefresh() async {
     try {
-      User tmpUser = (await getUser(widget.currentUser.email))!;
+      myUser tmpUser = (await getUser(widget.currentUser.email))!;
       List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
       setState(() {
         _listDevice = tempArray;

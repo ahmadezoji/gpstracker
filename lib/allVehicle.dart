@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,7 +20,7 @@ class myAllVehicle extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
   final Function selectedDevice;
 
   @override

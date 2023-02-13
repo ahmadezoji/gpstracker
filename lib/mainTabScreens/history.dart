@@ -6,7 +6,7 @@ import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,7 +31,7 @@ class History extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
   @override
   _HistoryState createState() => _HistoryState();
 }

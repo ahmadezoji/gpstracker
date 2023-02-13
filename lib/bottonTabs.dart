@@ -2,7 +2,7 @@ import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
 import 'package:cargpstracker/mainTabScreens/history.dart';
 import 'package:cargpstracker/mainTabScreens/live.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,7 +23,7 @@ class MyStatefulWidget extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }

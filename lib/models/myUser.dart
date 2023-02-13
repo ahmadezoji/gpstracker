@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-class User {
+class myUser {
   final String fullname;
   final String email;
   final String phone;
   final String birthday;
   final String pictureUrl;
 
-  const User(
+  const myUser(
       {required this.fullname,
       required this.email,
       required this.phone,
       required this.birthday,
       required this.pictureUrl});
 
-  factory User.fromJson(Map<String, dynamic> jsonData) {
-    return User(
+  factory myUser.fromJson(Map<String, dynamic> jsonData) {
+    return myUser(
       fullname: jsonData['fullname'],
       email: jsonData['email'],
       phone: jsonData['phone'],
@@ -29,7 +29,7 @@ class User {
     return 'name = $fullname,phone=$phone';
   }
 
-  static Map<String, dynamic> toMap(User user) => {
+  static Map<String, dynamic> toMap(myUser user) => {
         'fullname': user.fullname,
         'email': user.email,
         'phone': user.phone,
@@ -37,12 +37,12 @@ class User {
         'pictureUrl': user.pictureUrl
       };
 
-  static String encode(List<User> users) => json.encode(
-        users.map<Map<String, dynamic>>((users) => User.toMap(users)).toList(),
+  static String encode(List<myUser> users) => json.encode(
+        users.map<Map<String, dynamic>>((users) => myUser.toMap(users)).toList(),
       );
 
-  static List<User> decode(String users) =>
+  static List<myUser> decode(String users) =>
       (json.decode(users) as List<dynamic>)
-          .map<User>((item) => User.fromJson(item))
+          .map<myUser>((item) => myUser.fromJson(item))
           .toList();
 }

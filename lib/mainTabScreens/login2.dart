@@ -4,10 +4,11 @@ import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,7 +19,7 @@ import 'package:provider/provider.dart';
 
 class Login2Page extends StatefulWidget {
   const Login2Page({Key? key, required this.authUser}) : super(key: key);
-  final UserProfile? authUser;
+  final User authUser;
 
   @override
   _Login2PageState createState() => _Login2PageState();
@@ -35,7 +36,7 @@ class _Login2PageState extends State<Login2Page>
   late String password = "";
   late String repassword = "";
   late bool passwordCorrect = false;
-  late User? currentUser;
+  late myUser? currentUser;
 
   @override
   void initState() {
@@ -95,18 +96,17 @@ class _Login2PageState extends State<Login2Page>
 
   void _addUserAuth() async {
     try {
-      final _pictureUrl = widget.authUser?.pictureUrl ?? "";
-      final _fullname = widget.authUser?.nickname ?? "";
-      final _email = widget.authUser?.email ?? "saam@gmail.com";
-      final _phone = widget.authUser?.phoneNumber ?? "";
-      final _birthday = widget.authUser?.birthdate ?? "";
-      User user = User(
+      final _pictureUrl = widget.authUser.photoURL ?? "";
+      final _fullname = widget.authUser.displayName ?? "";
+      final _email = widget.authUser.email ?? "saam@gmail.com";
+      final _phone = widget.authUser.phoneNumber ?? "";
+      final _birthday = "";
+      myUser user = myUser(
           fullname: _fullname.toString(),
           email: _email.toString(),
           phone: _phone.toString(),
           birthday: _birthday.toString(),
           pictureUrl: _pictureUrl.toString());
-      print('user = $user');
       currentUser = (await addUser(user));
       if (currentUser != null) {
         save(SHARED_EMAIL_KEY, currentUser!.email)

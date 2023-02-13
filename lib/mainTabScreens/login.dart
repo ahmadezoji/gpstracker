@@ -41,31 +41,6 @@ class _LoginPageState extends State<LoginPage>
     //         fullscreenDialog: false));
   }
 
-  Future<void> loginWithAuth0() async {
-    try {
-      var credentials = await auth0
-          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-          .login();
-
-      if (credentials.user != null) {
-        // if (userPhone == "") {
-        //   Fluttertoast.showToast(msg: "please give one phone number ");
-        //   return;
-        // }
-        UserProfile? _user = credentials.user;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => Login2Page(authUser: _user),
-                fullscreenDialog: false));
-      }
-      // setState(() {
-      //   _user = credentials.user;
-      // });
-    } catch (error) {
-      print('refresh = $error');
-    }
-  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -147,7 +122,7 @@ class _LoginPageState extends State<LoginPage>
                         SizedBox(width: 40),
                         FloatingActionButton(
                           // backgroundColor: Colors.white,
-                          onPressed: () => loginWithAuth0(),
+                          onPressed: () => null,
                           child: Image.asset('assets/google.png'),
                         )
                       ],

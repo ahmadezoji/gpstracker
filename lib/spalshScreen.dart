@@ -6,7 +6,7 @@ import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   late AnimationController controller;
   List<int>? pattern;
   List<Device> devicesList = [];
-  late User currentUser;
+  late myUser currentUser;
 
   @override
   void initState() {

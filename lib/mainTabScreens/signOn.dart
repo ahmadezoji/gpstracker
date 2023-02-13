@@ -3,7 +3,8 @@ import 'dart:core';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
@@ -18,15 +19,9 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  clientId:
-  '584098077970-8qve4rlvuv00n7o2837523bd5cdedeos.apps.googleusercontent.com',
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-);
+
+import '../autentication.dart';
+
 class SignOnPage extends StatefulWidget {
   @override
   _SignOnPageState createState() => _SignOnPageState();
@@ -35,76 +30,26 @@ class SignOnPage extends StatefulWidget {
 class _SignOnPageState extends State<SignOnPage>
     with AutomaticKeepAliveClientMixin<SignOnPage> {
   late String userPhone = "";
-  bool _isLoading = false;
-  late Auth0 auth0;
-  GoogleSignInAccount? _currentUser;
 
   @override
   void initState() {
     super.initState();
-    // auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
-    // print('initState Live');
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-      print('_currentUser : $_currentUser');
-      if (_currentUser != null) {
-        // _handleGetContact(_currentUser!);
-      }
-    });
-    _googleSignIn.signInSilently();
-
+    Authentication.initializeFirebase();
   }
 
   Future<void> _handleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+      User? user = await Authentication.signInWithGoogle(context: context);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => Login2Page(authUser: user!),
+              fullscreenDialog: false));
     } catch (error) {
       print(error);
     }
   }
-  Future<void> loginWithAuth0() async {
-    try {
-      // var credentials = await auth0
-      //     .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-      //     .login();
 
-      // if (credentials.user != null) {
-      //   UserProfile? _user = credentials.user;
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (_) => Login2Page(authUser: _user),
-      //           fullscreenDialog: false));
-      // }
-      final _pictureUrl = "";
-      final _fullname = "";
-      final _email = "saam.ezoji.2021@gmail.com";
-      final _phone = "";
-      final _birthday = "";
-      User user = User(
-          fullname: _fullname.toString(),
-          email: _email.toString(),
-          phone: _phone.toString(),
-          birthday: _birthday.toString(),
-          pictureUrl: _pictureUrl.toString());
-
-      User? currentUser = (await addUser(user));
-      List<Device> devicesList = (await getUserDevice(currentUser!))!;
-      print(currentUser);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => HomePage(
-                  userLogined: true,
-                  userDevices: devicesList,
-                  currentUser: currentUser),
-              fullscreenDialog: false));
-    } catch (error) {
-      print('refresh = $error');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

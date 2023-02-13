@@ -1,3 +1,4 @@
+import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
@@ -5,7 +6,8 @@ import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/mainTabScreens/signOn.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class LeftDrawer extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   LeftDrawerState createState() => LeftDrawerState();
@@ -32,30 +34,31 @@ class LeftDrawer extends StatefulWidget {
 
 class LeftDrawerState extends State<LeftDrawer>
     with AutomaticKeepAliveClientMixin<LeftDrawer> {
-  late User _currentUser = widget.currentUser;
+  late myUser _currentUser = widget.currentUser;
   late Auth0 auth0;
 
   @override
   void initState() {
     super.initState();
-    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+    // auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
   }
 
-  Future<void> loginWithAuth0() async {
-    try {
-      var credentials = await auth0
-          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-          .logout();
-      delete(SHARED_EMAIL_KEY);
-      goToLoginPage();
-    } catch (error) {
-      print('refresh = $error');
-    }
-  }
+  // Future<void> loginWithAuth0() async {
+  //   try {
+  //     var credentials = await auth0
+  //         .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+  //         .logout();
+  //     delete(SHARED_EMAIL_KEY);
+  //     goToLoginPage();
+  //   } catch (error) {
+  //     print('refresh = $error');
+  //   }
+  // }
 
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {
+      await Authentication.signOut();
       // List<Device> devicesList = (await getUserDevice("09192592697"))!;
       // User currentUser = await getUser("09192592697") as User;
       // if (devicesList != null && currentUser != null) {
@@ -69,6 +72,10 @@ class LeftDrawerState extends State<LeftDrawer>
       //           fullscreenDialog: false));
       // }
       // goToLoginPage();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => new SignOnPage()),
+      );
     } catch (e) {
       print(e);
     }
@@ -147,7 +154,7 @@ class LeftDrawerState extends State<LeftDrawer>
           ));
   }
 
-  void onRefresh(User user) async {
+  void onRefresh(myUser user) async {
     print(user);
     setState(() {
       _currentUser = user;
@@ -241,7 +248,7 @@ class LeftDrawerState extends State<LeftDrawer>
               ],
             ),
             onTap: () {
-              widget.userLogined ? loginWithAuth0() : goToLoginPage();
+              widget.userLogined ? logout() : goToLoginPage();
             },
           ),
         ],

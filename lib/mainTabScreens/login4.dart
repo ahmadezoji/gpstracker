@@ -5,7 +5,7 @@ import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -20,7 +20,7 @@ class Login4Page extends StatefulWidget {
       {Key? key, required this.userDevices, required this.currentUser})
       : super(key: key);
   final List<Device> userDevices;
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   _Login4PageState createState() => _Login4PageState();

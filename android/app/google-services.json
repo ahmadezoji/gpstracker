@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "578503926545",
-    "project_id": "gpstracker-891e2",
-    "storage_bucket": "gpstracker-891e2.appspot.com"
+    "project_number": "311171007870",
+    "project_id": "gpstracker-80ea1",
+    "storage_bucket": "gpstracker-80ea1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:578503926545:android:6d13469b588efa3af0e2b0",
+        "mobilesdk_app_id": "1:311171007870:android:8b619b24ead7c212295f2f",
         "android_client_info": {
           "package_name": "com.next.cargpstracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "578503926545-h7907jq6bbbsmo7rco363rat2nv46tqf.apps.googleusercontent.com",
+          "client_id": "311171007870-f0i73p52c5jbtfgi1s1mi697q7882co5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.next.cargpstracker",
+            "certificate_hash": "c414ae3ac078e8393563ac7b15dfb0af758c0fd2"
+          }
+        },
+        {
+          "client_id": "311171007870-tqff4ffsqbdl35r44pru3ktcc044rr1s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB6d-tGYQiC6-GSIv-sdml-P6HWCzWdxqU"
+          "current_key": "AIzaSyCYf7W2dsygiXLE0slpbWYF_LHvxUuPlnY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "578503926545-h7907jq6bbbsmo7rco363rat2nv46tqf.apps.googleusercontent.com",
+              "client_id": "311171007870-02fh24qltvg6nrjkessebvs7mopj9fqj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

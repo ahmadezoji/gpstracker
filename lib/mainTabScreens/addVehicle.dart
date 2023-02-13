@@ -5,7 +5,7 @@ import 'dart:core';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 
 class AddVehicle extends StatefulWidget {
   const AddVehicle({Key? key, required this.currentUser}) : super(key: key);
-  final User currentUser;
+  final myUser currentUser;
 
   @override
   _AddVehicleState createState() => _AddVehicleState();

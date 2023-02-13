@@ -62,9 +62,13 @@ dependencies:
   cloud_firestore: ^4.0.5
   ussd_service: ^0.1.1
   permission_handler: ^10.2.0
-  google_sign_in: ^5.4.4
-  google_sign_in_web: ^0.10.2+1
 
+  
+  
+  # google_sign_in_web: ^0.10.2+1
+  google_sign_in: ^5.4.4
+  firebase_core: ^2.5.0
+  firebase_auth: ^4.2.6
 
 #dependency_overrides:
 #  firebase_core_platform_interface: 4.5.1
@@ -127,13 +131,13 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/newIcon_big.png"
+  image_path: "assets/newIcon_small.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 #  adaptive_icon_background: "assets/christmas-background.png"
 #  adaptive_icon_foreground: "assets/GPS+icon.png"
   remove_alpha_ios: true
   web:
     generate: true
-    image_path: "assets/newIcon_big.png"
+    image_path: "assets/newIcon_small.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"

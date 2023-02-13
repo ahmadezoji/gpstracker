@@ -5,7 +5,7 @@ import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/point.dart';
-import 'package:cargpstracker/models/user.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
@@ -28,7 +28,7 @@ class Live extends StatefulWidget {
       : super(key: key);
   final List<Device> userDevices;
   final bool userLogined;
-  final User currentUser;
+  final myUser currentUser;
   final bool active;
 
   @override
