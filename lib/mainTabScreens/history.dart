@@ -5,19 +5,17 @@ import 'dart:core';
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/models/myUser.dart';
+import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-
 // import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
@@ -80,10 +78,10 @@ class _HistoryState extends State<History>
     super.initState();
   }
 
-  Future<Uint8List> loadMarkerImage() async {
-    var byteData = await rootBundle.load("assets/finish.png");
-    return byteData.buffer.asUint8List();
-  }
+  // Future<Uint8List> loadMarkerImage() async {
+    // var byteData = await rootBundle.load("assets/finish.png");
+    // return byteData.buffer.asUint8List();
+  // }
 
   void getCurrentDevice() async {
     if (widget.userDevices.length > 0) currentDevice = widget.userDevices[0];

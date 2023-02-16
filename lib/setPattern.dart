@@ -3,7 +3,6 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SetPattern extends StatefulWidget {
   @override

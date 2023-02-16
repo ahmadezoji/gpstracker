@@ -1,7 +1,6 @@
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
-import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
@@ -11,10 +10,8 @@ import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get.dart';
 
 enum languages { english, farsi }
 
@@ -39,6 +36,7 @@ class HomePageState extends State<HomePage>
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
   late myUser _user = widget.currentUser;
+
 
   @override
   void initState() {

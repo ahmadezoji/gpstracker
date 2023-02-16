@@ -1,9 +1,7 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';

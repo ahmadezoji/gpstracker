@@ -52,23 +52,15 @@ dependencies:
   flutter_svg: ^1.1.2
   intl_phone_field: ^3.1.0
   flutter_launcher_icons: ^0.11.0
-  auth0_flutter: ^1.0.0
-  flutter_dotenv: ^5.0.2
 
-#  cloud_firestore: ^3.1.7
-#  firebase_core: ^1.13.1
-#  firebase_messaging: ^14.1.0
-#  firebase_core: ^2.2.0
   cloud_firestore: ^4.0.5
   ussd_service: ^0.1.1
   permission_handler: ^10.2.0
 
-  
-  
-  # google_sign_in_web: ^0.10.2+1
   google_sign_in: ^5.4.4
   firebase_core: ^2.5.0
   firebase_auth: ^4.2.6
+  firebase_messaging: ^14.2.2
 
 #dependency_overrides:
 #  firebase_core_platform_interface: 4.5.1
@@ -94,7 +86,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - .env
     - assets/
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -133,8 +124,6 @@ flutter_icons:
   ios: true
   image_path: "assets/newIcon_small.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
-#  adaptive_icon_background: "assets/christmas-background.png"
-#  adaptive_icon_foreground: "assets/GPS+icon.png"
   remove_alpha_ios: true
   web:
     generate: true

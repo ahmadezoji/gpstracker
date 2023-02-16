@@ -6,22 +6,24 @@ class myUser {
   final String phone;
   final String birthday;
   final String pictureUrl;
+  final String fcmToken;
 
   const myUser(
       {required this.fullname,
       required this.email,
       required this.phone,
       required this.birthday,
-      required this.pictureUrl});
+      required this.pictureUrl,
+      required this.fcmToken});
 
   factory myUser.fromJson(Map<String, dynamic> jsonData) {
     return myUser(
-      fullname: jsonData['fullname'],
-      email: jsonData['email'],
-      phone: jsonData['phone'],
-      birthday: jsonData["birthday"],
-      pictureUrl: jsonData["pictureUrl"],
-    );
+        fullname: jsonData['fullname'],
+        email: jsonData['email'],
+        phone: jsonData['phone'],
+        birthday: jsonData["birthday"],
+        pictureUrl: jsonData["pictureUrl"],
+        fcmToken: jsonData["fcmToken"]);
   }
 
   @override
@@ -34,11 +36,14 @@ class myUser {
         'email': user.email,
         'phone': user.phone,
         'birthday': user.birthday,
-        'pictureUrl': user.pictureUrl
+        'pictureUrl': user.pictureUrl,
+        'fcmToken': user.fcmToken
       };
 
   static String encode(List<myUser> users) => json.encode(
-        users.map<Map<String, dynamic>>((users) => myUser.toMap(users)).toList(),
+        users
+            .map<Map<String, dynamic>>((users) => myUser.toMap(users))
+            .toList(),
       );
 
   static List<myUser> decode(String users) =>

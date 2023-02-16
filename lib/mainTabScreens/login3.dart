@@ -1,18 +1,12 @@
-import 'dart:convert';
 import 'dart:core';
 
-import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/login4.dart';
-import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 
 class Login3Page extends StatefulWidget {
   @override

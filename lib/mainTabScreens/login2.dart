@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:auth0_flutter/auth0_flutter.dart';
+
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -9,9 +9,10 @@ import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -37,6 +38,8 @@ class _Login2PageState extends State<Login2Page>
   late String repassword = "";
   late bool passwordCorrect = false;
   late myUser? currentUser;
+  late FirebaseMessaging messaging;
+  late String fcmToken = "";
 
   @override
   void initState() {
@@ -45,7 +48,8 @@ class _Login2PageState extends State<Login2Page>
       setState(() {
         isTrueOTP = true;
       });
-      _addUserAuth();
+      initFirebaseFCM();
+
     } else {
       // sendCode();
     }
@@ -57,6 +61,26 @@ class _Login2PageState extends State<Login2Page>
     // appSignature = signature;
     // });
     // });
+  }
+
+  void initFirebaseFCM() {
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+
+      setState(() {
+        fcmToken = value!;
+      });
+      print('fcmToken = $fcmToken');
+      _addUserAuth();
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
   }
 
   @override
@@ -74,11 +98,6 @@ class _Login2PageState extends State<Login2Page>
     // if (status) Fluttertoast.showToast(msg: "sending-varify-code".tr);
   }
 
-
-  void updateShared() async {
-    save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
-  }
-
   void _addUserOTP() async {
     // try {
     //   String? phone = widget.userPhone;
@@ -93,29 +112,40 @@ class _Login2PageState extends State<Login2Page>
     //   print('_addUser Exception= $error');
     // }
   }
-
+  void _updateUser(myUser tmpuser)async{
+    await updateUser(tmpuser);
+  }
   void _addUserAuth() async {
     try {
       final _pictureUrl = widget.authUser.photoURL ?? "";
       final _fullname = widget.authUser.displayName ?? "";
       final _email = widget.authUser.email ?? "saam@gmail.com";
       final _phone = widget.authUser.phoneNumber ?? "";
+      final _fcmToken = fcmToken;
       final _birthday = "";
       myUser user = myUser(
           fullname: _fullname.toString(),
           email: _email.toString(),
           phone: _phone.toString(),
           birthday: _birthday.toString(),
-          pictureUrl: _pictureUrl.toString());
+          pictureUrl: _pictureUrl.toString(),
+          fcmToken: _fcmToken);
       currentUser = (await addUser(user));
+      if(currentUser!.fcmToken.toString() != fcmToken){
+        myUser tmpuser = myUser(
+            fullname: currentUser!.fullname,
+            email: currentUser!.email,
+            phone: currentUser!.phone,
+            birthday: currentUser!.birthday,
+            pictureUrl: currentUser!.pictureUrl,
+            fcmToken: _fcmToken);
+        _updateUser(tmpuser);
+      }
+      print(currentUser);
       if (currentUser != null) {
         save(SHARED_EMAIL_KEY, currentUser!.email)
             .then((value) => print('shared email is = $value'));
-      }else{
-        late Auth0 auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
-        var credentials = await auth0
-            .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME']).logout();
-      }
+      } else {}
     } catch (error) {
       print('_addUser Exception= $error');
     }
@@ -124,9 +154,8 @@ class _Login2PageState extends State<Login2Page>
   void goToNextStep() async {
     if (withPass) {
       updatePass(currentUser!, password);
-      updateShared();
+      save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
     }
-    print(currentUser);
     List<Device> devicesList = (await getUserDevice(currentUser!))!;
     Navigator.pushReplacement(
         context,

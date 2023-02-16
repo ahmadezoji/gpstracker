@@ -1,23 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'firebase_options.dart';
 
 class Authentication {
   static Future<FirebaseApp> initializeFirebase() async {
-    // const firebaseConfig = {
-    //   'apiKey': "AIzaSyAG-BpEWzjaWXRrX7mjextEglxwRVuZw2s",
-    //   'authDomain': "gpstracker-80ea1.firebaseapp.com",
-    //   'projectId': "gpstracker-80ea1",
-    //   'storageBucket': "gpstracker-80ea1.appspot.com",
-    //   'messagingSenderId': "311171007870",
-    //   'appId': "1:311171007870:web:9c7cc5728f63a864295f2f",
-    //   'measurementId': "G-CJG8QGXSHL"
-    // };
-
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    FirebaseApp firebaseApp = await Firebase.initializeApp(
+      name: 'GPS+',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    // FirebaseApp firebaseApp = await Firebase.initializeApp();
 
     // TODO: Add auto login logic
 
@@ -78,7 +73,7 @@ class Authentication {
 
     try {
       if (!kIsWeb) {
-        await googleSignIn.signOut();
+      await googleSignIn.signOut();
       }
       await FirebaseAuth.instance.signOut();
     } catch (e) {}

@@ -5,10 +5,7 @@ import 'package:cargpstracker/setPattern.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cargpstracker/myRequests.dart';
 
 class GpsPlus extends StatefulWidget {
   const GpsPlus({

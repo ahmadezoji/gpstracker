@@ -9,13 +9,8 @@ import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
-import io.flutter.view.FlutterView
-import java.util.jar.Manifest
-import android.Manifest.permission
-import android.widget.Toast
-//import com.google.android.gms.tasks.OnCompleteListener
-//import com.google.firebase.messaging.FirebaseMessaging
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import android.util.Log
 
 
@@ -30,17 +25,17 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("user_debug", "MainActivity: onCreate")
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            Log.d("token stat",task.isSuccessful.toString())
-//            if (!task.isSuccessful) {
-//
-//                return@OnCompleteListener
-//            }
-//            val newToken: String = task.result
-//            Log.d("newToken", newToken)
-////            sendRegistrationToServer(token)
-//
-//        })
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            Log.d("token stat",task.isSuccessful.toString())
+            if (!task.isSuccessful) {
+
+                return@OnCompleteListener
+            }
+            val newToken: String = task.result
+            Log.d("newToken", newToken)
+//            sendRegistrationToServer(token)
+
+        })
 //        GeneratedPluginRegistrant.registerWith(FlutterEngine(this))
 //        channel = MethodChannel(FlutterView(this), "myChannel")
 

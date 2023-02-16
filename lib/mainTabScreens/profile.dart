@@ -4,8 +4,6 @@ import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +35,8 @@ class _ProfilePage2State extends State<ProfilePage>
           email: email,
           phone: widget.currentUser.phone,
           birthday: birthday,
-          pictureUrl: "");
+          pictureUrl: "",
+          fcmToken: widget.currentUser.fcmToken);
       myUser currentUser = (await updateUser(newUser))!;
       if (currentUser != null)
         Navigator.pop(context, {'user': currentUser});

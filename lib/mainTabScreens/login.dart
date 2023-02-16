@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:auth0_flutter/auth0_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 import 'package:cargpstracker/mainTabScreens/login2.dart';
 import 'package:cargpstracker/mainTabScreens/otpCode.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -9,11 +9,12 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,13 +25,10 @@ class _LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin<LoginPage> {
   late String userPhone = "";
   bool _isLoading = false;
-  late Auth0 auth0;
 
   @override
   void initState() {
     super.initState();
-    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
-    // print('initState Live');
   }
 
   void loginWithPhone() async {

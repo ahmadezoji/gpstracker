@@ -1,9 +1,7 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class UpdateVehicle extends StatefulWidget {

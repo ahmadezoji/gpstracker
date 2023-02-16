@@ -1,3 +1,4 @@
+
 import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
@@ -7,15 +8,14 @@ import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
+import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cargpstracker/models/device.dart';
-import 'package:auth0_flutter/auth0_flutter.dart';
 
 class LeftDrawer extends StatefulWidget {
   const LeftDrawer(
@@ -35,26 +35,11 @@ class LeftDrawer extends StatefulWidget {
 class LeftDrawerState extends State<LeftDrawer>
     with AutomaticKeepAliveClientMixin<LeftDrawer> {
   late myUser _currentUser = widget.currentUser;
-  late Auth0 auth0;
 
   @override
   void initState() {
     super.initState();
-    // auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
   }
-
-  // Future<void> loginWithAuth0() async {
-  //   try {
-  //     var credentials = await auth0
-  //         .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-  //         .logout();
-  //     delete(SHARED_EMAIL_KEY);
-  //     goToLoginPage();
-  //   } catch (error) {
-  //     print('refresh = $error');
-  //   }
-  // }
-
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {

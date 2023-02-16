@@ -40,8 +40,8 @@ class AppConstants {
 const SHARED_SWITCH_PATTERN_KEY = "switch-pattern-key";
 const SHARED_EMAIL_KEY = "current-user-email-key";
 const SHARED_PHONE_KEY = "current-user-phone-key";
-const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass";
-const SHARED_REMEMBERED_PASS_KEY = "remembered-pass";
+const SHARED_ALLWAYS_PASS_KEY = "allways-login-with-pass-key";
+const SHARED_REMEMBERED_PASS_KEY = "remembered-pass-key";
 const SHARED_CURRENT_DEVICE_KEY = "current-device-key";
 
 const HTTP_URL = 'http://130.185.77.83:4681';

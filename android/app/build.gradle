@@ -85,9 +85,10 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            shrinkResources false
+            shrinkResources true
             minifyEnabled true
-            // TODO: Add your own signing config for the release build.
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
@@ -102,5 +103,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
 //    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -10,7 +10,6 @@ import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 import 'mainTabScreens/login4.dart';

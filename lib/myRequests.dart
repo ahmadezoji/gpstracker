@@ -3,8 +3,8 @@ import 'dart:convert' as convert;
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/util.dart';
 import 'package:cargpstracker/models/point.dart';
+import 'package:cargpstracker/util.dart';
 import 'package:http/http.dart' as http;
 
 Future<bool?> setCommand(Device device, String cmnd) async {
@@ -88,6 +88,7 @@ Future<myUser?> addUser(myUser user) async {
       'email': user.email,
       'birthday': user.birthday,
       'pictureUrl': user.pictureUrl,
+      'fcmToken': user.fcmToken,
     });
     http.StreamedResponse response = await request.send();
 
@@ -95,7 +96,7 @@ Future<myUser?> addUser(myUser user) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      print('json = $json');
+      print('jsonUser = $json');
       if (json != null) {
         return myUser.fromJson(json);
       } else {
@@ -125,7 +126,7 @@ Future<myUser?> getUser(String email) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      print('json = $json');
+      print('getUser = $json');
       return myUser.fromJson(json);
     } else {
       return null;
@@ -282,6 +283,7 @@ Future<myUser?> updateUser(myUser user) async {
       'email': user.email,
       'birthday': user.birthday,
       'fullname': user.fullname,
+      'fcmToken': user.fcmToken,
     });
 
     http.StreamedResponse response = await request.send();

@@ -1,4 +1,5 @@
 import 'package:cargpstracker/LacaleString.dart';
+import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/mainTabScreens/GpsPlus.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/spalshScreen.dart';
@@ -6,23 +7,18 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   // If you're going to use other Firebase services in the background, such as Firestore,
-//   // make sure you call `initializeApp` before using other Firebase services.
-//   await Firebase.initializeApp();
-//
-//   print("Handling a background message: ${message.messageId}");
-// }
-
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
 void main() async {
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  Authentication.initializeFirebase();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   runApp(MyApp());
 }
 

@@ -1,24 +1,12 @@
-import 'dart:convert';
 import 'dart:core';
-import 'package:auth0_flutter/auth0_flutter.dart';
-import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 import 'package:cargpstracker/mainTabScreens/login2.dart';
-import 'package:cargpstracker/mainTabScreens/otpCode.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
-import 'package:cargpstracker/util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../autentication.dart';
 
@@ -34,7 +22,6 @@ class _SignOnPageState extends State<SignOnPage>
   @override
   void initState() {
     super.initState();
-    Authentication.initializeFirebase();
   }
 
   Future<void> _handleSignIn() async {
