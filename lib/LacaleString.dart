@@ -5,7 +5,7 @@ class LocaleString extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
         'en_US': {
-          'App_Name': 'GPS+',
+          'app_name': "GPS+",
           'Login': 'Login',
           'Registration': 'Registeration',
           'Save': 'Save',
@@ -72,10 +72,15 @@ class LocaleString extends Translations {
           "device-alarmingMethod": "Alarming Method",
           "offlineMode": "Offline Mode",
           "signOn": "Sign on",
-          "simcardManagement" : "Sim Management"
+          "simcardManagement" : "Sim Management",
+          "app-language" : "Language",
+          "app-notification" : "Notificaiotns and sounds",
+          "app-privacy" : "Privacy and security",
+          "app-data-storage" : "Data and storage",
+          "app-QA" : "Ask and questions"
         },
         'fa_IR': {
-          'App_Name': 'موقعیت یاب',
+          'app_name': "موقعیت یاب",
           'Login': 'ورود',
           'Registration': 'ثبت نام',
           'Save': 'ذخیره',
@@ -141,7 +146,12 @@ class LocaleString extends Translations {
           "device-alarmingMethod": "متد هشداردهی",
           "offlineMode": "آفلاین",
           "signOn": "ورود",
-          "simcardManagement" : "سیم کارت"
+          "simcardManagement" : "سیم کارت",
+          "app-language" : "زبان",
+          "app-notification" : "نوتیفیکیشنها و صداها",
+          "app-privacy" : "خصوصی و امنیتی",
+          "app-data-storage" : "اطلاعات و ذخیره ها",
+          "app-QA" : "پرسش و پاسخ"
         },
       };
 }

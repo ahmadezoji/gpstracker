@@ -62,7 +62,84 @@ class _SimCardPageState extends State<SimCardPage>
       print("error! code: ${e.code} - message: ${e.message}");
     }
   }
-
+  Widget buildSimCardView(BuildContext context){
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(20),
+      scrollDirection: Axis.vertical,
+      child: Column(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text('Phone number synced with GPS+',
+              style: TextStyle(fontSize: 12)),
+          Text(
+            '$SimNumber',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+          ),
+          SizedBox(
+            height: 70,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Total Balance: ',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text('54710 IRR'),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Remaining Internet Value: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text('7.13 GB'),
+            ],
+          ),
+          SizedBox(
+            height: 70,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 120,
+                width: 120,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: backRechargBtn),
+                child: Text('Recharge'),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                onTap: () {
+                  makeMyRequest();
+                },
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: backRechargBtn),
+                  child: Text('Buy Internet '),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -70,91 +147,7 @@ class _SimCardPageState extends State<SimCardPage>
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(title: Text("Sim Management".tr)),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
-          scrollDirection: Axis.vertical,
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              myAllVehicle(
-                selectedDevice: _onSelectedDevice,
-                userLogined: widget.userLogined,
-                userDevices: _listDevice,
-                currentUser: widget.currentUser,
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              Text('Phone number synced with GPS+',
-                  style: TextStyle(fontSize: 12)),
-              Text(
-                '$SimNumber',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-              ),
-              SizedBox(
-                height: 70,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Total Balance: ',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  Text('54710 IRR'),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Remaining Internet Value: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text('7.13 GB'),
-                ],
-              ),
-              SizedBox(
-                height: 70,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 120,
-                    width: 120,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: backRechargBtn),
-                    child: Text('Recharge'),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      makeMyRequest();
-                    },
-                    child: Container(
-                      height: 120,
-                      width: 120,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          color: backRechargBtn),
-                      child: Text('Buy Internet '),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
+        body: buildSimCardView(context),
       );
     });
   }

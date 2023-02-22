@@ -1,4 +1,3 @@
-
 import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
@@ -40,6 +39,7 @@ class LeftDrawerState extends State<LeftDrawer>
   void initState() {
     super.initState();
   }
+
   void logout() async {
     delete(SHARED_PHONE_KEY);
     try {
@@ -91,15 +91,15 @@ class LeftDrawerState extends State<LeftDrawer>
               _currentUser.pictureUrl == ""
                   ? Image(image: AssetImage("assets/user_outline.png"))
                   : ClipRRect(
-                      borderRadius: BorderRadius.circular(35.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       child: Image.network(
                         _currentUser.pictureUrl,
-                        height: 70.0,
-                        width: 70.0,
+                        height: 60.0,
+                        width: 60.0,
                       ),
                     ),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               _currentUser.fullname == ""
                   ? Text("profileContent-fullname".tr,
@@ -199,8 +199,8 @@ class LeftDrawerState extends State<LeftDrawer>
                       context,
                       MaterialPageRoute(
                         builder: (_) => Setting(
-                            currentUser: widget.currentUser,
-                            userDevices: widget.userDevices),
+                          currentUser: widget.currentUser,
+                        ),
                         fullscreenDialog: false,
                       ))
                   : goToLoginPage();

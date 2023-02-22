@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
@@ -13,9 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import 'mainTabScreens/login4.dart';
-Widget getMarkerPoint(){
-  return  Lottie.asset("assets/point.json");
+
+Widget getMarkerPoint() {
+  return Lottie.asset("assets/point.json");
 }
+
 class SpalshScreen extends StatefulWidget {
   @override
   _SpalshScreenState createState() => _SpalshScreenState();
@@ -52,6 +53,7 @@ class _SpalshScreenState extends State<SpalshScreen>
 
       // String phone = "09192592697";
       // String withPass = "true";
+      email = "saam.ezoji.2021@gmail.com";
       if (email != null) {
         currentUser = (await getUser(email))!;
         devicesList = (await getUserDevice(currentUser))!;

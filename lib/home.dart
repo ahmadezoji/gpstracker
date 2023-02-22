@@ -46,7 +46,6 @@ class HomePageState extends State<HomePage>
   }
 
   void _onSimMangment() async {
-    print('start');
     Navigator.push(
         context,
         MaterialPageRoute(

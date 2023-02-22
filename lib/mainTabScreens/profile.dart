@@ -53,16 +53,22 @@ class _ProfilePage2State extends State<ProfilePage>
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         body: SingleChildScrollView(
-          child: new Stack(
+          child: Stack(
             children: <Widget>[
               // The containers in the background
-              new Column(
+              Column(
                 children: <Widget>[
-                  new Container(
+                  Container(
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.only(top: 20),
                     height: MediaQuery.of(context).size.height * .20,
-                    color: Colors.blue,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/backDrawer.png"),
+                          colorFilter: ColorFilter.linearToSrgbGamma(),
+                          // opacity: double.infinity,
+                          fit: BoxFit.cover),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(10),
                       child: GestureDetector(
@@ -87,7 +93,7 @@ class _ProfilePage2State extends State<ProfilePage>
                       ),
                     ),
                   ),
-                  new Container(
+                  Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
                         top: 70, left: 10, right: 10, bottom: 20),

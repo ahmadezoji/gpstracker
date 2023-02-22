@@ -1,7 +1,11 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 import 'dart:core';
 
+import 'package:cargpstracker/allVehicle.dart';
+import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
+import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
+import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
@@ -13,16 +17,26 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class UpdateVehicle extends StatefulWidget {
-  const UpdateVehicle({Key? key, required this.currentDeveice})
+  const UpdateVehicle(
+      {Key? key,
+      required this.currentDeveice,
+      required this.userLogined,
+      required this.userDevices,
+      required this.currentUser})
       : super(key: key);
   final Device currentDeveice;
+  final List<Device> userDevices;
+  final bool userLogined;
+  final myUser currentUser;
 
   @override
   _UpdateVehicleState createState() => _UpdateVehicleState();
 }
 
 class _UpdateVehicleState extends State<UpdateVehicle>
-    with AutomaticKeepAliveClientMixin<UpdateVehicle> {
+    with
+        AutomaticKeepAliveClientMixin<UpdateVehicle>,
+        TickerProviderStateMixin {
   late String serial;
   late String deviceSimNum = widget.currentDeveice.simPhone;
   late String title = widget.currentDeveice.title;
@@ -33,19 +47,56 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     "bicycle".tr: 'minibicycle',
     "vanet".tr: "minivanet",
   };
+  late Config currentDeviceConfig = Config(
+      device_id: "",
+      language: "farsi",
+      timezone: "istanbul",
+      intervalTime: 10,
+      staticTime: 50,
+      speed_alarm: 120,
+      fence: "",
+      userPhoneNum: "",
+      apn_name: "default",
+      apn_user: "default",
+      apn_pass: "default",
+      alarming_method: 1);
+  String intervalTime = "10";
+  String staticTime = "50";
+  String adminNum = '';
+  String timezone = "tehran";
+  String language = "english";
+  String speedAlarm = "220";
+  String fence = 'default';
+  String apn_name = 'default';
+  String apn_user = 'default';
+  String apn_pass = 'default';
+  String alarming_method = "1";
   late List<bool> radioValues = [true, false, false, false, false];
   late String selectedValue;
+  late TabController _nestedTabController;
+  late SimCardPage simCardPage = SimCardPage(
+      userLogined: widget.userLogined,
+      userDevices: widget.userDevices,
+      currentUser: widget.currentUser);
 
   @override
   void initState() {
     super.initState();
+    _nestedTabController = new TabController(length: 2, vsync: this);
     selectedValue = devices.keys.firstWhere(
         (k) => devices[k] == widget.currentDeveice.type,
         orElse: () => "null");
+    getCurrentDeviceConfig(widget.currentDeveice);
   }
 
   void _updateVehicle() async {
     try {
+      bool status =
+          (await setConfig(widget.currentDeveice, currentDeviceConfig))!;
+      if (status)
+        Fluttertoast.showToast(msg: 'Config success and start config thread');
+      else
+        Fluttertoast.showToast(msg: 'Set config failed !!');
       Device dev = Device(
           serial: widget.currentDeveice.serial,
           title: title,
@@ -70,6 +121,70 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     }
   }
 
+  Future<void> _onSelectedDevice(int deviceIndex) async {
+    setState(() {
+      // SimNumber = _listDevice.elementAt(deviceIndex).simPhone;
+    });
+    // makeMyRequest();
+  }
+
+  Future<Config> getCurrentDeviceConfig(Device device) async {
+    Config conff = (await getConfig(device))!;
+    setState(() {
+      currentDeviceConfig = conff;
+    });
+    print(currentDeviceConfig);
+    return currentDeviceConfig;
+  }
+
+  void _onchangedLanguage(String value) {
+    setState(() {
+      currentDeviceConfig.language = value;
+    });
+  }
+
+  void _onchangedTimezone(String value) {
+    setState(() {
+      currentDeviceConfig.timezone = value;
+    });
+  }
+
+  void _onchangedIntervalTime(String value) {
+    setState(() {
+      currentDeviceConfig.intervalTime = int.parse(value);
+    });
+  }
+
+  void _onchangedStaticTime(String value) {
+    setState(() {
+      currentDeviceConfig.staticTime = int.parse(value);
+    });
+  }
+
+  void _onchangedSpeedAlarm(String value) {
+    setState(() {
+      currentDeviceConfig.speed_alarm = int.parse(value);
+    });
+  }
+
+  void _onchangedFence(String value) {
+    setState(() {
+      fence = value;
+    });
+  }
+
+  void _onchangedApn(String value) {
+    setState(() {
+      apn_name = value;
+    });
+  }
+
+  void _onchangedAlarmMethod(String value) {
+    setState(() {
+      alarming_method = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     late Color fontColor = Theme.of(context).brightness == Brightness.dark
@@ -79,15 +194,6 @@ class _UpdateVehicleState extends State<UpdateVehicle>
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              // statusBarColor: statusColor,
-
-              // Status bar brightness (optional)
-              // statusBarIconBrightness:
-              //     Brightness.dark, // For Android (dark icons)
-              // statusBarBrightness: Brightness.light, // For iOS (dark icons)
-              ),
           title: Text("UpdateVehicle".tr),
           actions: [
             Container(
@@ -100,122 +206,258 @@ class _UpdateVehicleState extends State<UpdateVehicle>
           ],
           // backgroundColor: NabColor, // status bar color
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(top: 50),
-            margin: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  initialValue: deviceSimNum,
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) => setState(() {
-                    deviceSimNum = value;
-                  }),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    filled: true,
-                    labelText: "device-sim-num".tr,
+        body: Container(
+          // padding: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              myAllVehicle(
+                selectedDevice: _onSelectedDevice,
+                userLogined: widget.userLogined,
+                userDevices: widget.userDevices,
+                currentUser: widget.currentUser,
+              ),
+              TabBar(
+                controller: _nestedTabController,
+                indicatorColor: Colors.orange,
+                labelColor: Colors.orange,
+                unselectedLabelColor: Colors.black54,
+                isScrollable: true,
+                tabs: <Widget>[
+                  Tab(
+                    text: "Device",
+                    icon: Icon(Icons.phone_android_sharp),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  initialValue: widget.currentDeveice.title,
-                  onChanged: (value) => setState(() {
-                    title = value;
-                  }),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    filled: true,
-                    labelText: "device-title".tr,
+                  Tab(
+                    text: "Sim Card",
+                    icon: SvgPicture.asset("assets/simcard-icon.svg"),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: ListView.builder(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: devices.entries.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () => setState(() {
-                            selectedValue = devices.keys.elementAt(index);
-                          }),
-                          child: Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 1.0,
-                                  color: Colors.black,
-                                  // strokeAlign: StrokeAlign.inside,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Row(
-                                    children: [
-                                      devices.keys.elementAt(index) ==
-                                              selectedValue
-                                          ? Icon(Icons.check)
-                                          : Icon(Icons.circle_outlined),
-                                      SvgPicture.asset(
-                                        'assets/${devices.values.elementAt(index)}.svg',
-                                      )
-                                    ],
-                                  ),
-                                  flex: 1,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                      '${devices.keys.elementAt(index)}'.tr),
-                                  flex: 2,
-                                )
-                              ],
-                            ),
+                ],
+              ),
+              SingleChildScrollView(
+                child: Container(
+                    height: 400,
+                    margin: const EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TabBarView(
+                      controller: _nestedTabController,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                        );
-                      }),
+                          child: SingleChildScrollView(
+                            child: buildUpdateVehicleView(context),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: simCardPage
+                              .createState()
+                              .buildSimCardView(context),
+                        ),
+                      ],
+                    )),
+              ),
+              ElevatedButton(
+                child: Text(
+                  "apply".tr,
+                  style: const TextStyle(fontSize: 20),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  child: Text(
-                    "apply".tr,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  onPressed: _updateVehicle,
-                  style:
-                      ElevatedButton.styleFrom(fixedSize: const Size(300, 50)),
-                )
-              ],
-            ),
+                onPressed: _updateVehicle,
+                style: ElevatedButton.styleFrom(fixedSize: const Size(300, 50)),
+              )
+            ],
           ),
         ),
       );
     });
+  }
+
+  Widget buildUpdateVehicleView(BuildContext context) {
+    return SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            TextFormField(
+              initialValue: deviceSimNum,
+              keyboardType: TextInputType.number,
+              onChanged: (value) => setState(() {
+                deviceSimNum = value;
+              }),
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                filled: true,
+                labelText: "device-sim-num".tr,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              initialValue: widget.currentDeveice.title,
+              onChanged: (value) => setState(() {
+                title = value;
+              }),
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                filled: true,
+                labelText: "device-title".tr,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: statusColor,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: devices.entries.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => setState(() {
+                        selectedValue = devices.keys.elementAt(index);
+                      }),
+                      child: Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1.0,
+                              color: Colors.black,
+                              // strokeAlign: StrokeAlign.inside,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  devices.keys.elementAt(index) == selectedValue
+                                      ? Icon(Icons.check)
+                                      : Icon(Icons.circle_outlined),
+                                  SvgPicture.asset(
+                                    'assets/${devices.values.elementAt(index)}.svg',
+                                  )
+                                ],
+                              ),
+                              flex: 1,
+                            ),
+                            Flexible(
+                              child:
+                                  Text('${devices.keys.elementAt(index)}'.tr),
+                              flex: 2,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            buildDropDown(
+              "device-lang".tr,
+              deviceLanges,
+              currentDeviceConfig.language.toLowerCase(),
+              _onchangedLanguage,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            buildDropDown(
+              "device-timezone".tr,
+              deviceTimeZones,
+              currentDeviceConfig.timezone.toLowerCase(),
+              _onchangedTimezone,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            buildDropDown(
+              "device-interval".tr,
+              deviceIntervals,
+              currentDeviceConfig.intervalTime.toString(),
+              _onchangedIntervalTime,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            buildDropDown(
+              "device-static".tr,
+              deviceStatics,
+              currentDeviceConfig.staticTime.toString(),
+              _onchangedStaticTime,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            buildDropDown(
+              "device-speedAlarm".tr,
+              deviceSpeedAlarms,
+              currentDeviceConfig.speed_alarm.toString(),
+              _onchangedSpeedAlarm,
+            ),
+          ],
+        ));
+  }
+
+  Row buildDropDown(String lable, List<String> values, String selectValue,
+      Function onChangedDropDown) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          lable,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1)),
+          // dropdown below..
+          child: DropdownButton<String>(
+            value: selectValue,
+            onChanged: (value) {
+              onChangedDropDown(value);
+            },
+            items: values
+                .map<DropdownMenuItem<String>>(
+                    (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ))
+                .toList(),
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 32,
+            underline: SizedBox(),
+          ),
+        )
+      ],
+    );
   }
 
   showAlertDialog(BuildContext context, Function onDeleteDevice) {

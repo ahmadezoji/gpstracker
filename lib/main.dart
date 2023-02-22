@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification!.body}');
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Authentication.initializeFirebase();

@@ -64,3 +64,29 @@ String getTypeAsset(String type) {
 }
 
 const COMMAND = {'1': '222#', '2': '333#'};
+
+const List locale = [
+  {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
+  {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
+];
+const List<String> deviceLanges = ["english", "farsi"];
+const List<String> deviceTimeZones = ["tehran", "istanbul"];
+const List<String> deviceIntervals = ["1", "5", "10", "30", "50"];
+const List<String> deviceStatics = ["1", "5", "10", "30", "50"];
+const List<String> deviceSpeedAlarms = [
+  "0",
+  "60",
+  "70",
+  "80",
+  "90",
+  "100",
+  "120",
+  "140",
+  "160",
+  "180",
+  "200",
+  "220"
+];
+const List<String> deviceFences = ["default", "A"];
+const List<String> deviceAPNs = ["default", "A"];
+const List<String> deviceAlarmMethods = ["default", "1", "2"];
