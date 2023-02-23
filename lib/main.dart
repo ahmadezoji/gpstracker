@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           translations: LocaleString(),
           locale: Locale('en', 'US'),
-          title: "App_Name".tr,
+          title: "app_name".tr,
           // theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
           theme: themeNotifier.isDark
               ? ThemeData(

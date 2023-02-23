@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
@@ -32,7 +34,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
-  final String title = 'App_Name'.tr;
+  late String title = "app_name".tr;
   final bool switchVal = false;
   late List<Device> _listDevice = widget.userDevices;
   late myUser _user = widget.currentUser;

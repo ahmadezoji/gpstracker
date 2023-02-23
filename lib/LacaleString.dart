@@ -5,7 +5,7 @@ class LocaleString extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
         'en_US': {
-          'app_name': "GPS+",
+          "app_name": "GPS+",
           'Login': 'Login',
           'Registration': 'Registeration',
           'Save': 'Save',
@@ -62,9 +62,9 @@ class LocaleString extends Translations {
           "delete_message": "Are you sure to delete this device?",
           "device-lang": "Device language",
           "device-timezone": "Device Timezone",
-          "device-interval": "Device Interval time (Seconds)",
-          "device-static": "Device Static time (Minutes)",
-          "device-speedAlarm": "Device Speed Alarm (60-220 km/h)",
+          "device-interval": "Device Interval time\n (Seconds)",
+          "device-static": "Device Static time \n (Minutes)",
+          "device-speedAlarm": 'Device Speed Alarm \n (60-220 km/h)',
           "device-fence": "Device Fence Area",
           "device-apnName": "APN Name",
           "device-apnUser": "APN User",
@@ -77,10 +77,13 @@ class LocaleString extends Translations {
           "app-notification" : "Notificaiotns and sounds",
           "app-privacy" : "Privacy and security",
           "app-data-storage" : "Data and storage",
-          "app-QA" : "Ask and questions"
+          "app-QA" : "Ask and questions",
+          "update-device" : "Device",
+          "update-simcard" : "Sim Card"
+
         },
         'fa_IR': {
-          'app_name': "موقعیت یاب",
+          "app_name": "موقعیت یاب",
           'Login': 'ورود',
           'Registration': 'ثبت نام',
           'Save': 'ذخیره',
@@ -110,6 +113,7 @@ class LocaleString extends Translations {
           "country": "نام کشور",
           "city": "نام شهر",
           "addVehicle": "اضافه کردن دستگاه",
+          "updateVehicle": "ویرایش دستگاه ",
           "profile": "پروفایل",
           "save-change-success": "ثبت تغییرات موفق بود",
           "add-new-device": "ثبت دستگاه جدبد",
@@ -136,9 +140,9 @@ class LocaleString extends Translations {
           "delete_message": "آیا با حذف دستگاه موافقید ؟",
           "device-lang": "زبان دستگاه ",
           "device-timezone": "منظقه زمانی دستگاه",
-          "device-interval": "دوره زمانی  لحظه ای دستگاه (دقیقه)",
-          "device-static": "دوره زمانی  لحظه ای دستگاه (ثانیه)",
-          "device-speedAlarm": "حداکثر سرعت مجاز (60-220 کیلومتر بر ساعت)",
+          "device-interval": "دوره زمانی  لحظه ای دستگاه\n (دقیقه)",
+          "device-static": "دوره زمانی  لحظه ای دستگاه \n(ثانیه)",
+          "device-speedAlarm": 'حداکثر سرعت مجاز \n (60-220 کیلومتر بر ساعت)',
           "device-fence": "محدوده حرکت ",
           "device-apnName": "تام APN",
           "device-apnUser": "نام کاربری APN",
@@ -151,7 +155,9 @@ class LocaleString extends Translations {
           "app-notification" : "نوتیفیکیشنها و صداها",
           "app-privacy" : "خصوصی و امنیتی",
           "app-data-storage" : "اطلاعات و ذخیره ها",
-          "app-QA" : "پرسش و پاسخ"
+          "app-QA" : "پرسش و پاسخ",
+          "update-device" : "دستگاه",
+          "update-simcard" : "سیم کارت "
         },
       };
 }

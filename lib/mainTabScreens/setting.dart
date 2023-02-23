@@ -57,93 +57,100 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           title: Text("setting".tr),
         ),
         body: LayoutBuilder(
-            builder: (context, constraints) => Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(30),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(30),
-                                child: Column(children: [
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      children:  [
-                                        Icon(Icons.language),
-                                        SizedBox(width: 5,),
-                                        Text("app-language".tr),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 5,thickness: 2),
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.add_alert_sharp),
-                                        SizedBox(width: 5,),
-                                        Text("app-notification".tr)
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 5,thickness: 2),
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.privacy_tip),
-                                        SizedBox(width: 5,),
-                                        Text("app-privacy".tr)
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 5,thickness: 2),
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.pie_chart),
-                                        SizedBox(width: 5,),
-                                        Text("app-data-storage".tr)
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 5,thickness: 2),
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.add_task),
-                                        SizedBox(width: 5,),
-                                        Text("app-QA".tr)
-                                      ],
-                                    ),
-                                  )
-                                ]),
-                              ),
-                            ],
+          builder: (context, constraints) =>
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      child:  ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Icon(Icons.language),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("app-language".tr),
+                              ],
+                            ),
                           ),
-                        ),
+                          Divider(height: 5, thickness: 2),
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Icon(Icons.add_alert_sharp),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("app-notification".tr)
+                              ],
+                            ),
+                          ),
+                          Divider(height: 5, thickness: 2),
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Icon(Icons.privacy_tip),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("app-privacy".tr)
+                              ],
+                            ),
+                          ),
+                          Divider(height: 5, thickness: 2),
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Icon(Icons.pie_chart),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("app-data-storage".tr)
+                              ],
+                            ),
+                          ),
+                          Divider(height: 5, thickness: 2),
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Icon(Icons.add_task),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("app-QA".tr)
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      width: constraints.maxWidth,
-                      child: ElevatedButton(
-                        child: Text(
-                          "apply".tr,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () => applyChanges(),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(300, 50)),
+                  ),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    child: ElevatedButton(
+                      child: Text(
+                        "apply".tr,
+                        style: const TextStyle(fontSize: 20),
                       ),
+                      onPressed: () => applyChanges(),
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(300, 50)),
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              )
+        ),
       );
     });
   }

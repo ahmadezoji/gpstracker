@@ -38,6 +38,7 @@ class _AddVehicleState extends State<AddVehicle>
   };
   late List<bool> radioValues = [true, false, false, false, false];
   late int selectedValue = 0;
+
   @override
   void initState() {
     super.initState();
@@ -81,145 +82,146 @@ class _AddVehicleState extends State<AddVehicle>
           systemOverlayStyle: const SystemUiOverlayStyle(),
           title: Text("addVehicle".tr),
         ),
-        body: Container(
-          padding: EdgeInsets.only(top: 50),
-          margin: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        body: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            Container(
-            height: MediaQuery.of(context).size.height*0.7,
-            margin: const EdgeInsets.only(left: 5.0, right: 5.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      onChanged: (value) => setState(() {
-                        title = value;
-                      }),
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(6),
+              Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        TextFormField(
+                          onChanged: (value) => setState(() {
+                            title = value;
+                          }),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            filled: true,
+                            labelText: "device-title".tr,
+                          ),
                         ),
-                        filled: true,
-                        labelText: "device-title".tr,
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: statusColor,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: devices.entries.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () => setState(() {
-                                selectedValue = index;
-                              }),
-                              child: Container(
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.black,
-                                      // strokeAlign: StrokeAlign.inside,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: ListView.builder(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: devices.entries.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () => setState(() {
+                                    selectedValue = index;
+                                  }),
+                                  child: Container(
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          width: 1.0,
+                                          color: Colors.black,
+                                          // strokeAlign: StrokeAlign.inside,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Row(
+                                            children: [
+                                              index == selectedValue
+                                                  ? Icon(Icons.check)
+                                                  : Icon(Icons.circle_outlined),
+                                              SvgPicture.asset(
+                                                'assets/${devices.values.elementAt(index)}.svg',
+                                              )
+                                            ],
+                                          ),
+                                          flex: 1,
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                              '${devices.keys.elementAt(index)}'.tr),
+                                          flex: 2,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Row(
-                                        children: [
-                                          index == selectedValue
-                                              ? Icon(Icons.check)
-                                              : Icon(Icons.circle_outlined),
-                                          SvgPicture.asset(
-                                            'assets/${devices.values.elementAt(index)}.svg',
-                                          )
-                                        ],
-                                      ),
-                                      flex: 1,
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                          '${devices.keys.elementAt(index)}'.tr),
-                                      flex: 2,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
+                                );
+                              }),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => setState(() {
+                            serial = value;
                           }),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) => setState(() {
-                        serial = value;
-                      }),
-                      style: TextStyle(color: fontColor),
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(6),
+                          style: TextStyle(color: fontColor),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            filled: true,
+                            labelText: "device-serial".tr,
+                          ),
                         ),
-                        filled: true,
-                        labelText: "device-serial".tr,
-                      ),
-                    ),
-                    SizedBox(height: 2,),
-                    Image.asset('assets/serialplace.jpg'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) => setState(() {
-                        deviceSimNum = value;
-                      }),
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(6),
+                        SizedBox(
+                          height: 100,width: 100,
+                          child: Image.asset('assets/serialplace.jpg'),
                         ),
-                        filled: true,
-                        prefix: Text(prefix),
-                        labelText: "device-sim-num".tr,
-                      ),
-                    ),
-                    SizedBox(height: 2,),
-                    Image.asset('assets/simcardplace.jpg'),
-                    SizedBox(
-                      height: 10,
-                    ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => setState(() {
+                            deviceSimNum = value;
+                          }),
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            filled: true,
+                            prefix: Text(prefix),
+                            labelText: "device-sim-num".tr,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,width: 100,
+                          child: Image.asset('assets/simcardplace.jpg'),
+                        ),
 
-                  ],
+                      ],
+                    ),
+                  )
+              ),
+              SizedBox(
+                width: constraints.maxWidth,
+                child: ElevatedButton(
+                  child: Text(
+                    "apply".tr,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () => _addVehicle(),
+                  style:
+                      ElevatedButton.styleFrom(fixedSize:  Size(constraints.maxWidth, 50)),
                 ),
               ),
-            ),
-
-              ElevatedButton(
-                child: Text(
-                  "apply".tr,
-                  style: const TextStyle(fontSize: 20),
-                ),
-                onPressed: _addVehicle,
-                style:
-                ElevatedButton.styleFrom(fixedSize: const Size(300, 50)),
-              )
             ],
           ),
         ),
