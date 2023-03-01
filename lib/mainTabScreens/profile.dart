@@ -71,7 +71,7 @@ class _ProfilePage2State extends State<ProfilePage>
                                 image: DecorationImage(
                                     image: AssetImage("assets/backDrawer.png"),
                                     colorFilter: ColorFilter.linearToSrgbGamma(),
-                                    // opacity: double.infinity,
+                                    opacity: 0.5,
                                     fit: BoxFit.cover),
                               ),
                               child: Padding(
@@ -101,7 +101,7 @@ class _ProfilePage2State extends State<ProfilePage>
                             Container(
                               alignment: Alignment.center,
                               padding: EdgeInsets.only(
-                                  top: 70, bottom: 20),
+                                  top: 70),
                               height: MediaQuery
                                   .of(context)
                                   .size
@@ -200,9 +200,9 @@ class _ProfilePage2State extends State<ProfilePage>
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 color: Colors.blue,
-                                borderRadius: BorderRadius.circular(75)),
-                            height: 125.0,
-                            width: 125.0,
+                                borderRadius: BorderRadius.circular(50)),
+                            height: 100.0,
+                            width: 100.0,
                             child: pictureUrl == ""
                                 ? Image(
                                 image: AssetImage("assets/bigprofile.png"))

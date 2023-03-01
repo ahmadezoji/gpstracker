@@ -13,10 +13,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/svg.dart';
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-// import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -70,6 +70,7 @@ class _HistoryState extends State<History>
   late double zoom = 11.0;
 
   Device? currentDevice;
+  late List<Marker> markers = [];
 
   @override
   void initState() {
@@ -79,8 +80,8 @@ class _HistoryState extends State<History>
   }
 
   // Future<Uint8List> loadMarkerImage() async {
-    // var byteData = await rootBundle.load("assets/finish.png");
-    // return byteData.buffer.asUint8List();
+  // var byteData = await rootBundle.load("assets/finish.png");
+  // return byteData.buffer.asUint8List();
   // }
 
   void getCurrentDevice() async {
@@ -109,7 +110,7 @@ class _HistoryState extends State<History>
           Point p = Point.fromJson(age);
           dirLatLons.add(LatLng(p.lat, p.lon));
           circleMarkers.add(CircleMarker(
-              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.purple));
+              point: LatLng(p.lat, p.lon), radius: 2, color: Colors.red));
           dirArr.add(p);
         }
         setState(() {
@@ -117,7 +118,30 @@ class _HistoryState extends State<History>
           mile = dirArr[0].mileage;
           heading = dirArr[0].heading;
           date = dirArr[0].dateTime;
+          markers = <Marker>[
+            Marker(
+              width: 15,
+              height: 15,
+              point: dirLatLons[dirLatLons.length-1],
+              builder: (ctx) => new Container(
+                child: SvgPicture.asset(
+                  'assets/startPoint.svg',
+                ),
+              ),
+            ),
+            Marker(
+              width: 15,
+              height: 15,
+              point: dirLatLons[0],
+              builder: (ctx) => new Container(
+                child: SvgPicture.asset(
+                  'assets/endPoint.svg',
+                ),
+              ),
+            )
+          ];
         });
+
         _mapController.move(dirLatLons[0], 11);
         // _add();
       } else {
@@ -128,8 +152,10 @@ class _HistoryState extends State<History>
     }
   }
 
-  void _onSelectedDevice(Device device) {
-    currentDevice = device;
+  void _onSelectedDevice(int index) {
+    setState(() {
+      currentDevice = widget.userDevices[index];
+    });
   }
 
   void onChangedPointShow(bool? value) {
@@ -152,7 +178,8 @@ class _HistoryState extends State<History>
             selectedDevice: _onSelectedDevice,
             userLogined: widget.userLogined,
             userDevices: widget.userDevices,
-            currentUser: widget.currentUser),
+            currentUser: widget.currentUser,
+            selectedDeviceIndex: 0),
       );
     });
   }
@@ -165,24 +192,7 @@ class _HistoryState extends State<History>
 
   Scaffold buildMap() {
     StreamController<void> resetController = StreamController.broadcast();
-    var markers = <Marker>[
-      Marker(
-        width: 80,
-        height: 80,
-        point: currentLatLng,
-        builder: (ctx) => new Container(
-            child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: backgroundColor,
-          ),
-          child: Text(
-            'saam ezoji',
-            style: TextStyle(color: Colors.blue, fontSize: 27),
-          ),
-        )),
-      ),
-    ];
+
 
     return Scaffold(
       endDrawer: Drawer(
@@ -241,7 +251,7 @@ class _HistoryState extends State<History>
                     isDotted: showPoint),
               ],
             ),
-          // new MarkerLayerOptions(markers: markers),
+          MarkerLayerOptions(markers: markers),
         ],
       ),
       floatingActionButton: _floatingBottons(),

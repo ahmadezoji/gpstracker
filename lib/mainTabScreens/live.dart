@@ -165,6 +165,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
           userLogined: widget.userLogined,
           userDevices: _listDevice,
           currentUser: widget.currentUser,
+          selectedDeviceIndex: 0,
         ),
       );
     });

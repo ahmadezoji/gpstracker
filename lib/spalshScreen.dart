@@ -53,7 +53,7 @@ class _SpalshScreenState extends State<SpalshScreen>
 
       // String phone = "09192592697";
       // String withPass = "true";
-      email = "saam.ezoji.2021@gmail.com";
+      email = "saam.ezoji@gmail.com";
       if (email != null) {
         currentUser = (await getUser(email))!;
         devicesList = (await getUserDevice(currentUser))!;

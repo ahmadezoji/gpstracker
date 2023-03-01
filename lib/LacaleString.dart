@@ -79,8 +79,9 @@ class LocaleString extends Translations {
           "app-data-storage" : "Data and storage",
           "app-QA" : "Ask and questions",
           "update-device" : "Device",
-          "update-simcard" : "Sim Card"
-
+          "update-simcard" : "Sim Card",
+          "ballon-remove" : "Remove",
+          "ballon-edit" : "Edit"
         },
         'fa_IR': {
           "app_name": "موقعیت یاب",
@@ -157,7 +158,9 @@ class LocaleString extends Translations {
           "app-data-storage" : "اطلاعات و ذخیره ها",
           "app-QA" : "پرسش و پاسخ",
           "update-device" : "دستگاه",
-          "update-simcard" : "سیم کارت "
+          "update-simcard" : "سیم کارت ",
+          "ballon-remove" : "حذف",
+          "ballon-edit" : "ویرایش"
         },
       };
 }

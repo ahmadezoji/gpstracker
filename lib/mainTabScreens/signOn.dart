@@ -82,7 +82,7 @@ class _SignOnPageState extends State<SignOnPage>
                   height: 60,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: themeNotifier.isDark ? Colors.blue: Colors.white,
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
                       BoxShadow(

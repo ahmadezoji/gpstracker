@@ -61,6 +61,7 @@ dependencies:
   firebase_core: ^2.5.0
   firebase_auth: ^4.2.6
   firebase_messaging: ^14.2.2
+  simple_tooltip: ^1.2.0
 
 #dependency_overrides:
 #  firebase_core_platform_interface: 4.5.1

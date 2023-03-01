@@ -37,8 +37,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
         AutomaticKeepAliveClientMixin<UpdateVehicle>,
         TickerProviderStateMixin {
   late String serial;
-  late String deviceSimNum = widget.currentDeveice.simPhone;
-  late String title = widget.currentDeveice.title;
+  late String deviceSimNum = '';
+  late String title = '';
   static Map<String, String> devices = {
     "car".tr: 'minicar',
     "motor".tr: "minimotor",
@@ -73,10 +73,13 @@ class _UpdateVehicleState extends State<UpdateVehicle>
   late List<bool> radioValues = [true, false, false, false, false];
   late String selectedValue;
   late TabController _nestedTabController;
-  late SimCardPage simCardPage = SimCardPage(
-      userLogined: widget.userLogined,
-      userDevices: widget.userDevices,
-      currentUser: widget.currentUser);
+  late int selectedIndex = widget.userDevices.indexOf(widget.currentDeveice);
+  // late SimCardPage simCardPage = SimCardPage(
+  //     userLogined: widget.userLogined,
+  //     userDevices: widget.userDevices,
+  //     currentUser: widget.currentUser,
+  //     selectedDeviceIndex: selectedIndex,);
+
 
   @override
   void initState() {
@@ -85,6 +88,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     selectedValue = devices.keys.firstWhere(
             (k) => devices[k] == widget.currentDeveice.type,
         orElse: () => "null");
+    deviceSimNum = widget.currentDeveice.simPhone;
+    title = widget.currentDeveice.title;
     getCurrentDeviceConfig(widget.currentDeveice);
   }
 
@@ -125,12 +130,16 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     String value = devices.keys.firstWhere(
             (k) => devices[k] == widget.userDevices[deviceIndex].type,
         orElse: () => "null");
-  print(widget.userDevices[deviceIndex].title);
     setState(() {
       selectedValue = value;
       deviceSimNum = widget.userDevices[deviceIndex].simPhone;
       title = widget.userDevices[deviceIndex].title;
-
+      selectedIndex = deviceIndex;
+      // simCardPage = SimCardPage(
+      //     userLogined: widget.userLogined,
+      //     userDevices: widget.userDevices,
+      //     currentUser: widget.currentUser,
+      //     selectedDeviceIndex: deviceIndex);
     });
     getCurrentDeviceConfig(widget.userDevices[deviceIndex]);
     // makeMyRequest();
@@ -232,6 +241,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                   userLogined: widget.userLogined,
                                   userDevices: widget.userDevices,
                                   currentUser: widget.currentUser,
+                                  selectedDeviceIndex: selectedIndex,
+
                                 ),
                               ),
                               Expanded(
@@ -241,25 +252,27 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                     padding: EdgeInsets.all(20),
                                     child: ListView(
                                       children: [
-
-                                        TabBar(
-                                          controller: _nestedTabController,
-                                          indicatorColor: Colors.orange,
-                                          labelColor: Colors.orange,
-                                          unselectedLabelColor: Colors.black54,
-                                          isScrollable: true,
-                                          tabs: <Widget>[
-                                            Tab(
-                                              text: "update-device".tr,
-                                              icon: Icon(
-                                                  Icons.phone_android_sharp),
-                                            ),
-                                            Tab(
-                                              text: "update-simcard".tr,
-                                              icon: SvgPicture.asset(
-                                                  "assets/simcard-icon.svg"),
-                                            ),
-                                          ],
+                                        Container(
+                                          alignment: Alignment.topCenter,
+                                          child: TabBar(
+                                            controller: _nestedTabController,
+                                            indicatorColor: Colors.orange,
+                                            labelColor: Colors.orange,
+                                            unselectedLabelColor: Colors.black54,
+                                            isScrollable: true,
+                                            tabs: <Widget>[
+                                              Tab(
+                                                text: "update-device".tr,
+                                                icon: Icon(
+                                                    Icons.phone_android_sharp),
+                                              ),
+                                              Tab(
+                                                text: "update-simcard".tr,
+                                                icon: SvgPicture.asset(
+                                                    "assets/simcard-icon.svg"),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         SingleChildScrollView(
                                           child: Container(
@@ -289,10 +302,7 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                                       borderRadius: BorderRadius
                                                           .circular(8.0),
                                                     ),
-                                                    child: simCardPage
-                                                        .createState()
-                                                        .buildSimCardView(
-                                                        context),
+                                                    child: SimCardPage.buildSimCardView(deviceSimNum),
                                                   ),
                                                 ],
                                               )),
@@ -329,7 +339,7 @@ class _UpdateVehicleState extends State<UpdateVehicle>
         child: Column(
           children: [
             TextFormField(
-              initialValue: deviceSimNum,
+              controller: TextEditingController(text: deviceSimNum),
               keyboardType: TextInputType.number,
               onChanged: (value) =>
                   setState(() {
@@ -348,7 +358,7 @@ class _UpdateVehicleState extends State<UpdateVehicle>
               height: 10,
             ),
             TextFormField(
-              initialValue: title,
+              controller: TextEditingController(text: title),
               onChanged: (value) =>
                   setState(() {
                     title = value;
@@ -358,7 +368,6 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                filled: true,
                 labelText: "device-title".tr,
               ),
             ),

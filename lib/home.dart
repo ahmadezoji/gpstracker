@@ -48,15 +48,16 @@ class HomePageState extends State<HomePage>
   }
 
   void _onSimMangment() async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => SimCardPage(
-                  currentUser: _user,
-                  userDevices: _listDevice,
-                  userLogined: false,
-                ),
-            fullscreenDialog: false));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (_) => SimCardPage(
+    //               currentUser: _user,
+    //               userDevices: _listDevice,
+    //               userLogined: false,
+    //               selectedDeviceIndex: 0,
+    //             ),
+    //         fullscreenDialog: false));
   }
 
   void onRefresh() async {
