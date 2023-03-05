@@ -57,17 +57,17 @@ class _Login4PageState extends State<Login4Page>
     updateShared();
     print(widget.currentUser.phone + password);
     bool status = (await loginWithPass(widget.currentUser.email, password))!;
-    if (status)
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new HomePage(
-                currentUser: widget.currentUser,
-                userLogined: true,
-                userDevices: widget.userDevices)),
-      );
-    else
-      Fluttertoast.showToast(msg: 'password is incorrect');
+    // if (status)
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => new HomePage(
+      //           currentUser: widget.currentUser,
+      //           userLogined: true,
+      //           userDevices: widget.userDevices)),
+      // );
+    // else
+      // Fluttertoast.showToast(msg: 'password is incorrect');
   }
 
   void onRememberMyPass(bool? status) {}

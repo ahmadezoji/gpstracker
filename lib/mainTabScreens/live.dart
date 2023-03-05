@@ -3,6 +3,7 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:cargpstracker/allVehicle.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -15,23 +16,16 @@ import 'package:cargpstracker/theme_preference.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class Live extends StatefulWidget {
-  const Live(
-      {Key? key,
-      required this.active,
-      required this.userLogined,
-      required this.userDevices,
-      required this.currentUser})
-      : super(key: key);
-  final List<Device> userDevices;
-  final bool userLogined;
-  final myUser currentUser;
-  final bool active;
+  const Live({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _LiveState createState() => _LiveState();
@@ -49,7 +43,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   bool drawerOpen = true;
   late double zoom = 11.0;
 
-  Point? currentPos = new Point(
+  Point? currentPos = Point(
       lat: 0.0, lon: 0.0, dateTime: '', speed: 0.0, mileage: 0.0, heading: 0.0);
   Point defaultPos = Point(
       lat: 41.025819,
@@ -58,22 +52,19 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       speed: 0.0,
       mileage: 0,
       heading: 0.0);
-  LatLng currentLatLng = new LatLng(35.7159678, 51.2870684);
+  LatLng currentLatLng = LatLng(35.7159678, 51.2870684);
   late final MapController _mapController;
   var interActiveFlags = InteractiveFlag.all;
   static const double CHANGE_ZOOM = 12;
   bool theme = false;
   late ThemePreferences _preferences;
-  late TextStyle textStyle = TextStyle(
+  late TextStyle textStyle = const TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
   Device? currentDevice;
-  late List<Device> _listDevice = widget.userDevices;
 
   @override
   void dispose() {
-    // mapController.dispose();
-
     _timer.cancel();
     super.dispose();
   }
@@ -97,30 +88,18 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   void startTimer() async {
     await getCurrentDevice();
-    _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) async {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
       _getCurrentLocation();
     });
   }
 
-  void onRefresh() async {
-    try {
-      List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
-      setState(() {
-        _listDevice = tempArray;
-      });
-      getCurrentDevice();
-    } catch (error) {
-      print('refresh = $error');
-    }
-  }
-
   Future<void> getCurrentDevice() async {
-    if (_listDevice.length > 0) {
+    if (StoreProvider.of<AppState>(context).state.devices.isNotEmpty) {
       setState(() {
-        currentDevice = _listDevice[0];
+        currentDevice = StoreProvider.of<AppState>(context).state.devices[0];
       });
     }
-    // print('currentDevice = $currentDevice');
+    print('currentDevice = $currentDevice');
   }
 
   void _getCurrentLocation() async {
@@ -141,30 +120,32 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     _mapController.move(currentLatLng, CHANGE_ZOOM);
   }
 
-  Future<void> _onSelectedDevice(int deviceIndex) async {
+  Future<void> _onSelectedDevice(Device device) async {
     setState(() {
-      currentDevice = _listDevice[deviceIndex];
+      currentDevice = device;
     });
     updatePoint();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.active);
+    super.build(context);
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         key: _key,
         drawerEnableOpenDragGesture: true,
-        body: currentDevice == null
-            ? Center(child: Text("there is no device to show"))
-            : buildMap(themeNotifier),
+        body: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (_, state) {
+            return currentDevice == null
+                ? const Center(child: Text("there is no device to show"))
+                : buildMap(themeNotifier);
+          },
+        ),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
           selectedDevice: _onSelectedDevice,
-          userLogined: widget.userLogined,
-          userDevices: _listDevice,
-          currentUser: widget.currentUser,
           selectedDeviceIndex: 0,
         ),
       );
@@ -288,12 +269,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>  UpdateVehicle(
-                                            userLogined: widget.userLogined,
-                                            currentUser: widget.currentUser,
-                                            userDevices: _listDevice,
+                                        builder: (context) => UpdateVehicle(
                                             currentDeveice: currentDevice)),
-                                  ).then((value) => onRefresh());
+                                  );
                                 },
                                 icon: Icon(Icons.info, size: 15))
                           ],

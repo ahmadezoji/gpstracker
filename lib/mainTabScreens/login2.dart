@@ -157,14 +157,14 @@ class _Login2PageState extends State<Login2Page>
       save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
     }
     List<Device> devicesList = (await getUserDevice(currentUser!))!;
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => HomePage(
-                userLogined: true,
-                userDevices: devicesList,
-                currentUser: currentUser!),
-            fullscreenDialog: false));
+    // Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (_) => HomePage(
+    //             userLogined: true,
+    //             userDevices: devicesList,
+    //             currentUser: currentUser!),
+    //         fullscreenDialog: false));
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(

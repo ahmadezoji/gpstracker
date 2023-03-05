@@ -2,6 +2,7 @@
 import 'dart:core';
 
 import 'package:cargpstracker/allVehicle.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -15,18 +16,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class UpdateVehicle extends StatefulWidget {
-  const UpdateVehicle({Key? key,
+  const UpdateVehicle({
+    Key? key,
     required this.currentDeveice,
-    required this.userLogined,
-    required this.userDevices,
-    required this.currentUser})
-      : super(key: key);
+  }) : super(key: key);
   final Device currentDeveice;
-  final List<Device> userDevices;
-  final bool userLogined;
-  final myUser currentUser;
 
   @override
   _UpdateVehicleState createState() => _UpdateVehicleState();
@@ -36,9 +33,6 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     with
         AutomaticKeepAliveClientMixin<UpdateVehicle>,
         TickerProviderStateMixin {
-  late String serial;
-  late String deviceSimNum = '';
-  late String title = '';
   static Map<String, String> devices = {
     "car".tr: 'minicar',
     "motor".tr: "minimotor",
@@ -73,43 +67,40 @@ class _UpdateVehicleState extends State<UpdateVehicle>
   late List<bool> radioValues = [true, false, false, false, false];
   late String selectedValue;
   late TabController _nestedTabController;
-  late int selectedIndex = widget.userDevices.indexOf(widget.currentDeveice);
-  // late SimCardPage simCardPage = SimCardPage(
-  //     userLogined: widget.userLogined,
-  //     userDevices: widget.userDevices,
-  //     currentUser: widget.currentUser,
-  //     selectedDeviceIndex: selectedIndex,);
-
+  late Device _currentDevice = widget.currentDeveice;
+  late int selectedIndex =
+      StoreProvider.of<AppState>(context).state.devices.indexOf(_currentDevice);
 
   @override
   void initState() {
     super.initState();
-    _nestedTabController = new TabController(length: 2, vsync: this);
+    _nestedTabController = TabController(length: 2, vsync: this);
     selectedValue = devices.keys.firstWhere(
-            (k) => devices[k] == widget.currentDeveice.type,
+        (k) => devices[k] == _currentDevice.type,
         orElse: () => "null");
-    deviceSimNum = widget.currentDeveice.simPhone;
-    title = widget.currentDeveice.title;
-    getCurrentDeviceConfig(widget.currentDeveice);
+    getCurrentDeviceConfig(_currentDevice);
   }
 
   void _updateVehicle() async {
     try {
-      bool status =
-      (await setConfig(widget.currentDeveice, currentDeviceConfig))!;
+      bool status = (await setConfig(_currentDevice, currentDeviceConfig))!;
       if (status)
         Fluttertoast.showToast(msg: 'Config success and start config thread');
       else
         Fluttertoast.showToast(msg: 'Set config failed !!');
       Device dev = Device(
-          serial: widget.currentDeveice.serial,
-          title: title,
-          simPhone: deviceSimNum,
+          serial: _currentDevice.serial,
+          title: _currentDevice.title,
+          simPhone: _currentDevice.simPhone,
           type: devices[selectedValue]!);
-      print(dev.type);
       bool? result = await updateDevice(dev);
+      if (result!) {
+        // (viewModel as _ViewModel).updateItemToList(dev);
+        StoreProvider.of<AppState>(context).dispatch(UpdateAction(input: dev));
+        Navigator.canPop(context);
+      }
       Fluttertoast.showToast(msg: 'update device is $result');
-      if (result!) Navigator.pop(context, {"call": true});
+      if (result) Navigator.pop(context);
     } catch (error) {
       print(error);
     }
@@ -117,32 +108,24 @@ class _UpdateVehicleState extends State<UpdateVehicle>
 
   void _deleteVehicle() async {
     try {
-      bool? result = await deleteDevice(widget.currentDeveice);
+      bool? result = await deleteDevice(_currentDevice);
       Fluttertoast.showToast(msg: 'delete device is $result');
+      StoreProvider.of<AppState>(context)
+          .dispatch(DeleteAction(input: _currentDevice));
       if (result!) Navigator.pop(context);
     } catch (e) {
       Fluttertoast.showToast(msg: 'unsuccessful process');
     }
   }
 
-  Future<void> _onSelectedDevice(int deviceIndex) async {
-
-    String value = devices.keys.firstWhere(
-            (k) => devices[k] == widget.userDevices[deviceIndex].type,
-        orElse: () => "null");
+  Future<void> _onSelectedDevice(Device device) async {
+    String value = devices.keys
+        .firstWhere((k) => devices[k] == device.type, orElse: () => "null");
     setState(() {
       selectedValue = value;
-      deviceSimNum = widget.userDevices[deviceIndex].simPhone;
-      title = widget.userDevices[deviceIndex].title;
-      selectedIndex = deviceIndex;
-      // simCardPage = SimCardPage(
-      //     userLogined: widget.userLogined,
-      //     userDevices: widget.userDevices,
-      //     currentUser: widget.currentUser,
-      //     selectedDeviceIndex: deviceIndex);
+      _currentDevice = device;
     });
-    getCurrentDeviceConfig(widget.userDevices[deviceIndex]);
-    // makeMyRequest();
+    getCurrentDeviceConfig(device);
   }
 
   Future<Config> getCurrentDeviceConfig(Device device) async {
@@ -204,31 +187,29 @@ class _UpdateVehicleState extends State<UpdateVehicle>
 
   @override
   Widget build(BuildContext context) {
-    late Color fontColor = Theme
-        .of(context)
-        .brightness == Brightness.dark
+    late Color fontColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.white
         : Colors.black;
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
-          return Scaffold(
-              appBar: AppBar(
-                title: Text("updateVehicle".tr),
-                actions: [
-                  Container(
-                    padding: EdgeInsets.only(right: 10, left: 10),
-                    child: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => showAlertDialog(context, _deleteVehicle),
-                    ),
-                  )
-                ],
-                // backgroundColor: NabColor, // status bar color
-              ),
-              body:
-              LayoutBuilder(
-                  builder: (context, constraints) =>
-                      Container(
+      return Scaffold(
+          appBar: AppBar(
+            title: Text("updateVehicle".tr),
+            actions: [
+              Container(
+                padding: EdgeInsets.only(right: 10, left: 10),
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => showAlertDialog(context, _deleteVehicle),
+                ),
+              )
+            ],
+            // backgroundColor: NabColor, // status bar color
+          ),
+          body: StoreConnector<AppState, AppState>(
+              converter: (store) => store.state,
+              builder: (context, viewModel) => LayoutBuilder(
+                  builder: (context, constraints) => Container(
                         alignment: AlignmentDirectional.center,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,79 +219,78 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                 padding: EdgeInsets.all(15),
                                 child: myAllVehicle(
                                   selectedDevice: _onSelectedDevice,
-                                  userLogined: widget.userLogined,
-                                  userDevices: widget.userDevices,
-                                  currentUser: widget.currentUser,
                                   selectedDeviceIndex: selectedIndex,
-
                                 ),
                               ),
                               Expanded(
-                                  child:
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.all(20),
-                                    child: ListView(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.topCenter,
-                                          child: TabBar(
+                                  child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(20),
+                                child: ListView(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.topCenter,
+                                      child: TabBar(
+                                        controller: _nestedTabController,
+                                        indicatorColor: Colors.orange,
+                                        labelColor: Colors.orange,
+                                        unselectedLabelColor: Colors.black54,
+                                        isScrollable: true,
+                                        tabs: <Widget>[
+                                          Tab(
+                                            text: "update-device".tr,
+                                            icon:
+                                                Icon(Icons.phone_android_sharp),
+                                          ),
+                                          Tab(
+                                            text: "update-simcard".tr,
+                                            icon: SvgPicture.asset(
+                                                "assets/simcard-icon.svg"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SingleChildScrollView(
+                                      child: Container(
+                                          // decoration: BoxDecoration(
+                                          //     border: Border.all(width: 1,color: Colors.black),
+                                          //     borderRadius: BorderRadius.circular(6)
+                                          //
+                                          // ),
+                                          height: constraints.maxHeight,
+                                          margin: const EdgeInsets.only(
+                                              left: 5.0, right: 5.0),
+                                          child: TabBarView(
                                             controller: _nestedTabController,
-                                            indicatorColor: Colors.orange,
-                                            labelColor: Colors.orange,
-                                            unselectedLabelColor: Colors.black54,
-                                            isScrollable: true,
-                                            tabs: <Widget>[
-                                              Tab(
-                                                text: "update-device".tr,
-                                                icon: Icon(
-                                                    Icons.phone_android_sharp),
+                                            children: <Widget>[
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: SingleChildScrollView(
+                                                  child: buildUpdateVehicleView(
+                                                      context, _currentDevice),
+                                                ),
                                               ),
-                                              Tab(
-                                                text: "update-simcard".tr,
-                                                icon: SvgPicture.asset(
-                                                    "assets/simcard-icon.svg"),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: SimCardPage
+                                                    .buildSimCardView(
+                                                        _currentDevice
+                                                            .simPhone),
                                               ),
                                             ],
-                                          ),
-                                        ),
-                                        SingleChildScrollView(
-                                          child: Container(
-                                              // decoration: BoxDecoration(
-                                              //     border: Border.all(width: 1,color: Colors.black),
-                                              //     borderRadius: BorderRadius.circular(6)
-                                              //
-                                              // ),
-                                              height: constraints.maxHeight,
-                                              margin: const EdgeInsets.only(
-                                                  left: 5.0, right: 5.0),
-                                              child: TabBarView(
-                                                controller: _nestedTabController,
-                                                children: <Widget>[
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius
-                                                          .circular(8.0),
-                                                    ),
-                                                    child: SingleChildScrollView(
-                                                      child: buildUpdateVehicleView(
-                                                          context),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius
-                                                          .circular(8.0),
-                                                    ),
-                                                    child: SimCardPage.buildSimCardView(deviceSimNum),
-                                                  ),
-                                                ],
-                                              )),
-                                        ),
-                                      ],
+                                          )),
                                     ),
-                                  )
-                              ),
+                                  ],
+                                ),
+                              )),
                               SizedBox(
                                 width: constraints.maxWidth,
                                 child: ElevatedButton(
@@ -319,32 +299,28 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                     style: const TextStyle(fontSize: 20),
                                   ),
                                   onPressed: () => _updateVehicle(),
-                                  style:
-                                  ElevatedButton.styleFrom(
-                                      fixedSize: Size(constraints.maxWidth, 50)),
+                                  style: ElevatedButton.styleFrom(
+                                      fixedSize:
+                                          Size(constraints.maxWidth, 50)),
                                 ),
                               ),
-                            ]
-                        ),
-                      )
-              )
-          );
-        });
+                            ]),
+                      ))));
+    });
   }
 
-  Widget buildUpdateVehicleView(BuildContext context) {
+  Widget buildUpdateVehicleView(BuildContext context, Device device) {
     return SingleChildScrollView(
         padding: EdgeInsets.all(15),
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
             TextFormField(
-              controller: TextEditingController(text: deviceSimNum),
+              controller: TextEditingController(text: device.simPhone),
               keyboardType: TextInputType.number,
-              onChanged: (value) =>
-                  setState(() {
-                    deviceSimNum = value;
-                  }),
+              onChanged: (value) => setState(() {
+                device.simPhone = value;
+              }),
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
@@ -358,11 +334,10 @@ class _UpdateVehicleState extends State<UpdateVehicle>
               height: 10,
             ),
             TextFormField(
-              controller: TextEditingController(text: title),
-              onChanged: (value) =>
-                  setState(() {
-                    title = value;
-                  }),
+              controller: TextEditingController(text: device.title),
+              onChanged: (value) => setState(() {
+                device.title = value;
+              }),
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
@@ -387,10 +362,9 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                   itemCount: devices.entries.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () =>
-                          setState(() {
-                            selectedValue = devices.keys.elementAt(index);
-                          }),
+                      onTap: () => setState(() {
+                        selectedValue = devices.keys.elementAt(index);
+                      }),
                       child: Container(
                         height: 30,
                         decoration: BoxDecoration(
@@ -412,8 +386,7 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                                       ? Icon(Icons.check)
                                       : Icon(Icons.circle_outlined),
                                   SvgPicture.asset(
-                                    'assets/${devices.values.elementAt(
-                                        index)}.svg',
+                                    'assets/${devices.values.elementAt(index)}.svg',
                                   )
                                 ],
                               ),
@@ -421,7 +394,7 @@ class _UpdateVehicleState extends State<UpdateVehicle>
                             ),
                             Flexible(
                               child:
-                              Text('${devices.keys.elementAt(index)}'.tr),
+                                  Text('${devices.keys.elementAt(index)}'.tr),
                               flex: 2,
                             )
                           ],
@@ -501,14 +474,13 @@ class _UpdateVehicleState extends State<UpdateVehicle>
             },
             items: values
                 .map<DropdownMenuItem<String>>(
-                    (String value) =>
-                    DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ))
+                    (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ))
                 .toList(),
             icon: Icon(Icons.arrow_drop_down),
             iconSize: 32,

@@ -1,7 +1,9 @@
 import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
+import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
@@ -12,18 +14,15 @@ import 'package:get/get.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 
 import 'models/device.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 class myAllVehicle extends StatefulWidget {
-  const myAllVehicle({Key? key,
-    required this.selectedDevice,
-    required this.userLogined,
-    required this.currentUser,
-    required this.userDevices,
-    required this.selectedDeviceIndex})
+  const myAllVehicle(
+      {Key? key,
+      required this.selectedDevice,
+      required this.selectedDeviceIndex})
       : super(key: key);
-  final List<Device> userDevices;
-  final bool userLogined;
-  final myUser currentUser;
   final Function selectedDevice;
   final int selectedDeviceIndex;
 
@@ -40,6 +39,7 @@ class _myAllVehicleState extends State<myAllVehicle>
   bool drawerOpen = true;
   late int selectedDeviceIndex = widget.selectedDeviceIndex;
   late int selectedBaloonIndex = -2;
+  late myUser? currentUser = StoreProvider.of<AppState>(context).state.user;
 
   @override
   void initState() {
@@ -47,33 +47,37 @@ class _myAllVehicleState extends State<myAllVehicle>
     selectedDeviceIndex = widget.selectedDeviceIndex;
     selectedBaloonIndex = -2;
   }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      height: 55,
-      child: Row(
-        children: [
-          if (widget.userDevices.length > 0)
-            Expanded(
-              child: ListView.builder(
-                physics: AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                // padding: const EdgeInsets.all(8),
-                itemCount: widget.userDevices.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _vehicleIcon(context, index);
-                },
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, state) => Container(
+        padding: EdgeInsets.all(5),
+        height: 60,
+        child: Row(
+          children: [
+            if (state.devices.length > 0)
+              Expanded(
+                child: ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  // padding: const EdgeInsets.all(8),
+                  itemCount: state.devices.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _vehicleIcon(context, state.devices[index], index);
+                  },
+                ),
               ),
-            ),
-          _vehicleIcon(context, -1)
-        ],
+            _vehicleIcon(context, null, -1)
+          ],
+        ),
       ),
     );
   }
 
-  Widget _vehicleIcon(BuildContext context, int deviceIndex) {
+  Widget _vehicleIcon(BuildContext context, Device? device, int deviceIndex) {
     return SimpleTooltip(
         ballonPadding: EdgeInsets.zero,
         borderColor: Colors.transparent,
@@ -88,17 +92,15 @@ class _myAllVehicleState extends State<myAllVehicle>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) =>
-                          AddVehicle(currentUser: widget.currentUser),
+                      builder: (_) => AddVehicle(currentUser: currentUser!),
                       fullscreenDialog: false));
             } else {
               setState(() {
                 selectedDeviceIndex = deviceIndex;
                 selectedBaloonIndex = -2;
               });
-              Fluttertoast.showToast(
-                  msg: widget.userDevices[deviceIndex].title);
-              widget.selectedDevice(selectedDeviceIndex);
+              Fluttertoast.showToast(msg: device!.title);
+              widget.selectedDevice(device);
             }
           },
           child: Container(
@@ -114,34 +116,32 @@ class _myAllVehicleState extends State<myAllVehicle>
             ),
             child: deviceIndex == -1
                 ? Center(
-              child: Icon(
-                Icons.add,
-                color: Colors.black,
-                size: 35,
-              ),
-            )
-                : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  getTypeAsset(widget.userDevices[deviceIndex].type),
-                  height: 21,
-                  width: 21,
-                  color: Colors.black,
-                ),
-                Text(
-                  widget.userDevices[deviceIndex].title.length > 6
-                      ? widget.userDevices[deviceIndex].title
-                      .substring(0, 6) +
-                      "..."
-                      : widget.userDevices[deviceIndex].title,
-                  style: TextStyle(
-                      fontSize: 12,
+                    child: Icon(
+                      Icons.add,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
+                      size: 35,
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        getTypeAsset(device!.type),
+                        height: 21,
+                        width: 21,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        device.title.length > 6
+                            ? device.title.substring(0, 6) + "..."
+                            : device.title,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
           ),
         ),
         content: Container(
@@ -161,32 +161,53 @@ class _myAllVehicleState extends State<myAllVehicle>
                     height: 18,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9),
-                        border: Border.all(color: Colors.black,width: 1)
-                    ),
-                    child: Icon(Icons.close,size: 15, color: Colors.black,)
-                ),
+                        border: Border.all(color: Colors.black, width: 1)),
+                    child: Icon(
+                      Icons.close,
+                      size: 15,
+                      color: Colors.black,
+                    )),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  // showAlertDialog(context, _deleteVehicle);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if(deviceIndex != 0)Text("ballon-remove".tr,
-                      style: TextStyle(fontSize: 10, color: Colors.black),),
-                    Icon(Icons.remove, color: Colors.black,)
+                    if (deviceIndex != 0)
+                      Text(
+                        "ballon-remove".tr,
+                        style: TextStyle(fontSize: 10, color: Colors.black),
+                      ),
+                    Icon(
+                      Icons.remove,
+                      color: Colors.black,
+                    )
                   ],
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  print("remove");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => UpdateVehicle(currentDeveice: device!),
+                        fullscreenDialog: false),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if(deviceIndex != 0)Text("ballon-edit".tr,
-                      style: TextStyle(fontSize: 10, color: Colors.black),),
-                    Icon(Icons.edit, color: Colors.black,)
+                    if (deviceIndex != 0)
+                      Text(
+                        "ballon-edit".tr,
+                        style: TextStyle(fontSize: 10, color: Colors.black),
+                      ),
+                    Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                    )
                   ],
                 ),
               ),
@@ -199,6 +220,7 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   bool get wantKeepAlive => true;
 }
+
 Widget cardVehicle(String vehicleName, String assetPath) {
   return (Container(
       alignment: Alignment.topCenter,

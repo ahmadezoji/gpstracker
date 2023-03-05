@@ -4,6 +4,7 @@ import 'dart:core';
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/models/point.dart';
@@ -13,23 +14,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 // import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+// import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
 class History extends StatefulWidget {
-  const History(
-      {Key? key,
-      required this.userLogined,
-      required this.userDevices,
-      required this.currentUser})
-      : super(key: key);
-  final List<Device> userDevices;
-  final bool userLogined;
-  final myUser currentUser;
+  const History({
+    Key? key,
+  }) : super(key: key);
   @override
   _HistoryState createState() => _HistoryState();
 }
@@ -59,7 +55,7 @@ class _HistoryState extends State<History>
   List<Point> dirArr = [];
   List<LatLng> dirLatLons = [];
   List<CircleMarker> circleMarkers = [];
-  late Jalali tempPickedDate;
+  // late Jalali tempPickedDate;
   late double zoomLevel = 5.0;
   late bool showPoint = false;
 
@@ -84,16 +80,18 @@ class _HistoryState extends State<History>
   // return byteData.buffer.asUint8List();
   // }
 
-  void getCurrentDevice() async {
-    if (widget.userDevices.length > 0) currentDevice = widget.userDevices[0];
+  Future<void> getCurrentDevice() async {
+    if (StoreProvider.of<AppState>(context).state.devices.isNotEmpty) {
+      setState(() {
+        currentDevice = StoreProvider.of<AppState>(context).state.devices[0];
+      });
+    }
+    print('currentDevice = $currentDevice');
   }
 
   void fetch(String stamp) async {
     try {
-      // final prefs = await SharedPreferences.getInstance();
-      // serial = prefs.getString('serial')!;
       dirArr.clear();
-      print(currentDevice!.serial);
       var request =
           http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/history/'));
       request.fields
@@ -122,7 +120,7 @@ class _HistoryState extends State<History>
             Marker(
               width: 15,
               height: 15,
-              point: dirLatLons[dirLatLons.length-1],
+              point: dirLatLons[dirLatLons.length - 1],
               builder: (ctx) => new Container(
                 child: SvgPicture.asset(
                   'assets/startPoint.svg',
@@ -152,9 +150,9 @@ class _HistoryState extends State<History>
     }
   }
 
-  void _onSelectedDevice(int index) {
+  Future<void> _onSelectedDevice(Device device) async {
     setState(() {
-      currentDevice = widget.userDevices[index];
+      currentDevice = device;
     });
   }
 
@@ -175,11 +173,7 @@ class _HistoryState extends State<History>
         body: buildMap(),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
-            selectedDevice: _onSelectedDevice,
-            userLogined: widget.userLogined,
-            userDevices: widget.userDevices,
-            currentUser: widget.currentUser,
-            selectedDeviceIndex: 0),
+            selectedDevice: _onSelectedDevice, selectedDeviceIndex: 0),
       );
     });
   }
@@ -192,7 +186,6 @@ class _HistoryState extends State<History>
 
   Scaffold buildMap() {
     StreamController<void> resetController = StreamController.broadcast();
-
 
     return Scaffold(
       endDrawer: Drawer(
@@ -328,24 +321,24 @@ class _HistoryState extends State<History>
 
   //change Flat to text button
   _selectDate(BuildContext context) async {
-    Jalali? picked = await showPersianDatePicker(
-      context: context,
-      initialDate: Jalali.now(),
-      firstDate: Jalali(1385, 8),
-      lastDate: Jalali(1450, 9),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked.toJalaliDateTime();
-      });
-      print(selectedDate);
+    // Jalali? picked = await showPersianDatePicker(
+    //   context: context,
+    //   initialDate: Jalali.now(),
+    //   firstDate: Jalali(1385, 8),
+    //   lastDate: Jalali(1450, 9),
+    // );
+    // if (picked != null && picked != selectedDate) {
+    //   setState(() {
+    //     selectedDate = picked.toJalaliDateTime();
+    //   });
+    //   print(selectedDate);
 
-      Timestamp myTimeStamp =
-          Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
-      currentTimeStamp = myTimeStamp;
-      print(myTimeStamp.seconds.toString());
-      fetch(myTimeStamp.seconds.toString());
-    }
+    //   Timestamp myTimeStamp =
+    //       Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+    //   currentTimeStamp = myTimeStamp;
+    //   print(myTimeStamp.seconds.toString());
+    //   fetch(myTimeStamp.seconds.toString());
+    // }
   }
 
   @override

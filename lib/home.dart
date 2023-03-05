@@ -18,15 +18,9 @@ import 'package:provider/provider.dart';
 enum languages { english, farsi }
 
 class HomePage extends StatefulWidget {
-  const HomePage(
-      {Key? key,
-      required this.userLogined,
-      required this.userDevices,
-      required this.currentUser})
-      : super(key: key);
-  final bool userLogined;
-  final List<Device> userDevices;
-  final myUser currentUser;
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   HomePageState createState() => HomePageState();
@@ -36,15 +30,14 @@ class HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
   late String title = "app_name".tr;
   final bool switchVal = false;
-  late List<Device> _listDevice = widget.userDevices;
-  late myUser _user = widget.currentUser;
-
+  // late List<Device> _listDevice = widget.userDevices;
+  // late myUser _user = widget.currentUser;
 
   @override
   void initState() {
     super.initState();
-    _listDevice = widget.userDevices;
-    _user = widget.currentUser;
+    // _listDevice = widget.userDevices;
+    // _user = widget.currentUser;
   }
 
   void _onSimMangment() async {
@@ -60,19 +53,19 @@ class HomePageState extends State<HomePage>
     //         fullscreenDialog: false));
   }
 
-  void onRefresh() async {
-    try {
-      myUser tmpUser = (await getUser(widget.currentUser.email))!;
-      List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
-      setState(() {
-        _listDevice = tempArray;
-        _user = tmpUser;
-      });
-      print(_listDevice);
-    } catch (error) {
-      print('refresh = $error');
-    }
-  }
+  // void onRefresh() async {
+  //   try {
+  //     myUser tmpUser = (await getUser(widget.currentUser.email))!;
+  //     List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
+  //     setState(() {
+  //       _listDevice = tempArray;
+  //       _user = tmpUser;
+  //     });
+  //     print(_listDevice);
+  //   } catch (error) {
+  //     print('refresh = $error');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +128,8 @@ class HomePageState extends State<HomePage>
               //     }),
               SizedBox(width: 10),
             ]),
-        body: Center(
-            child: new MyStatefulWidget(
-          userLogined: widget.userLogined,
-          userDevices: _listDevice,
-          currentUser: _user,
-        )),
-        drawer: LeftDrawer(
-            currentUser: _user,
-            userLogined: widget.userLogined,
-            userDevices: _listDevice),
+        body: const Center(child: MyStatefulWidget()),
+        drawer: LeftDrawer(),
       );
     });
   }

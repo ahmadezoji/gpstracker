@@ -2,28 +2,39 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 import 'mainTabScreens/login4.dart';
+
+class _ViewModel {
+  final GetDevice getItemToList;
+  _ViewModel({required this.getItemToList});
+}
 
 Widget getMarkerPoint() {
   return Lottie.asset("assets/point.json");
 }
 
 class SpalshScreen extends StatefulWidget {
+  static const String id = "SpalshScreen";
+  final void Function() onInit;
+  SpalshScreen({required this.onInit});
   @override
   _SpalshScreenState createState() => _SpalshScreenState();
 }
 
-class _SpalshScreenState extends State<SpalshScreen>
-    with TickerProviderStateMixin {
+class _SpalshScreenState extends State<SpalshScreen> {
   late AnimationController controller;
   List<int>? pattern;
   List<Device> devicesList = [];
@@ -32,6 +43,7 @@ class _SpalshScreenState extends State<SpalshScreen>
   @override
   void initState() {
     super.initState();
+    widget.onInit();
     // SystemChrome.setEnabledSystemUIOverlays ([]);
 
     HttpOverrides.global = MyHttpOverrides();
@@ -43,7 +55,7 @@ class _SpalshScreenState extends State<SpalshScreen>
     //   });
     // controller.repeat(reverse: false);
 
-    Timer(Duration(seconds: 3), () => getShared());
+    Timer(Duration(seconds: 3), () => pushPage());
   }
 
   void getShared() async {
@@ -57,13 +69,14 @@ class _SpalshScreenState extends State<SpalshScreen>
       if (email != null) {
         currentUser = (await getUser(email))!;
         devicesList = (await getUserDevice(currentUser))!;
+
         if (withPass == "true") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => new Login4Page(
-                    currentUser: currentUser, userDevices: devicesList)),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => new Login4Page(
+          //           currentUser: currentUser, userDevices: devicesList)),
+          // );
 
           // Navigator.pushReplacement(
           //   context,
@@ -74,14 +87,14 @@ class _SpalshScreenState extends State<SpalshScreen>
           //           userDevices: devicesList)),
           // );
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => new HomePage(
-                    currentUser: currentUser,
-                    userLogined: true,
-                    userDevices: devicesList)),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => new HomePage(
+          //           currentUser: currentUser,
+          //           userLogined: true,
+          //           userDevices: devicesList)),
+          // );
         }
       } else {
         Navigator.pushReplacement(
@@ -113,12 +126,13 @@ class _SpalshScreenState extends State<SpalshScreen>
 
   void pushPage() async {
     try {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => new HomePage(
-      //           userLogined: userLogined, userDevices: devicesList)),
-      // );
+      // String email = "saam.ezoji@gmail.com";
+      // currentUser = (await getUser(email))!;
+      // devicesList = (await getUserDevice(currentUser))!;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
 
       // final prefs = await SharedPreferences.getInstance();
       // String? phone = prefs.getString('phone');

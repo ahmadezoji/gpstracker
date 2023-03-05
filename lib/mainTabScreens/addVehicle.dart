@@ -2,6 +2,7 @@
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
@@ -9,15 +10,20 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+class _ViewModel {
+  final AddDevice addItemToList;
+  _ViewModel({required this.addItemToList});
+}
+
 class AddVehicle extends StatefulWidget {
   const AddVehicle({Key? key, required this.currentUser}) : super(key: key);
   final myUser currentUser;
-
   @override
   _AddVehicleState createState() => _AddVehicleState();
 }
@@ -46,7 +52,7 @@ class _AddVehicleState extends State<AddVehicle>
     // devices.add(Text('asdsd'));
   }
 
-  void _addVehicle() async {
+  void _addVehicle(Object viewModel) async {
     type = devices.values.elementAt(selectedValue).toString();
     Device dev = Device(
         serial: serial,
@@ -58,15 +64,17 @@ class _AddVehicleState extends State<AddVehicle>
     if (result!) {
       // Navigator.pop(context);
       //add pushreplacment
-      List<Device> devicesList = (await getUserDevice(widget.currentUser))!;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new HomePage(
-                currentUser: widget.currentUser,
-                userLogined: true,
-                userDevices: devicesList)),
-      );
+      // List<Device> devicesList = (await getUserDevice(widget.currentUser))!;
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => new HomePage(
+      //           currentUser: widget.currentUser,
+      //           userLogined: true,
+      //           userDevices: devicesList)),
+      // );
+      (viewModel as _ViewModel).addItemToList(dev);
+      Navigator.of(context).pop();
     }
   }
 
@@ -78,17 +86,23 @@ class _AddVehicleState extends State<AddVehicle>
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(),
-          title: Text("addVehicle".tr),
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  child: Container(
+          appBar: AppBar(
+            systemOverlayStyle: const SystemUiOverlayStyle(),
+            title: Text("addVehicle".tr),
+          ),
+          body: StoreConnector<AppState, _ViewModel>(
+            converter: (store) => _ViewModel(
+              addItemToList: (inputText) => store.dispatch(
+                AddAction(input: inputText),
+              ),
+            ),
+            builder: (context, viewModel) => LayoutBuilder(
+              builder: (context, constraints) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                      child: Container(
                     padding: EdgeInsets.all(20),
                     child: ListView(
                       scrollDirection: Axis.vertical,
@@ -138,7 +152,7 @@ class _AddVehicleState extends State<AddVehicle>
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Flexible(
                                           child: Row(
@@ -155,7 +169,8 @@ class _AddVehicleState extends State<AddVehicle>
                                         ),
                                         Flexible(
                                           child: Text(
-                                              '${devices.keys.elementAt(index)}'.tr),
+                                              '${devices.keys.elementAt(index)}'
+                                                  .tr),
                                           flex: 2,
                                         )
                                       ],
@@ -183,7 +198,8 @@ class _AddVehicleState extends State<AddVehicle>
                           ),
                         ),
                         SizedBox(
-                          height: 100,width: 100,
+                          height: 100,
+                          width: 100,
                           child: Image.asset('assets/serialplace.jpg'),
                         ),
                         TextFormField(
@@ -202,30 +218,29 @@ class _AddVehicleState extends State<AddVehicle>
                           ),
                         ),
                         SizedBox(
-                          height: 100,width: 100,
+                          height: 100,
+                          width: 100,
                           child: Image.asset('assets/simcardplace.jpg'),
                         ),
-
                       ],
                     ),
-                  )
-              ),
-              SizedBox(
-                width: constraints.maxWidth,
-                child: ElevatedButton(
-                  child: Text(
-                    "apply".tr,
-                    style: const TextStyle(fontSize: 20),
+                  )),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    child: ElevatedButton(
+                      child: Text(
+                        "apply".tr,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () => _addVehicle(viewModel),
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(constraints.maxWidth, 50)),
+                    ),
                   ),
-                  onPressed: () => _addVehicle(),
-                  style:
-                      ElevatedButton.styleFrom(fixedSize:  Size(constraints.maxWidth, 50)),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-      );
+            ),
+          ));
     });
   }
 

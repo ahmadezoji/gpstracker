@@ -126,7 +126,7 @@ Future<myUser?> getUser(String email) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      print('getUser = $json');
+      // print('getUser = $json');
       return myUser.fromJson(json);
     } else {
       return null;

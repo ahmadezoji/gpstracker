@@ -1,33 +1,23 @@
 import 'dart:convert';
 
 class Device {
-  final String serial;
-  final String simPhone;
-  final String title;
-  final String type;
+  late String serial;
+  late String simPhone;
+  late String title;
+  late String type;
 
-  const Device({
+  Device({
     required this.serial,
     required this.title,
     required this.simPhone,
     required this.type,
   });
-
-  String getSerial() {
-    return this.serial;
-  }
-
-  String getSimPhone() {
-    return this.simPhone;
-  }
-
-  String getTitle() {
-    return this.title;
-  }
-
-  String getType() {
-    return this.type;
-  }
+  // const Device({
+  //   required this.serial,
+  //   required this.title,
+  //   required this.simPhone,
+  //   required this.type,
+  // });
 
   factory Device.fromJson(Map<String, dynamic> jsonData) {
     return Device(
