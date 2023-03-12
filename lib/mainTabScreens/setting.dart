@@ -1,15 +1,10 @@
-import 'dart:convert';
 import 'dart:core';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import 'package:cargpstracker/models/config.dart';
+
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 

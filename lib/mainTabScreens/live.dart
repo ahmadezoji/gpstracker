@@ -1,13 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:ui';
 
 import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
-import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/spalshScreen.dart';
@@ -15,6 +14,7 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/theme_preference.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,8 +61,12 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late TextStyle textStyle = const TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
-  Device? currentDevice;
+  late Device? currentDevice = StoreProvider.of<AppState>(context).state.devices.isEmpty ? null :
+  StoreProvider.of<AppState>(context).state.devices[0];
 
+
+  List<Point> demoPoints = [];
+  int _indexDemoPoints = 0;
   @override
   void dispose() {
     _timer.cancel();
@@ -76,24 +80,28 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   @override
   void initState() {
     super.initState();
-    _mapController = MapController();
+    initDemo();
     startTimer();
+    _mapController = MapController();
   }
 
   @override
   void deactivate() {
     print("deactivate");
+    _timer.cancel();
     super.deactivate();
   }
 
   void startTimer() async {
-    await getCurrentDevice();
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
-      _getCurrentLocation();
+      // currentDevice!.serial == '123456789'
+      //     ? _getCurrentDemoLocation()
+           _getCurrentLocation();
     });
   }
 
   Future<void> getCurrentDevice() async {
+    // print(StoreProvider.of<AppState>(context).state.devices);
     if (StoreProvider.of<AppState>(context).state.devices.isNotEmpty) {
       setState(() {
         currentDevice = StoreProvider.of<AppState>(context).state.devices[0];
@@ -102,14 +110,42 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     print('currentDevice = $currentDevice');
   }
 
+  void initDemo() async {
+    try {
+      final String response =
+          await rootBundle.loadString('assets/liveDemo.json');
+      final demoData = await json.decode(response);
+      for (var json in demoData["features"]) {
+        demoPoints.add(Point.fromJson(json));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Point? _getCurrentDemoLocation() {
+    try {
+      if (_indexDemoPoints > 130) _indexDemoPoints = 0;
+      return demoPoints[_indexDemoPoints++];
+    } catch (e) {
+      print('$e');
+    }
+  }
+
   void _getCurrentLocation() async {
     try {
-      Point? curPoint = await getCurrentLocation(currentDevice!);
-      if (curPoint == null) return;
-      setState(() {
-        currentPos = curPoint;
-        currentLatLng = LatLng(curPoint.lat, curPoint.lon);
-      });
+      Point? curPoint;
+      curPoint  = currentDevice!.serial == '123456789'//Demo
+          ? _getCurrentDemoLocation()
+          : await getCurrentLocation(currentDevice!);
+
+
+      if (curPoint != null) {
+        setState(() {
+          currentPos = curPoint;
+          currentLatLng = LatLng(curPoint!.lat, curPoint.lon);
+        });
+      }
     } catch (e) {
       print('$e');
     }
@@ -136,17 +172,15 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
         key: _key,
         drawerEnableOpenDragGesture: true,
         body: StoreConnector<AppState, AppState>(
-          converter: (store) => store.state,
-          builder: (_, state) {
-            return currentDevice == null
+            converter: (store) => store.state,
+            builder: (context, state) => currentDevice == null
                 ? const Center(child: Text("there is no device to show"))
-                : buildMap(themeNotifier);
-          },
-        ),
+                : buildMap(themeNotifier)),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
           selectedDevice: _onSelectedDevice,
           selectedDeviceIndex: 0,
+          direction: VehicleTooltipDirection.UP,
         ),
       );
     });
@@ -421,29 +455,30 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       ),
       floatingActionButton: _floatingBottons(),
     );
-    // }
-    // else {
-    //   return Scaffold(
-    //     body: Center(
-    //         child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //       children: [Center(child: Text('Please wait its loading...'))],
-    //     )),
-    //   );
-    // }
+
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {
-    return Container(
-      width: 50,
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Colors.blue, width: 1),
-          color: Colors.white),
-      child: SvgPicture.asset(
-        getTypeAsset(device.type),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => UpdateVehicle(currentDeveice: device),
+              fullscreenDialog: false),
+        );
+      },
+      child: Container(
+        width: 50,
+        height: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(color: Colors.blue, width: 1),
+            color: Colors.white),
+        child: SvgPicture.asset(
+          getTypeAsset(device.type),
+        ),
       ),
     );
   }

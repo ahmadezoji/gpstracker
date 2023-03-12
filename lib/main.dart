@@ -9,14 +9,11 @@ import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
-// import 'package:firebase_core/firebase_core.dart';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
@@ -25,14 +22,28 @@ Future<void> _messageHandler(RemoteMessage message) async {
 }
 
 class AppState {
-  final List<Device> _devices;
-  final myUser? _user;
+  late List<Device> _devices;
+  late myUser? _user;
   List<Device> get devices => _devices;
   myUser? get user => _user;
   AppState(this._devices, this._user);
 
+  setUser(myUser user) {
+    _user = user;
+  }
+
+  setDevices(List<Device> devices) {
+    _devices = devices;
+  }
+
   AppState.initialState()
-      : _devices = [],
+      : _devices = [
+          Device(
+              serial: '123456789',
+              title: "demo".tr,
+              simPhone: '09123456789',
+              type: 'minicar')
+        ],
         _user = null;
 
   @override
@@ -53,17 +64,21 @@ class FetchDataAction {
 
 AppState reducer(AppState prev, dynamic action) {
   if (action is FetchDataAction) {
+    prev.devices.clear();
     return AppState(action.devices, action.user);
-  } else if (action is AddAction) {
+  } else if (action is AddDeviceAction) {
     prev._devices.add(action.input);
     return prev;
-  } else if (action is UpdateAction) {
+  } else if (action is UpdateDeviceAction) {
     int index =
         prev._devices.indexWhere((item) => item.serial == action.input.serial);
     prev._devices[index] = action.input;
     return prev;
-  } else if (action is DeleteAction) {
+  } else if (action is DeleteDeviceAction) {
     prev._devices.remove(action.input);
+    return prev;
+  } else if (action is UpdateUserAction) {
+    prev.setUser(action.user);
     return prev;
   } else {
     return prev;
@@ -72,33 +87,35 @@ AppState reducer(AppState prev, dynamic action) {
 
 ThunkAction<AppState> getDeviceAction = (Store<AppState> store) async {
   String? email = await load(SHARED_EMAIL_KEY);
-  email = "saam.ezoji@gmail.com";
-  List<Device> devicesList = [];
-  late myUser currentUser;
-  currentUser = (await getUser(email))!;
-  devicesList = (await getUserDevice(currentUser))!;
-  store.dispatch(FetchDataAction(devicesList, currentUser));
+  // email = "saam.ezoji@gmail.com";
+  if (email != null) {
+    List<Device> devicesList = [];
+    late myUser currentUser;
+    currentUser = (await getUser(email))!;
+    devicesList = (await getUserDevice(currentUser))!;
+    store.dispatch(FetchDataAction(devicesList, currentUser));
+  }
 };
 
-class AddAction {
+class AddDeviceAction {
   final Device input;
-  AddAction({required this.input});
+  AddDeviceAction({required this.input});
 }
 
-class UpdateAction {
+class UpdateDeviceAction {
   final Device input;
-  UpdateAction({required this.input});
+  UpdateDeviceAction({required this.input});
 }
 
-class DeleteAction {
+class DeleteDeviceAction {
   final Device input;
-  DeleteAction({required this.input});
+  DeleteDeviceAction({required this.input});
 }
 
-typedef GetDevice(List<Device> devices);
-typedef AddDevice(Device device);
-typedef UpdateDevice(Device device);
-typedef DeleteDevice(Device device);
+class UpdateUserAction {
+  final myUser user;
+  UpdateUserAction({required this.user});
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

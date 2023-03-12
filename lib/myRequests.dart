@@ -292,7 +292,6 @@ Future<myUser?> updateUser(myUser user) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-      print(json);
       return myUser.fromJson(json);
     } else {
       return null;

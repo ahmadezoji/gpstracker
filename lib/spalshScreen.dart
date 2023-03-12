@@ -2,25 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cargpstracker/home.dart';
-import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lottie/lottie.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'mainTabScreens/login4.dart';
 
-class _ViewModel {
-  final GetDevice getItemToList;
-  _ViewModel({required this.getItemToList});
-}
+
 
 Widget getMarkerPoint() {
   return Lottie.asset("assets/point.json");
@@ -44,17 +34,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   void initState() {
     super.initState();
     widget.onInit();
-    // SystemChrome.setEnabledSystemUIOverlays ([]);
-
     HttpOverrides.global = MyHttpOverrides();
-    // controller = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(seconds: 3),
-    // )..addListener(() {
-    //     getShared();
-    //   });
-    // controller.repeat(reverse: false);
-
     Timer(Duration(seconds: 3), () => pushPage());
   }
 
@@ -67,8 +47,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
       // String withPass = "true";
       email = "saam.ezoji@gmail.com";
       if (email != null) {
-        currentUser = (await getUser(email))!;
-        devicesList = (await getUserDevice(currentUser))!;
+        // currentUser = (await getUser(email))!;
+        // devicesList = (await getUserDevice(currentUser))!;
 
         if (withPass == "true") {
           // Navigator.pushReplacement(

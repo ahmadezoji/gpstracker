@@ -6,13 +6,11 @@ import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:cargpstracker/allVehicle.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/models/point.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +33,7 @@ class _HistoryState extends State<History>
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
   String serial = '';
   String label = '';
-  String selectedDate = ''; //Jalali.now().toJalaliDateTime();
+  DateTime selectedDate = DateTime.now();
   late Timestamp currentTimeStamp;
   late LatLng pos = new LatLng(41.025819, 29.230415);
 
@@ -65,7 +63,8 @@ class _HistoryState extends State<History>
 
   late double zoom = 11.0;
 
-  Device? currentDevice;
+  late Device? currentDevice = StoreProvider.of<AppState>(context).state.devices.isEmpty ? null :
+  StoreProvider.of<AppState>(context).state.devices[0];
   late List<Marker> markers = [];
 
   @override
@@ -173,7 +172,7 @@ class _HistoryState extends State<History>
         body: buildMap(),
         extendBody: true,
         bottomNavigationBar: myAllVehicle(
-            selectedDevice: _onSelectedDevice, selectedDeviceIndex: 0),
+            selectedDevice: _onSelectedDevice, selectedDeviceIndex: 0,direction: VehicleTooltipDirection.UP),
       );
     });
   }
@@ -319,27 +318,44 @@ class _HistoryState extends State<History>
     );
   }
 
-  //change Flat to text button
-  _selectDate(BuildContext context) async {
-    // Jalali? picked = await showPersianDatePicker(
-    //   context: context,
-    //   initialDate: Jalali.now(),
-    //   firstDate: Jalali(1385, 8),
-    //   lastDate: Jalali(1450, 9),
-    // );
-    // if (picked != null && picked != selectedDate) {
-    //   setState(() {
-    //     selectedDate = picked.toJalaliDateTime();
-    //   });
-    //   print(selectedDate);
-
-    //   Timestamp myTimeStamp =
-    //       Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
-    //   currentTimeStamp = myTimeStamp;
-    //   print(myTimeStamp.seconds.toString());
-    //   fetch(myTimeStamp.seconds.toString());
-    // }
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+      Timestamp myTimeStamp = Timestamp.fromDate(picked); //To TimeStamp
+      // currentTimeStamp = myTimeStamp;
+      // print(myTimeStamp.seconds.toString());
+      fetch(myTimeStamp.seconds.toString());
+    }
   }
+
+  //change Flat to text button
+  // _selectDate(BuildContext context) async {
+  // Jalali? picked = await showPersianDatePicker(
+  //   context: context,
+  //   initialDate: Jalali.now(),
+  //   firstDate: Jalali(1385, 8),
+  //   lastDate: Jalali(1450, 9),
+  // );
+  // if (picked != null && picked != selectedDate) {
+  //   setState(() {
+  //     selectedDate = picked.toJalaliDateTime();
+  //   });
+  //   print(selectedDate);
+
+  //   Timestamp myTimeStamp =
+  //       Timestamp.fromDate(picked.toDateTime()); //To TimeStamp
+  //   currentTimeStamp = myTimeStamp;
+  //   print(myTimeStamp.seconds.toString());
+  //   fetch(myTimeStamp.seconds.toString());
+  // }
+  // }
 
   @override
   bool get wantKeepAlive => true;

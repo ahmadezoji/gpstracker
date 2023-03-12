@@ -1,6 +1,6 @@
 class Point {
-  late  double lat;
-  late  double lon;
+  late double lat;
+  late double lon;
 
   // final String name;
   final String dateTime;
@@ -10,7 +10,7 @@ class Point {
   final double heading;
 
 // required this.name,
-   Point({
+  Point({
     required this.lat,
     required this.lon,
     required this.dateTime,

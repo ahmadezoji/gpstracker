@@ -4,9 +4,6 @@ import 'package:cargpstracker/bottonTabs.dart';
 import 'package:cargpstracker/dialogs/dialogs.dart';
 import 'package:cargpstracker/drawer/leftDrawer.dart';
 import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
-import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
@@ -41,31 +38,12 @@ class HomePageState extends State<HomePage>
   }
 
   void _onSimMangment() async {
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (_) => SimCardPage(
-    //               currentUser: _user,
-    //               userDevices: _listDevice,
-    //               userLogined: false,
-    //               selectedDeviceIndex: 0,
-    //             ),
-    //         fullscreenDialog: false));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => SimCardPage(),
+            fullscreenDialog: false));
   }
-
-  // void onRefresh() async {
-  //   try {
-  //     myUser tmpUser = (await getUser(widget.currentUser.email))!;
-  //     List<Device> tempArray = (await getUserDevice(widget.currentUser))!;
-  //     setState(() {
-  //       _listDevice = tempArray;
-  //       _user = tmpUser;
-  //     });
-  //     print(_listDevice);
-  //   } catch (error) {
-  //     print('refresh = $error');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

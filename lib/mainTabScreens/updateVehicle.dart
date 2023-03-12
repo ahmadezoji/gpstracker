@@ -6,17 +6,15 @@ import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/simCardManagment.dart';
 import 'package:cargpstracker/models/config.dart';
 import 'package:cargpstracker/models/device.dart';
-import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 class UpdateVehicle extends StatefulWidget {
   const UpdateVehicle({
@@ -96,7 +94,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
       bool? result = await updateDevice(dev);
       if (result!) {
         // (viewModel as _ViewModel).updateItemToList(dev);
-        StoreProvider.of<AppState>(context).dispatch(UpdateAction(input: dev));
+        StoreProvider.of<AppState>(context)
+            .dispatch(UpdateDeviceAction(input: dev));
         Navigator.canPop(context);
       }
       Fluttertoast.showToast(msg: 'update device is $result');
@@ -111,8 +110,8 @@ class _UpdateVehicleState extends State<UpdateVehicle>
       bool? result = await deleteDevice(_currentDevice);
       Fluttertoast.showToast(msg: 'delete device is $result');
       StoreProvider.of<AppState>(context)
-          .dispatch(DeleteAction(input: _currentDevice));
-      if (result!) Navigator.pop(context);
+          .dispatch(DeleteDeviceAction(input: _currentDevice));
+      // if (result!) Navigator.pop(context);
     } catch (e) {
       Fluttertoast.showToast(msg: 'unsuccessful process');
     }
@@ -193,119 +192,117 @@ class _UpdateVehicleState extends State<UpdateVehicle>
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-          appBar: AppBar(
-            title: Text("updateVehicle".tr),
-            actions: [
-              Container(
-                padding: EdgeInsets.only(right: 10, left: 10),
-                child: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => showAlertDialog(context, _deleteVehicle),
-                ),
-              )
-            ],
-            // backgroundColor: NabColor, // status bar color
-          ),
-          body: StoreConnector<AppState, AppState>(
-              converter: (store) => store.state,
-              builder: (context, viewModel) => LayoutBuilder(
-                  builder: (context, constraints) => Container(
-                        alignment: AlignmentDirectional.center,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(15),
-                                child: myAllVehicle(
-                                  selectedDevice: _onSelectedDevice,
-                                  selectedDeviceIndex: selectedIndex,
+        appBar: AppBar(
+          title: Text("updateVehicle".tr),
+          actions: [
+            Container(
+              padding: EdgeInsets.only(right: 10, left: 10),
+              child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => showAlertDialog(context, _deleteVehicle),
+              ),
+            )
+          ],
+          // backgroundColor: NabColor, // status bar color
+        ),
+        body: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (context, viewModel) => LayoutBuilder(
+            builder: (context, constraints) => Container(
+              alignment: AlignmentDirectional.center,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      child: myAllVehicle(
+                        selectedDevice: _onSelectedDevice,
+                        selectedDeviceIndex: selectedIndex,
+                        direction: VehicleTooltipDirection.DOWN,
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(20),
+                      child: ListView(
+                        children: [
+                          Container(
+                            alignment: Alignment.topCenter,
+                            child: TabBar(
+                              controller: _nestedTabController,
+                              indicatorColor: Colors.orange,
+                              labelColor: Colors.orange,
+                              unselectedLabelColor: Colors.black54,
+                              isScrollable: true,
+                              tabs: <Widget>[
+                                Tab(
+                                  text: "update-device".tr,
+                                  icon: Icon(Icons.phone_android_sharp),
                                 ),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(20),
-                                child: ListView(
-                                  children: [
+                                Tab(
+                                  text: "update-simcard".tr,
+                                  icon: SvgPicture.asset(
+                                      "assets/simcard-icon.svg"),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Container(
+                                // decoration: BoxDecoration(
+                                //     border: Border.all(width: 1,color: Colors.black),
+                                //     borderRadius: BorderRadius.circular(6)
+                                //
+                                // ),
+                                height: constraints.maxHeight,
+                                margin: const EdgeInsets.only(
+                                    left: 5.0, right: 5.0),
+                                child: TabBarView(
+                                  controller: _nestedTabController,
+                                  children: <Widget>[
                                     Container(
-                                      alignment: Alignment.topCenter,
-                                      child: TabBar(
-                                        controller: _nestedTabController,
-                                        indicatorColor: Colors.orange,
-                                        labelColor: Colors.orange,
-                                        unselectedLabelColor: Colors.black54,
-                                        isScrollable: true,
-                                        tabs: <Widget>[
-                                          Tab(
-                                            text: "update-device".tr,
-                                            icon:
-                                                Icon(Icons.phone_android_sharp),
-                                          ),
-                                          Tab(
-                                            text: "update-simcard".tr,
-                                            icon: SvgPicture.asset(
-                                                "assets/simcard-icon.svg"),
-                                          ),
-                                        ],
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: SingleChildScrollView(
+                                        child: buildUpdateVehicleView(
+                                            context, _currentDevice),
                                       ),
                                     ),
-                                    SingleChildScrollView(
-                                      child: Container(
-                                          // decoration: BoxDecoration(
-                                          //     border: Border.all(width: 1,color: Colors.black),
-                                          //     borderRadius: BorderRadius.circular(6)
-                                          //
-                                          // ),
-                                          height: constraints.maxHeight,
-                                          margin: const EdgeInsets.only(
-                                              left: 5.0, right: 5.0),
-                                          child: TabBarView(
-                                            controller: _nestedTabController,
-                                            children: <Widget>[
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: SingleChildScrollView(
-                                                  child: buildUpdateVehicleView(
-                                                      context, _currentDevice),
-                                                ),
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: SimCardPage
-                                                    .buildSimCardView(
-                                                        _currentDevice
-                                                            .simPhone),
-                                              ),
-                                            ],
-                                          )),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: const SimCardPage().createState().buildSimCardView(
+                                          _currentDevice.simPhone),
                                     ),
                                   ],
-                                ),
-                              )),
-                              SizedBox(
-                                width: constraints.maxWidth,
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "apply".tr,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                  onPressed: () => _updateVehicle(),
-                                  style: ElevatedButton.styleFrom(
-                                      fixedSize:
-                                          Size(constraints.maxWidth, 50)),
-                                ),
-                              ),
-                            ]),
-                      ))));
+                                )),
+                          ),
+                        ],
+                      ),
+                    )),
+                    SizedBox(
+                      width: constraints.maxWidth,
+                      child: ElevatedButton(
+                        child: Text(
+                          "apply".tr,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () => _updateVehicle(),
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size(constraints.maxWidth, 50)),
+                      ),
+                    ),
+                  ]),
+            ),
+          ),
+        ),
+      );
     });
   }
 

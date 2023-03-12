@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:cargpstracker/home.dart';
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
@@ -12,10 +12,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class Login2Page extends StatefulWidget {
@@ -49,7 +48,6 @@ class _Login2PageState extends State<Login2Page>
         isTrueOTP = true;
       });
       initFirebaseFCM();
-
     } else {
       // sendCode();
     }
@@ -66,7 +64,6 @@ class _Login2PageState extends State<Login2Page>
   void initFirebaseFCM() {
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value) {
-
       setState(() {
         fcmToken = value!;
       });
@@ -112,9 +109,11 @@ class _Login2PageState extends State<Login2Page>
     //   print('_addUser Exception= $error');
     // }
   }
-  void _updateUser(myUser tmpuser)async{
+
+  void _updateUser(myUser tmpuser) async {
     await updateUser(tmpuser);
   }
+
   void _addUserAuth() async {
     try {
       final _pictureUrl = widget.authUser.photoURL ?? "";
@@ -131,7 +130,7 @@ class _Login2PageState extends State<Login2Page>
           pictureUrl: _pictureUrl.toString(),
           fcmToken: _fcmToken);
       currentUser = (await addUser(user));
-      if(currentUser!.fcmToken.toString() != fcmToken){
+      if (currentUser!.fcmToken.toString() != fcmToken) {
         myUser tmpuser = myUser(
             fullname: currentUser!.fullname,
             email: currentUser!.email,
@@ -157,14 +156,10 @@ class _Login2PageState extends State<Login2Page>
       save(SHARED_ALLWAYS_PASS_KEY, withPass.toString());
     }
     List<Device> devicesList = (await getUserDevice(currentUser!))!;
-    // Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (_) => HomePage(
-    //             userLogined: true,
-    //             userDevices: devicesList,
-    //             currentUser: currentUser!),
-    //         fullscreenDialog: false));
+    StoreProvider.of<AppState>(context)
+        .dispatch(FetchDataAction(devicesList, currentUser));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => HomePage(), fullscreenDialog: false));
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -203,25 +198,6 @@ class _Login2PageState extends State<Login2Page>
         // backgroundColor: secondBackgroundPage,
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text("verification".tr)
-            // style: TextStyle(
-            // color: Colors.black,
-            //         fontWeight: FontWeight.bold,
-            //         fontFamily: 'IranSans')),
-            // backgroundColor: Colors.white, // status bar color
-            // leading: Container(
-            //     alignment: Alignment.center,
-            //     width: 20,
-            //     height: 20  ,
-            //     child: Image.asset('assets/GPS+icon.png')),
-            // systemOverlayStyle: const SystemUiOverlayStyle(
-            // Status bar color
-            // statusBarColor: statusColor,
-
-            // Status bar brightness (optional)
-            // statusBarIconBrightness:
-            // Brightness.dark, // For Android (dark icons)
-            // statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            // ),
             ),
         body: SingleChildScrollView(
             child: Container(

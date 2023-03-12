@@ -81,7 +81,8 @@ class LocaleString extends Translations {
           "update-device" : "Device",
           "update-simcard" : "Sim Card",
           "ballon-remove" : "Remove",
-          "ballon-edit" : "Edit"
+          "ballon-edit" : "Edit",
+          "demo" : "Demo"
         },
         'fa_IR': {
           "app_name": "موقعیت یاب",
@@ -117,7 +118,7 @@ class LocaleString extends Translations {
           "updateVehicle": "ویرایش دستگاه ",
           "profile": "پروفایل",
           "save-change-success": "ثبت تغییرات موفق بود",
-          "add-new-device": "ثبت دستگاه جدبد",
+          "add-new-device": "ثبت دستگاه جدید",
           "speed": "سرعت ",
           "interval": "فاصله زمانی",
           "mile": "جهت",
@@ -133,8 +134,8 @@ class LocaleString extends Translations {
           "profileContent-email": "ایمیل ",
           "profileContent-phone": "شماره همراه ",
           "profileContent-birthday": "تاریخ تولد ",
-          "verification": "اعتبارستجی",
-          "loginWithPassTick": "یخواهم با رمز عبور وارد شوم",
+          "verification": "اعتبارسنجی",
+          "loginWithPassTick": "میخواهم با رمز عبور وارد شوم",
           "apply": "قبول",
           "cancel": "رد",
           "delete_title": "حذف دستگاه",
@@ -160,7 +161,8 @@ class LocaleString extends Translations {
           "update-device" : "دستگاه",
           "update-simcard" : "سیم کارت ",
           "ballon-remove" : "حذف",
-          "ballon-edit" : "ویرایش"
+          "ballon-edit" : "ویرایش",
+          "demo" : "نسخه نمایش"
         },
       };
 }

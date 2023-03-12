@@ -11,6 +11,8 @@ extension BuildContextX on BuildContext {
     );
   }
 }
+enum VehicleTooltipDirection{UP,DOWN}
+
 
 const statusColor = Color.fromRGBO(201, 201, 201, 1.0);
 const backgroundColor = Color.fromRGBO(217, 217, 217, 1.0);

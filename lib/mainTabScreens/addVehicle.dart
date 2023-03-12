@@ -1,7 +1,6 @@
 // import 'package:cargpstracker/mainTabScreens/qrScanner.dart';
 import 'dart:core';
 
-import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
@@ -15,11 +14,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
-class _ViewModel {
-  final AddDevice addItemToList;
-  _ViewModel({required this.addItemToList});
-}
 
 class AddVehicle extends StatefulWidget {
   const AddVehicle({Key? key, required this.currentUser}) : super(key: key);
@@ -52,7 +46,7 @@ class _AddVehicleState extends State<AddVehicle>
     // devices.add(Text('asdsd'));
   }
 
-  void _addVehicle(Object viewModel) async {
+  void _addVehicle() async {
     type = devices.values.elementAt(selectedValue).toString();
     Device dev = Device(
         serial: serial,
@@ -62,18 +56,7 @@ class _AddVehicleState extends State<AddVehicle>
     bool? result = await addDevice(dev, widget.currentUser);
     Fluttertoast.showToast(msg: 'add device is $result');
     if (result!) {
-      // Navigator.pop(context);
-      //add pushreplacment
-      // List<Device> devicesList = (await getUserDevice(widget.currentUser))!;
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => new HomePage(
-      //           currentUser: widget.currentUser,
-      //           userLogined: true,
-      //           userDevices: devicesList)),
-      // );
-      (viewModel as _ViewModel).addItemToList(dev);
+      StoreProvider.of<AppState>(context).dispatch(AddDeviceAction(input: dev));
       Navigator.of(context).pop();
     }
   }
@@ -90,12 +73,8 @@ class _AddVehicleState extends State<AddVehicle>
             systemOverlayStyle: const SystemUiOverlayStyle(),
             title: Text("addVehicle".tr),
           ),
-          body: StoreConnector<AppState, _ViewModel>(
-            converter: (store) => _ViewModel(
-              addItemToList: (inputText) => store.dispatch(
-                AddAction(input: inputText),
-              ),
-            ),
+          body: StoreConnector<AppState, AppState>(
+            converter: (store) => store.state,
             builder: (context, viewModel) => LayoutBuilder(
               builder: (context, constraints) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +211,7 @@ class _AddVehicleState extends State<AddVehicle>
                         "apply".tr,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () => _addVehicle(viewModel),
+                      onPressed: () => _addVehicle(),
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size(constraints.maxWidth, 50)),
                     ),

@@ -5,26 +5,26 @@ import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
 import 'package:cargpstracker/mainTabScreens/updateVehicle.dart';
 import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 
 import 'models/device.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 class myAllVehicle extends StatefulWidget {
   const myAllVehicle(
       {Key? key,
       required this.selectedDevice,
-      required this.selectedDeviceIndex})
+      required this.selectedDeviceIndex,
+      required this.direction})
       : super(key: key);
   final Function selectedDevice;
   final int selectedDeviceIndex;
+  final VehicleTooltipDirection direction;
 
   @override
   _myAllVehicleState createState() => _myAllVehicleState();
@@ -44,8 +44,60 @@ class _myAllVehicleState extends State<myAllVehicle>
   @override
   void initState() {
     super.initState();
+    print(context);
     selectedDeviceIndex = widget.selectedDeviceIndex;
     selectedBaloonIndex = -2;
+  }
+
+  void _deleteVehicle(Device device) async {
+    try {
+      // bool? result = await deleteDevice(device);
+      // Fluttertoast.showToast(msg: 'delete device is $result');
+      // StoreProvider.of<AppState>(context)
+      //     .dispatch(DeleteDeviceAction(input: device));
+      setState(() {
+        selectedBaloonIndex = -2;
+      });
+      // if (result!) Navigator.pop(context);
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'unsuccessful process');
+    }
+  }
+
+  showAlertDialog(BuildContext context, Function onDeleteDevice) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("cancel".tr),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: Text("apply".tr),
+      onPressed: () {
+        Navigator.pop(context);
+        onDeleteDevice();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("delete_title".tr),
+      content: Text("delete_message".tr),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -70,7 +122,7 @@ class _myAllVehicleState extends State<myAllVehicle>
                   },
                 ),
               ),
-            _vehicleIcon(context, null, -1)
+            _vehicleIcon(context, null, -1),
           ],
         ),
       ),
@@ -81,14 +133,18 @@ class _myAllVehicleState extends State<myAllVehicle>
     return SimpleTooltip(
         ballonPadding: EdgeInsets.zero,
         borderColor: Colors.transparent,
+        tooltipDirection: widget.direction==VehicleTooltipDirection.UP ? TooltipDirection.up : TooltipDirection.down,
         child: GestureDetector(
           onLongPress: () {
             setState(() {
-              selectedBaloonIndex = deviceIndex;
+              selectedBaloonIndex = selectedBaloonIndex == -2 ? deviceIndex : -2;
             });
           },
           onTap: () {
             if (deviceIndex == -1) {
+              setState(() {
+                selectedBaloonIndex = -2;
+              });
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -145,43 +201,24 @@ class _myAllVehicleState extends State<myAllVehicle>
           ),
         ),
         content: Container(
-          height: 70,
+          height: 50,
           width: 110,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedBaloonIndex = -2;
-                  });
-                },
-                child: Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(9),
-                        border: Border.all(color: Colors.black, width: 1)),
-                    child: Icon(
-                      Icons.close,
-                      size: 15,
-                      color: Colors.black,
-                    )),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // showAlertDialog(context, _deleteVehicle);
-                },
+                onTap: () => showAlertDialog(context, _deleteVehicle),
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (deviceIndex != 0)
                       Text(
                         "ballon-remove".tr,
-                        style: TextStyle(fontSize: 10, color: Colors.black),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                     Icon(
-                      Icons.remove,
+                      Icons.close,
                       color: Colors.black,
                     )
                   ],
@@ -195,6 +232,9 @@ class _myAllVehicleState extends State<myAllVehicle>
                         builder: (_) => UpdateVehicle(currentDeveice: device!),
                         fullscreenDialog: false),
                   );
+                  setState(() {
+                    selectedBaloonIndex = -2;
+                  });
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +242,7 @@ class _myAllVehicleState extends State<myAllVehicle>
                     if (deviceIndex != 0)
                       Text(
                         "ballon-edit".tr,
-                        style: TextStyle(fontSize: 10, color: Colors.black),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                     Icon(
                       Icons.edit,

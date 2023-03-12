@@ -2,21 +2,16 @@ import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
-import 'package:cargpstracker/mainTabScreens/login.dart';
-import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
-import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LeftDrawer extends StatefulWidget {
   const LeftDrawer({
@@ -40,6 +35,15 @@ class LeftDrawerState extends State<LeftDrawer>
     delete(SHARED_PHONE_KEY);
     try {
       await Authentication.signOut();
+      StoreProvider.of<AppState>(context).dispatch(FetchDataAction([Device(
+          serial: '123456789',
+          title: "demo".tr,
+          simPhone: '09123456789',
+          type: 'minicar')], null));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(), fullscreenDialog: false));
       // List<Device> devicesList = (await getUserDevice("09192592697"))!;
       // User currentUser = await getUser("09192592697") as User;
       // if (devicesList != null && currentUser != null) {
@@ -53,30 +57,30 @@ class LeftDrawerState extends State<LeftDrawer>
       //           fullscreenDialog: false));
       // }
       // goToLoginPage();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => new SignOnPage()),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => new SignOnPage()),
+      // );
     } catch (e) {
       print(e);
     }
   }
 
   void goToLoginPage() async {
-    // String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
-    // if (withPass == "true") {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => Login4Page(
-    //             currentUser: _currentUser, userDevices: widget.userDevices)),
-    //   );
-    // } else {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => LoginPage()),
-    //   );
-    // }
+    String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
+    if (withPass == "true") {
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => Login4Page(
+      //           currentUser: _currentUser, userDevices: widget.userDevices)),
+      // );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignOnPage()),
+      );
+    }
   }
 
   Widget ProfileContent(myUser? _currentUser) {
@@ -123,7 +127,11 @@ class LeftDrawerState extends State<LeftDrawer>
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image(image: AssetImage("assets/user_outline.png")),
+              Container(
+                height: 50,
+                width: 50,
+                child: Image(image: AssetImage("assets/user_outline.png")),
+              ),
               Text("profileContent-fullname".tr,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Text("profileContent-phone".tr,

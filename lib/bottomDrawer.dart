@@ -30,20 +30,6 @@ class _MyBottomDrawerState extends State<MyBottomDrawer>
   BottomDrawerController _controller = BottomDrawerController();
   bool drawerOpen = true;
 
-  // List<Device> devices = [
-  //   new Device(
-  //       serial: "027028360584",
-  //       title: "موتور",
-  //       simPhone: "simPhone",
-  //       type: "motor"),
-  //   new Device(
-  //       serial: "027028362416",
-  //       title: "ماشین",
-  //       simPhone: "simPhone",
-  //       type: "car"),
-  //   new Device(
-  //       serial: "123456789", title: "خاور", simPhone: "simPhone", type: "truck")
-  // ];
 
   @override
   void initState() {
