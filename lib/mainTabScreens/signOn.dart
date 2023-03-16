@@ -29,13 +29,12 @@ class _SignOnPageState extends State<SignOnPage>
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => Login2Page(authUser: user!),
+              builder: (_) => Login2Page(authUser: user!, userPhone: null),
               fullscreenDialog: false));
     } catch (error) {
       print(error);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,7 @@ class _SignOnPageState extends State<SignOnPage>
                   height: 60,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: themeNotifier.isDark ? Colors.blue: Colors.white,
+                    color: themeNotifier.isDark ? Colors.blue : Colors.white,
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
                       BoxShadow(

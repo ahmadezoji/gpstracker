@@ -61,9 +61,10 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   late TextStyle textStyle = const TextStyle(
       fontSize: 10, fontWeight: FontWeight.bold, fontFamily: 'IranSans');
   late Color btnColor;
-  late Device? currentDevice = StoreProvider.of<AppState>(context).state.devices.isEmpty ? null :
-  StoreProvider.of<AppState>(context).state.devices[0];
-
+  late Device? currentDevice =
+      StoreProvider.of<AppState>(context).state.devices.isEmpty
+          ? null
+          : StoreProvider.of<AppState>(context).state.devices[0];
 
   List<Point> demoPoints = [];
   int _indexDemoPoints = 0;
@@ -96,7 +97,7 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
       // currentDevice!.serial == '123456789'
       //     ? _getCurrentDemoLocation()
-           _getCurrentLocation();
+      _getCurrentLocation();
     });
   }
 
@@ -125,6 +126,19 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   Point? _getCurrentDemoLocation() {
     try {
+      // print(_mapController.bounds!.east);
+      if (currentLatLng.longitude > _mapController.bounds!.east)
+        _mapController.move(currentLatLng, _mapController.zoom);
+      if (currentLatLng.longitude < _mapController.bounds!.west)
+        _mapController.move(currentLatLng, _mapController.zoom);
+      if (currentLatLng.latitude > _mapController.bounds!.south)
+        _mapController.move(currentLatLng, _mapController.zoom);
+      if (currentLatLng.latitude < _mapController.bounds!.north)
+        _mapController.move(currentLatLng, _mapController.zoom);
+
+      // if (_indexDemoPoints % 10 == 0)
+      // _mapController.move(currentLatLng, CHANGE_ZOOM);
+
       if (_indexDemoPoints > 130) _indexDemoPoints = 0;
       return demoPoints[_indexDemoPoints++];
     } catch (e) {
@@ -135,10 +149,9 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
   void _getCurrentLocation() async {
     try {
       Point? curPoint;
-      curPoint  = currentDevice!.serial == '123456789'//Demo
+      curPoint = currentDevice!.serial == '123456789' //Demo
           ? _getCurrentDemoLocation()
           : await getCurrentLocation(currentDevice!);
-
 
       if (curPoint != null) {
         setState(() {
@@ -455,7 +468,6 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
       ),
       floatingActionButton: _floatingBottons(),
     );
-
   }
 
   Widget _vehicleIcon(BuildContext context, Device device) {

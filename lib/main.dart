@@ -9,6 +9,7 @@ import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/spalshScreen.dart';
 import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -86,12 +87,13 @@ AppState reducer(AppState prev, dynamic action) {
 }
 
 ThunkAction<AppState> getDeviceAction = (Store<AppState> store) async {
-  String? email = await load(SHARED_EMAIL_KEY);
+  // String? email = await load(SHARED_EMAIL_KEY);
+  String? phone = await load(SHARED_PHONE_KEY);
   // email = "saam.ezoji@gmail.com";
-  if (email != null) {
+  if (phone != null) {
     List<Device> devicesList = [];
     late myUser currentUser;
-    currentUser = (await getUser(email))!;
+    currentUser = (await getUser(phone))!;
     devicesList = (await getUserDevice(currentUser))!;
     store.dispatch(FetchDataAction(devicesList, currentUser));
   }

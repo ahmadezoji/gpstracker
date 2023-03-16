@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/login.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/models/device.dart';
@@ -9,16 +10,17 @@ import 'package:cargpstracker/theme_model.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../home.dart';
+
 class Login4Page extends StatefulWidget {
   const Login4Page(
-      {Key? key, required this.userDevices, required this.currentUser})
+      {Key? key})
       : super(key: key);
-  final List<Device> userDevices;
-  final myUser currentUser;
-
   @override
   _Login4PageState createState() => _Login4PageState();
 }
@@ -31,7 +33,7 @@ class _Login4PageState extends State<Login4Page>
   bool _isLoading = false;
   bool _obscureText = true;
   TextEditingController passController = TextEditingController();
-
+  late myUser? currentUser  = StoreProvider.of<AppState>(context).state.user;
   @override
   void initState() {
     super.initState();
@@ -53,19 +55,15 @@ class _Login4PageState extends State<Login4Page>
 
   void goToNextStep() async {
     updateShared();
-    print(widget.currentUser.phone + password);
-    bool status = (await loginWithPass(widget.currentUser.email, password))!;
-    // if (status)
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => new HomePage(
-      //           currentUser: widget.currentUser,
-      //           userLogined: true,
-      //           userDevices: widget.userDevices)),
-      // );
-    // else
-      // Fluttertoast.showToast(msg: 'password is incorrect');
+    bool status = (await loginWithPass(currentUser!, password))!;
+    if (status) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>  const HomePage()),
+      );
+    } else {
+      Fluttertoast.showToast(msg: 'password is incorrect');
+    }
   }
 
   void onRememberMyPass(bool? status) {}

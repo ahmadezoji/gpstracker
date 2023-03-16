@@ -18,38 +18,39 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Login2Page extends StatefulWidget {
-  const Login2Page({Key? key, required this.authUser}) : super(key: key);
-  final User authUser;
+  const Login2Page({Key? key, required this.authUser, required this.userPhone})
+      : super(key: key);
+  final User? authUser;
+  final String? userPhone;
 
   @override
   _Login2PageState createState() => _Login2PageState();
 }
 
 class _Login2PageState extends State<Login2Page>
-    with AutomaticKeepAliveClientMixin<Login2Page> {
+    with AutomaticKeepAliveClientMixin<Login2Page> , SingleTickerProviderStateMixin{
   String signature = "{{ app signature }}";
   String? appSignature;
   late bool isTrueOTP = false;
   late bool withPass = false;
   bool _isLoading = false;
-  late String currentCode;
+  late String? currentCode = "";
   late String password = "";
   late String repassword = "";
   late bool passwordCorrect = false;
   late myUser? currentUser;
   late FirebaseMessaging messaging;
   late String fcmToken = "";
-
   @override
   void initState() {
     super.initState();
+    // initFirebaseFCM();
     if (widget.authUser != null) {
       setState(() {
         isTrueOTP = true;
       });
-      initFirebaseFCM();
     } else {
-      // sendCode();
+      sendCode();
     }
     // print('ValidCode : ${widget.validCode}');
     // SmsAutoFill().listenForCode();
@@ -67,8 +68,9 @@ class _Login2PageState extends State<Login2Page>
       setState(() {
         fcmToken = value!;
       });
-      print('fcmToken = $fcmToken');
-      _addUserAuth();
+      print('fcmToken = $fcmToken ,,, phone=${widget.userPhone}');
+      // _addUserAuth();
+      _addUserOTP();
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
@@ -86,28 +88,33 @@ class _Login2PageState extends State<Login2Page>
     super.dispose();
   }
 
-  void init() async {
-    // print(SmsAutoFill().listenForCode);
-  }
+  void init() async {}
 
   void sendCode() async {
-    // bool status = (await OTPverifyNew(widget.userPhone!))!;
-    // if (status) Fluttertoast.showToast(msg: "sending-varify-code".tr);
+    String? sentCode = await OTPverify(widget.userPhone!);
+    setState(() {
+      currentCode = sentCode;
+    });
   }
 
   void _addUserOTP() async {
-    // try {
-    //   String? phone = widget.userPhone;
-    //   User user = User(
-    //       fullname: "", email: "", phone: phone!, birthday: "", pictureUrl: "");
-    //   currentUser = (await addUser(user))!;
-    //   if (currentUser != null) {
-    //     save(SHARED_PHONE_KEY, widget.userPhone!)
-    //         .then((value) => print('shared uphone is = $value'));
-    //   }
-    // } catch (error) {
-    //   print('_addUser Exception= $error');
-    // }
+    try {
+      String? phone = widget.userPhone;
+      myUser user = myUser(
+          fullname: "",
+          email: "",
+          phone: phone!,
+          birthday: "",
+          pictureUrl: "",
+          fcmToken: fcmToken);
+      currentUser = (await addUser(user))!;
+      if (currentUser != null) {
+        save(SHARED_PHONE_KEY, widget.userPhone!)
+            .then((value) => print('shared uphone is = $value'));
+      }
+    } catch (error) {
+      print('_addUser Exception= $error');
+    }
   }
 
   void _updateUser(myUser tmpuser) async {
@@ -116,10 +123,10 @@ class _Login2PageState extends State<Login2Page>
 
   void _addUserAuth() async {
     try {
-      final _pictureUrl = widget.authUser.photoURL ?? "";
-      final _fullname = widget.authUser.displayName ?? "";
-      final _email = widget.authUser.email ?? "saam@gmail.com";
-      final _phone = widget.authUser.phoneNumber ?? "";
+      final _pictureUrl = widget.authUser!.photoURL ?? "";
+      final _fullname = widget.authUser!.displayName ?? "";
+      final _email = widget.authUser!.email ?? "saam@gmail.com";
+      final _phone = widget.authUser!.phoneNumber ?? "";
       final _fcmToken = fcmToken;
       final _birthday = "";
       myUser user = myUser(
@@ -197,109 +204,113 @@ class _Login2PageState extends State<Login2Page>
       return Scaffold(
         // backgroundColor: secondBackgroundPage,
         // resizeToAvoidBottomInset: false,
-        appBar: AppBar(title: Text("verification".tr)
-            ),
+        appBar: AppBar(title: Text("verification".tr)),
         body: SingleChildScrollView(
-            child: Container(
-          padding: EdgeInsets.only(top: 50),
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 15, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'assets/GPS+icon.png',
-                width: 84,
-                height: 84,
-              ),
-              Text("Validation code",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.blue)),
-              SizedBox(height: 20),
-              if (isTrueOTP == false)
-                validPlaceHolder(context, currentCode, onOTPChanged),
-              SizedBox(height: 10),
-              if (isTrueOTP == false)
-                ElevatedButton(
-                  style: raisedButtonStyle,
-                  onPressed: () {
-                    _sendAgain();
-                  },
-                  child: Text(
-                    isTrueOTP ? 'Ok' : 'Send again',
-                    style: TextStyle(color: Colors.blue, fontSize: 14),
+          child: Container(
+              padding: EdgeInsets.only(top: 50),
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 15, right: 15),
+              child:
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/GPS+icon.png',
+                    width: 84,
+                    height: 84,
                   ),
-                ),
-              SizedBox(height: 20),
-              Row(children: [
-                Checkbox(
-                    value: withPass,
-                    onChanged: (value) => setState(() {
+                  Text("Validation code",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Colors.blue)),
+                  SizedBox(height: 20),
+                  if (isTrueOTP == false)
+                    validPlaceHolder(context, currentCode!, onOTPChanged),
+                  SizedBox(height: 10),
+                  if (isTrueOTP == false)
+                    ElevatedButton(
+                      style: raisedButtonStyle,
+                      onPressed: () {
+                        _sendAgain();
+                      },
+                      child: Text(
+                        isTrueOTP ? 'Ok' : 'Send again',
+                        style:
+                        TextStyle(color: Colors.blue, fontSize: 14),
+                      ),
+                    ),
+                  SizedBox(height: 20),
+                  Row(children: [
+                    Checkbox(
+                        value: withPass,
+                        onChanged: (value) => setState(() {
                           withPass = value!;
                         })),
-                Text("loginWithPassTick".tr)
-              ]),
-              SizedBox(height: 20),
-              if (withPass)
-                Row(
-                  children: [
-                    Text("Password"),
-                  ],
-                ),
-              if (withPass) SizedBox(height: 20),
-              if (withPass)
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your password',
-                  ),
-                  validator: (val) =>
+                    Text("loginWithPassTick".tr)
+                  ]),
+                  SizedBox(height: 20),
+                  if (withPass)
+                    const Row(
+                      children: [
+                        Text("Password"),
+                      ],
+                    ),
+                  if (withPass) SizedBox(height: 20),
+                  if (withPass)
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter your password',
+                      ),
+                      validator: (val) =>
                       val!.length < 6 ? 'Password too short.' : null,
-                  onChanged: (value) => setState(
-                    () {
-                      password = value;
-                    },
-                  ),
-                ),
-              if (withPass) SizedBox(height: 5),
-              if (withPass)
-                TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your password again',
-                      fillColor: Colors.black),
-                  validator: (val) =>
-                      val != password ? 'Passwords not match .' : null,
-                  onChanged: (value) => setState(
-                    () {
-                      if (value != password)
-                        setState(() {
-                          passwordCorrect = false;
-                        });
-                      else
-                        setState(() {
-                          passwordCorrect = true;
-                        });
-                    },
-                  ),
-                ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                child: Text(
-                  _isLoading ? 'Loading...' : 'Sumbmit',
-                  style: const TextStyle(fontSize: 20),
-                ),
-                onPressed: isTrueOTP && withPass == false ||
+                      onChanged: (value) => setState(
+                            () {
+                          password = value;
+                        },
+                      ),
+                    ),
+                  if (withPass) SizedBox(height: 5),
+                  if (withPass)
+                    TextFormField(
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter your password again',
+                          fillColor: Colors.black),
+                      validator: (val) => val != password
+                          ? 'Passwords not match .'
+                          : null,
+                      onChanged: (value) => setState(
+                            () {
+                          if (value != password)
+                            setState(() {
+                              passwordCorrect = false;
+                            });
+                          else
+                            setState(() {
+                              passwordCorrect = true;
+                            });
+                        },
+                      ),
+                    ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    child: Text(
+                      _isLoading ? 'Loading...' : 'Sumbmit',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: isTrueOTP && withPass == false ||
                         (withPass && passwordCorrect)
-                    ? goToNextStep
-                    : null,
-                style: ElevatedButton.styleFrom(fixedSize: const Size(250, 50)),
-              ),
-            ],
+                        ? goToNextStep
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(250, 50)),
+                  ),
+                ],
+              )
           ),
-        )),
+        ),
       );
     });
   }

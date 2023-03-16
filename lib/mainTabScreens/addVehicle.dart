@@ -47,6 +47,7 @@ class _AddVehicleState extends State<AddVehicle>
   }
 
   void _addVehicle() async {
+    print(widget.currentUser);
     type = devices.values.elementAt(selectedValue).toString();
     Device dev = Device(
         serial: serial,

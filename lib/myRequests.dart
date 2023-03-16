@@ -112,13 +112,13 @@ Future<myUser?> addUser(myUser user) async {
   }
 }
 
-Future<myUser?> getUser(String email) async {
+Future<myUser?> getUser(String phone) async {
   try {
-    if (email.isEmpty) return null;
+    if (phone.isEmpty) return null;
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/getUser/'));
     request.fields.addAll({
-      'email': email,
+      'phone': phone,
     });
     http.StreamedResponse response = await request.send();
 
@@ -140,14 +140,12 @@ Future<myUser?> getUser(String email) async {
 Future<List<Device>?> getUserDevice(myUser user) async {
   try {
     List<Device> devicesList = [];
-    if (user.email.isEmpty) return null;
+    if (user.phone.isEmpty) return null;
 
-    // ignore: unnecessary_null_comparison
-    if (user.email == null) return null;
     var request = http.MultipartRequest(
         'POST', Uri.parse(HTTP_URL + '/getDeviceByUser/'));
     request.fields.addAll({
-      'email': user.email,
+      'phone': user.phone,
     });
 
     http.StreamedResponse response = await request.send();
@@ -156,7 +154,7 @@ Future<List<Device>?> getUserDevice(myUser user) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
-
+      print('json = $json');
       for (var dev in json) {
         Device device = Device.fromJson(dev);
         devicesList.add(device);
@@ -173,17 +171,17 @@ Future<List<Device>?> getUserDevice(myUser user) async {
 Future<bool?> addDevice(Device device, myUser user) async {
   try {
     List<Device> devicesList = [];
-    if (user.email.isEmpty || device.serial.isEmpty) return null;
+    if (user.phone.isEmpty || device.serial.isEmpty) return null;
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/addDevice/'));
     request.fields.addAll({
       'serial': device.serial,
-      'userEmail': user.email,
+      'userPhone': user.phone,
       'deviceSimNum': device.simPhone,
       'type': device.type,
       'title': device.title
     });
-    print('user.email=${user.email}');
+    // print('user.email=${user.email}');
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -204,7 +202,7 @@ Future<bool?> updatePass(myUser user, String password) async {
   try {
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/updatePass/'));
-    request.fields.addAll({'email': user.email, 'password': password});
+    request.fields.addAll({'phone': user.phone, 'password': password});
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -301,14 +299,14 @@ Future<myUser?> updateUser(myUser user) async {
   }
 }
 
-Future<bool?> loginWithPass(String email, String password) async {
+Future<bool?> loginWithPass(myUser user, String password) async {
   try {
-    if (email.isEmpty) return null;
+    if (user.phone.isEmpty) return null;
     if (password.isEmpty) return null;
     var request =
         http.MultipartRequest('POST', Uri.parse(HTTP_URL + '/loginByPass/'));
     request.fields.addAll({
-      'email': email,
+      'phone': user.phone,
       'password': password,
     });
     print(request);

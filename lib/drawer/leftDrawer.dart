@@ -2,6 +2,8 @@ import 'package:cargpstracker/autentication.dart';
 import 'package:cargpstracker/home.dart';
 import 'package:cargpstracker/main.dart';
 import 'package:cargpstracker/mainTabScreens/addVehicle.dart';
+import 'package:cargpstracker/mainTabScreens/login.dart';
+import 'package:cargpstracker/mainTabScreens/login4.dart';
 import 'package:cargpstracker/mainTabScreens/profile.dart';
 import 'package:cargpstracker/mainTabScreens/setting.dart';
 import 'package:cargpstracker/mainTabScreens/shared.dart';
@@ -35,11 +37,13 @@ class LeftDrawerState extends State<LeftDrawer>
     delete(SHARED_PHONE_KEY);
     try {
       await Authentication.signOut();
-      StoreProvider.of<AppState>(context).dispatch(FetchDataAction([Device(
-          serial: '123456789',
-          title: "demo".tr,
-          simPhone: '09123456789',
-          type: 'minicar')], null));
+      StoreProvider.of<AppState>(context).dispatch(FetchDataAction([
+        Device(
+            serial: '123456789',
+            title: "demo".tr,
+            simPhone: '09123456789',
+            type: 'minicar')
+      ], null));
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -69,16 +73,14 @@ class LeftDrawerState extends State<LeftDrawer>
   void goToLoginPage() async {
     String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
     if (withPass == "true") {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => Login4Page(
-      //           currentUser: _currentUser, userDevices: widget.userDevices)),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login4Page()),
+      );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignOnPage()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
     }
   }
