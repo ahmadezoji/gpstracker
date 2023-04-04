@@ -316,6 +316,7 @@ Future<bool?> loginWithPass(myUser user, String password) async {
       final responseData = await response.stream.toBytes();
       final responseString = String.fromCharCodes(responseData);
       final json = convert.jsonDecode(responseString);
+      print(json);
       return json["status"];
     } else {
       return false;

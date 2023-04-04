@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "311171007870",
-    "project_id": "gpstracker-80ea1",
-    "storage_bucket": "gpstracker-80ea1.appspot.com"
+    "project_number": "815025655208",
+    "project_id": "gps-plus-aa2a9",
+    "storage_bucket": "gps-plus-aa2a9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:311171007870:android:8b619b24ead7c212295f2f",
+        "mobilesdk_app_id": "1:815025655208:android:917e213238411eb5eae19d",
         "android_client_info": {
-          "package_name": "com.next.cargpstracker"
+          "package_name": "business.gpstracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "311171007870-f0i73p52c5jbtfgi1s1mi697q7882co5.apps.googleusercontent.com",
+          "client_id": "815025655208-3rvflc820s4cm19k89nko969n9set3hb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.next.cargpstracker",
+            "package_name": "business.gpstracker",
             "certificate_hash": "c414ae3ac078e8393563ac7b15dfb0af758c0fd2"
           }
         },
         {
-          "client_id": "311171007870-tqff4ffsqbdl35r44pru3ktcc044rr1s.apps.googleusercontent.com",
+          "client_id": "815025655208-3aej06lu01k9g9cebhl6dfp5g3ne3n7v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCYf7W2dsygiXLE0slpbWYF_LHvxUuPlnY"
+          "current_key": "AIzaSyCChHr756iAa8MyXJfQBJbgXUoNxZiDBco"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "311171007870-02fh24qltvg6nrjkessebvs7mopj9fqj.apps.googleusercontent.com",
+              "client_id": "815025655208-3aej06lu01k9g9cebhl6dfp5g3ne3n7v.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

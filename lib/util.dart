@@ -67,10 +67,17 @@ String getTypeAsset(String type) {
 
 const COMMAND = {'1': '222#', '2': '333#'};
 
-const List locale = [
-  {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-  {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
-];
+const Map locale = {
+  'English' : Locale('en', 'US'),
+  'فارسی' : Locale('fa', 'IR')
+};
+const Map locale_string = {
+  'en_US' : 'English',
+  'fa_IR' : 'فارسی'
+};
+  // {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
+  // {'name': 'فارسی', 'locale': Locale('fa', 'IR')},
+// ];
 const List<String> deviceLanges = ["english", "farsi"];
 const List<String> deviceTimeZones = ["tehran", "istanbul"];
 const List<String> deviceIntervals = ["1", "5", "10", "30", "50"];

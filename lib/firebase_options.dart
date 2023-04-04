@@ -53,8 +53,8 @@ class DefaultFirebaseOptions {
       projectId: "gpstracker-80ea1",
       storageBucket: "gpstracker-80ea1.appspot.com",
       messagingSenderId: "311171007870",
-      appId: "1:311171007870:web:84ff048fe686ef02295f2f",
-      measurementId: "G-KL6JDWJ6SB");
+      appId: "1:311171007870:web:214b53342d7ea08d295f2f",
+      measurementId: "G-YV1V9MEQHC");
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB6d-tGYQiC6-GSIv-sdml-P6HWCzWdxqU',

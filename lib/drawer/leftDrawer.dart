@@ -10,6 +10,7 @@ import 'package:cargpstracker/mainTabScreens/shared.dart';
 import 'package:cargpstracker/mainTabScreens/signOn.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
+import 'package:cargpstracker/myRequests.dart';
 import 'package:cargpstracker/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -34,7 +35,7 @@ class LeftDrawerState extends State<LeftDrawer>
   }
 
   void logout() async {
-    delete(SHARED_PHONE_KEY);
+    // delete(SHARED_PHONE_KEY);
     try {
       await Authentication.signOut();
       StoreProvider.of<AppState>(context).dispatch(FetchDataAction([
@@ -48,23 +49,6 @@ class LeftDrawerState extends State<LeftDrawer>
           context,
           MaterialPageRoute(
               builder: (_) => HomePage(), fullscreenDialog: false));
-      // List<Device> devicesList = (await getUserDevice("09192592697"))!;
-      // User currentUser = await getUser("09192592697") as User;
-      // if (devicesList != null && currentUser != null) {
-      //   Navigator.pushReplacement(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (_) => HomePage(
-      //               currentUser: currentUser,
-      //               userLogined: false,
-      //               userDevices: devicesList),
-      //           fullscreenDialog: false));
-      // }
-      // goToLoginPage();
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => new SignOnPage()),
-      // );
     } catch (e) {
       print(e);
     }
@@ -72,7 +56,16 @@ class LeftDrawerState extends State<LeftDrawer>
 
   void goToLoginPage() async {
     String? withPass = await load(SHARED_ALLWAYS_PASS_KEY);
-    if (withPass == "true") {
+    String? phone = await load(SHARED_PHONE_KEY);
+    // String? withPass = "true";
+    // String? phone = "+989195835135";
+    if (phone != null && withPass == "true") {
+      List<Device> devicesList = [];
+      late myUser currentUser;
+      currentUser = (await getUser(phone))!;
+      devicesList = (await getUserDevice(currentUser))!;
+      StoreProvider.of<AppState>(context)
+          .dispatch(FetchDataAction(devicesList, currentUser));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login4Page()),
@@ -80,7 +73,7 @@ class LeftDrawerState extends State<LeftDrawer>
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => SignOnPage()),
       );
     }
   }

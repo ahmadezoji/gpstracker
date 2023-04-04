@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:cargpstracker/mainTabScreens/languages.dart';
 import 'package:cargpstracker/models/device.dart';
 import 'package:cargpstracker/models/myUser.dart';
 import 'package:cargpstracker/theme_model.dart';
@@ -52,100 +53,146 @@ class _SettingState extends State<Setting> with TickerProviderStateMixin {
           title: Text("setting".tr),
         ),
         body: LayoutBuilder(
-          builder: (context, constraints) =>
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(30),
-                      child:  ListView(
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                Icon(Icons.language),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("app-language".tr),
-                              ],
+            builder: (context, constraints) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(30),
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.language),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text("app-language".tr),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    Language(),
+                                                fullscreenDialog: false));
+                                      },
+                                      icon: Icon(Icons.keyboard_arrow_right))
+                                ],
+                              ),
                             ),
-                          ),
-                          Divider(height: 5, thickness: 2),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                Icon(Icons.add_alert_sharp),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("app-notification".tr)
-                              ],
-                            ),
-                          ),
-                          Divider(height: 5, thickness: 2),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                Icon(Icons.privacy_tip),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("app-privacy".tr)
-                              ],
-                            ),
-                          ),
-                          Divider(height: 5, thickness: 2),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                Icon(Icons.pie_chart),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("app-data-storage".tr)
-                              ],
-                            ),
-                          ),
-                          Divider(height: 5, thickness: 2),
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              children: [
-                                Icon(Icons.add_task),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("app-QA".tr)
-                              ],
-                            ),
-                          )
-                        ],
+                            Divider(height: 5, thickness: 2),
+                            SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.add_alert_sharp),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("app-notification".tr)
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.keyboard_arrow_right))
+                                  ],
+                                )),
+                            Divider(height: 5, thickness: 2),
+                            SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.privacy_tip),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("app-privacy".tr)
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.keyboard_arrow_right))
+                                  ],
+                                )),
+                            Divider(height: 5, thickness: 2),
+                            SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.pie_chart),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("app-data-storage".tr)
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.keyboard_arrow_right))
+                                  ],
+                                )),
+                            Divider(height: 5, thickness: 2),
+                            SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.add_task),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("app-QA".tr)
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.keyboard_arrow_right))
+                                  ],
+                                ))
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: constraints.maxWidth,
-                    child: ElevatedButton(
-                      child: Text(
-                        "apply".tr,
-                        style: const TextStyle(fontSize: 20),
+                    SizedBox(
+                      width: constraints.maxWidth,
+                      child: ElevatedButton(
+                        child: Text(
+                          "apply".tr,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () => applyChanges(),
+                        style:
+                            ElevatedButton.styleFrom(fixedSize: Size(300, 50)),
                       ),
-                      onPressed: () => applyChanges(),
-                      style: ElevatedButton.styleFrom(
-                          fixedSize: Size(300, 50)),
                     ),
-                  ),
-                ],
-              )
-        ),
+                  ],
+                )),
       );
     });
   }

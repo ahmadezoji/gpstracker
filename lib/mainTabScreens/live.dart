@@ -126,14 +126,13 @@ class _LiveState extends State<Live> with AutomaticKeepAliveClientMixin<Live> {
 
   Point? _getCurrentDemoLocation() {
     try {
-      // print(_mapController.bounds!.east);
       if (currentLatLng.longitude > _mapController.bounds!.east)
         _mapController.move(currentLatLng, _mapController.zoom);
       if (currentLatLng.longitude < _mapController.bounds!.west)
         _mapController.move(currentLatLng, _mapController.zoom);
-      if (currentLatLng.latitude > _mapController.bounds!.south)
+      if (currentLatLng.latitude < _mapController.bounds!.south)
         _mapController.move(currentLatLng, _mapController.zoom);
-      if (currentLatLng.latitude < _mapController.bounds!.north)
+      if (currentLatLng.latitude > _mapController.bounds!.north)
         _mapController.move(currentLatLng, _mapController.zoom);
 
       // if (_indexDemoPoints % 10 == 0)

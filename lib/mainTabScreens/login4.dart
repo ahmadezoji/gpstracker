@@ -55,6 +55,7 @@ class _Login4PageState extends State<Login4Page>
 
   void goToNextStep() async {
     updateShared();
+    print(currentUser);
     bool status = (await loginWithPass(currentUser!, password))!;
     if (status) {
       Navigator.pushReplacement(
@@ -163,6 +164,8 @@ class _Login4PageState extends State<Login4Page>
                         ),
                         TextButton(
                           onPressed: () {
+                            delete(SHARED_REMEMBERED_PASS_KEY);
+                            delete(SHARED_ALLWAYS_PASS_KEY);
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

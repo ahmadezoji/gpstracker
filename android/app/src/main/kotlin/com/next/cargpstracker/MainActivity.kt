@@ -1,4 +1,4 @@
-package com.next.cargpstracker
+package business.gpstracker
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -17,7 +17,7 @@ import android.util.Log
 class MainActivity : FlutterActivity() {
 //    private val CHANNEL =  "myChannel";
 
-    private val CHANNEL = "com.next.cargpstracker/sendMsg"
+    private val CHANNEL = "business.gpstracker/sendMsg"
 
     private val callResult: MethodChannel.Result? = null
     var channel: MethodChannel? = null

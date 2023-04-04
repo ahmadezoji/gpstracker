@@ -13,9 +13,7 @@ class Authentication {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     // FirebaseApp firebaseApp = await Firebase.initializeApp();
-
     // TODO: Add auto login logic
-
     return firebaseApp;
   }
 
@@ -73,7 +71,7 @@ class Authentication {
 
     try {
       if (!kIsWeb) {
-      await googleSignIn.signOut();
+        await googleSignIn.signOut();
       }
       await FirebaseAuth.instance.signOut();
     } catch (e) {}
