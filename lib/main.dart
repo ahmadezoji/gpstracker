@@ -88,6 +88,7 @@ AppState reducer(AppState prev, dynamic action) {
 
 ThunkAction<AppState> getDeviceAction = (Store<AppState> store) async {
   // String? email = await load(SHARED_EMAIL_KEY);
+  //login with phone
   String? phone = await load(SHARED_PHONE_KEY);
   // email = "saam.ezoji@gmail.com";
   if (phone != null) {
