@@ -75,10 +75,10 @@ class HomePageState extends State<HomePage>
             ),
             // status bar color
             actions: [
-              IconButton(
-                icon: SvgPicture.asset("assets/simcard-icon.svg"),
-                onPressed: () => _onSimMangment(),
-              ),
+              // IconButton(
+              //   icon: SvgPicture.asset("assets/simcard-icon.svg"),
+              //   onPressed: () => _onSimMangment(),
+              // ),
               SizedBox(width: 10),
               IconButton(
                   icon: Icon(
