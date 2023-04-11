@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gps-plus-aa2a9",
+  "private_key_id": "6c1dc28ff5485395fb82278cade064fbb8fb15dd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEMYF0AveXFfnl\n4mNnVRvS1HebhfUnJ5XYuVKgTR67VATyNX9hvm3H9k0uYPYdsOWCy3gDxkOEOhJJ\nyIthgvJBorCp4E9iJOK4Lb3n35Ox3AG24gzRqkLs3J3hUY7jF5rTEOMwiWJ8GWqH\nrrR1UYX0dallmvvTQUHiKzPSUBrJvravMBEC2DW6YE7EhttA8qB2/7eAS6wjEKCj\nFCWCaU+2pDKV+GdOBWF/kAUH/h93u2wpJH4B+/ZoMfDQPju+TgtR1z8yzdvt3DyO\nfqbl+8ELqzBYKlNwSPHxBnixYUh/kMgRSzRbjTbpl40XhRfMzJ4FkNubwxd2vGzp\nCuBUiCvRAgMBAAECggEAA7ZQwJGYL0PRcjIyUmTxQ3ktiqiG2rGXH3UO+p9Byt1b\nnJm0rSUjABoVrpQKd+pyA77kWV6BWK1Oa+Xg3XOJbWQq3kcIda2T5ReF/4RTnw9O\nc5G29AuVdcgxzZmIhs215DYM5goWGOMRXh0MGxykdueWjdMnfLH3F3k4UOoY3JzB\nMMsm6nAWxHLvidB0zVmJ5LyRAEXMZ29lOd9YBDVjgGpZXWVZMMIDVi/R7CGLf6LZ\nKS7fCJdNIqXCIgm4Pz3ihZvgZ+JS7bIkavDyn59BSdYvb7QU/l8nIlc/wWbTu+NG\nkEEDfeXQ/FmiJRwPT1inBNil05rsihOXsrK+L0HESwKBgQDmHFl0pUEwEIZEPUD+\nO/5fBp/TEz/A0no6Fa1NnAX/GJ6qMsrtY5HrNL82njtZqGCqtwmEy3iD/g86th/e\nDIBO2lwSqNCDdsBIM9jJQxs/Hoo6OWC6dU4bV0hQdlwOpRVAYn/ZIFlj+IqorhzA\nUbA9xlsYNry0oarHXiaKaKsRBwKBgQDaRESxUjWy3D30X0W3aEOEBT8RNEpO/Zj9\n/YSTOcNjPO27wc37NXFiDHIpc6/YnQhWIrg44qBn9dHCp2D+oiP2TsmlSBrlfVAG\nUUXBhTaBq+HJQC3XXx2zwGRtCjaBK9DmuKOGb7qZcOkGgk5gG3ChJ8Ivimd12Zal\nPd1gAL6eZwKBgBqUV7jjhb4ZiojDUoiLQXyUdU2aQZjyNvASpOv8A61NmLYsG8iD\n4cz7UMLsUAqxKklNzympnwgQBo5PjyrE4uU4z73QBhXJV7h/VKEawUDvNCQ5kHS5\nLAZ4dH/mzAddBjFjr0TTOcAUa1/EjMmiJetcyBTp7a4npmRU+bqvEGNtAoGAYLWK\n8j6IyH1JfjOQgllSQPbKIOdYXXOEDFX+HfWkGx5t/5k5mSru2BDHrJIzwfiiLvgn\nRB02EZobnPHoyioxYPs74V33fONvR71O+RX7Nq1f13n2Vc0xLen7FU1HJSiy4OfC\nnNh4h3A978Jg07iUyPMC2Wmruc31L7Yfll/+FdUCgYEAkaJ5DHZq8OK9ni/Jb8QK\n0FWhHb2Ash0KqLPSgZiQ2m1hXRevv1W5oTxCVixiFBBqGXGnE+qKRWx6vg2s/9oE\n1KQfhYZdx0lw1P5idWs8tYw+eIENkaPrwvHQimFspMIEEUe0c05cr4sd0OGlrIFr\nY4tjqsibIZYpN9YAITvMJF8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gpstrackerserveraccount@gps-plus-aa2a9.iam.gserviceaccount.com",
+  "client_id": "116584458217050545385",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gpstrackerserveraccount%40gps-plus-aa2a9.iam.gserviceaccount.com"
+}
