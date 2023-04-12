@@ -82,7 +82,7 @@ class LocaleString extends Translations {
           "update-simcard" : "Sim Card",
           "ballon-remove" : "Remove",
           "ballon-edit" : "Edit",
-          "demo" : "Demo"
+          "demo" : "demo version"
         },
         'fa_IR': {
           "app_name": "موقعیت یاب",
